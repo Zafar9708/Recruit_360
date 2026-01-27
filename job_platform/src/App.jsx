@@ -10,7 +10,7 @@ import LoginPage from "./pages/LoginPage";
 /* Registration */
 import CandidateRegistrationPage from "./pages/CandidateRegisterationPage";
 import VendorRegisterationPage from "./pages/VendorRegisterationPage";
-import EndClientRegistrationPage from "./pages/EndClientRegisterationPage"
+import EndClientRegistrationPage from "./pages/EndClientRegisterationPage";
 
 /* Common */
 import ProfileSetupPage from "./pages/ProfileSetupPage";
@@ -46,14 +46,26 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
 
           {/* Registration */}
-          <Route path="/register/candidate" element={<CandidateRegistrationPage />} />
-          <Route path="/register/vendor" element={<VendorRegisterationPage />} />
-          <Route path="/register/end-client" element={<EndClientRegistrationPage />} />
+          <Route
+            path="/register/candidate"
+            element={<CandidateRegistrationPage />}
+          />
+          <Route
+            path="/register/vendor"
+            element={<VendorRegisterationPage />}
+          />
+          <Route
+            path="/register/end-client"
+            element={<EndClientRegistrationPage />}
+          />
 
           {/* Common */}
           <Route path="/profile-setup" element={<ProfileSetupPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/schedule-interview" element={<InterviewSchedulingPage />} />
+          <Route
+            path="/schedule-interview"
+            element={<InterviewSchedulingPage />}
+          />
 
           {/* Admin */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -64,14 +76,29 @@ export default function App() {
           <Route path="/vendor/benchlist" element={<VendorBenchListPage />} />
           <Route path="/vendor/candidates" element={<VendorCandidatesPage />} />
           <Route path="/vendor/profile" element={<VendorProfilePage />} />
-          <Route path="/vendor/interview/:candidateId" element={<EndClientInterviewPage />} />
+          <Route
+            path="/vendor/interview/:candidateId"
+            element={<EndClientInterviewPage />}
+          />
 
           {/* End Client */}
-          <Route path="/end-client/dashboard" element={<EndClientDashboard />} />
+          <Route
+            path="/end-client/dashboard"
+            element={<EndClientDashboard />}
+          />
           <Route path="/end-client/jobs" element={<EndClientJobsPage />} />
-          <Route path="/end-client/candidates" element={<EndClientCandidatesPage />} />
-          <Route path="/end-client/interview/:candidateId" element={<EndClientInterviewPage />} />
-          <Route path="/end-client/profile" element={<EndClientProfilePage />} />
+          <Route
+            path="/end-client/candidates"
+            element={<EndClientCandidatesPage />}
+          />
+          <Route
+            path="/end-client/interview/:candidateId"
+            element={<EndClientInterviewPage />}
+          />
+          <Route
+            path="/end-client/profile"
+            element={<EndClientProfilePage />}
+          />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
