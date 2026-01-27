@@ -14,7 +14,7 @@ import {
   FileText
 } from 'lucide-react';
 
-export default function VendorRegistrationPage() {
+export default function VendorRegisterationPage() {
   const navigate = useNavigate();
   const [verificationSent, setVerificationSent] = useState(false);
 
