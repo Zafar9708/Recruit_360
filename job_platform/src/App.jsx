@@ -23,7 +23,6 @@ import AdminDashboard from "./pages/AdminDashboard";
 /* Vendor */
 import VendorDashboard from "./pages/VendorDashboard";
 import VendorJobsPage from "./pages/VendorJobsPage";
-import VendorBenchListPage from "./pages/VendorBenchListPage";
 import VendorCandidatesPage from "./pages/VendorCandidatesPage";
 import VendorProfilePage from "./pages/VendorProfilePage";
 
@@ -33,6 +32,7 @@ import EndClientJobsPage from "./pages/EndClientJobsPage";
 import EndClientCandidatesPage from "./pages/EndClientCandidatesPage";
 import EndClientInterviewPage from "./pages/EndClientInterviewPage";
 import EndClientProfilePage from "./pages/EndClientProfilePage";
+import VendorBenchlistPage from "./pages/VendorBenchListPage";
 
 export default function App() {
   return (
@@ -73,7 +73,7 @@ export default function App() {
           {/* Vendor */}
           <Route path="/vendor/dashboard" element={<VendorDashboard />} />
           <Route path="/vendor/jobs" element={<VendorJobsPage />} />
-          <Route path="/vendor/benchlist" element={<VendorBenchListPage />} />
+          <Route path="/vendor/benchlist" element={< VendorBenchlistPage />} />
           <Route path="/vendor/candidates" element={<VendorCandidatesPage />} />
           <Route path="/vendor/profile" element={<VendorProfilePage />} />
           <Route

@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import VendorSidebar from '../components/VendorSidebar';
 
-export default function VendorBenchListPage() {
+export default function VendorBenchlistPage() {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [showUploadModal, setShowUploadModal] = useState(false);
