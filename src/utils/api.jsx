@@ -1,1 +1,0 @@
-export const API_BASE_URL="https://unforwardly-construable-guillermo.ngrok-free.dev/"

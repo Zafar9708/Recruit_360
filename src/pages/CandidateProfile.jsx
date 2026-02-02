@@ -4,11 +4,12 @@ import {
   User, Mail, Phone, MapPin, Building, Calendar, 
   DollarSign, Clock, Palette, Lock, Save, Check
 } from 'lucide-react';
-import VendorSidebar from '../components/VendorSidebar';
-import ProfilePhotoUpload from '../components/ProfilePhotoUpload';
 
-export default function VendorProfilePage() {
-  const [activeTab, setActiveTab] = useState('personal');
+import CandidateSidebar from '../components/CandidateSidebar';
+
+function CandidateProfile() {
+
+   const [activeTab, setActiveTab] = useState('account');
   const [theme, setTheme] = useState('light');
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -45,10 +46,12 @@ export default function VendorProfilePage() {
     { id: 'preferences', label: 'Theme Preferences', icon: Palette },
     { id: 'security', label: 'Security', icon: Lock },
   ];
+       
+
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/30">
-      <VendorSidebar />
+  <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/30">
+      <CandidateSidebar/>
       
       <div className="flex-1 lg:ml-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -68,9 +71,9 @@ export default function VendorProfilePage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="mb-6 p-4 bg-green-50 border border-blue-200 rounded-xl flex items-center gap-3"
+            className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center gap-3"
           >
-            <Check className="w-5 h-5 text-blue-600" />
+            <Check className="w-5 h-5 text-blue-500" />
             <p className="text-blue-800 font-semibold">Changes saved successfully!</p>
           </motion.div>
         )}
@@ -93,7 +96,7 @@ export default function VendorProfilePage() {
                       whileTap={{ scale: 0.98 }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left ${
                         isActive
-                          ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg'
+                          ? 'bg-gradient-to-br from-blue-600 to-cyan-600 text-white shadow-lg'
                           : 'text-gray-700 hover:bg-blue-50'
                       }`}
                     >
@@ -146,228 +149,6 @@ export default function VendorProfilePage() {
                   </div>
                 </motion.div>
               )}
-
-              {/* Personal Information */}
-              {activeTab === 'personal' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Personal Information</h2>
-                  
-                  <div className="space-y-8">
-                    {/* Profile Photo Upload */}
-                    <div className="flex justify-center py-6 border-b border-gray-200">
-                      <ProfilePhotoUpload
-                        userName={profileData.fullName}
-                        onPhotoChange={(file) => console.log('Photo changed:', file)}
-                      />
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Full Name
-                        </label>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={profileData.fullName}
-                            onChange={(e) => setProfileData({ ...profileData, fullName: e.target.value })}
-                            className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Email Address
-                        </label>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="email"
-                            value={profileData.email}
-                            onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
-                            className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Phone Number
-                        </label>
-                        <div className="relative">
-                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="tel"
-                            value={profileData.phone}
-                            onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
-                            className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Country
-                        </label>
-                        <div className="relative">
-                          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={profileData.country}
-                            onChange={(e) => setProfileData({ ...profileData, country: e.target.value })}
-                            className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Location
-                      </label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        <input
-                          type="text"
-                          value={profileData.location}
-                          onChange={(e) => setProfileData({ ...profileData, location: e.target.value })}
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                    </div>
-
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleSave}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
-                    >
-                      <Save className="w-5 h-5" />
-                      Save Changes
-                    </motion.button>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Company Information */}
-              {activeTab === 'company' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Company Information</h2>
-                  
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Company Name
-                      </label>
-                      <div className="relative">
-                        <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        <input
-                          type="text"
-                          value={profileData.companyName}
-                          onChange={(e) => setProfileData({ ...profileData, companyName: e.target.value })}
-                          className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Company Description
-                      </label>
-                      <textarea
-                        rows={4}
-                        value={profileData.companyDescription}
-                        onChange={(e) => setProfileData({ ...profileData, companyDescription: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleSave}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
-                    >
-                      <Save className="w-5 h-5" />
-                      Save Changes
-                    </motion.button>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Package Information */}
-              {activeTab === 'package' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Package Information</h2>
-                  
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border-2 border-blue-200">
-                      <DollarSign className="w-8 h-8 text-blue-600 mb-4" />
-                      <p className="text-sm text-gray-600 mb-2">Current Package</p>
-                      <p className="text-2xl font-bold text-gray-900 mb-2">{profileData.packageType}</p>
-                      <p className="text-sm text-gray-600">Unlimited candidate submissions</p>
-                    </div>
-
-                    <div className="p-6 bg-gray-50 rounded-2xl border-2 border-gray-200">
-                      <Calendar className="w-8 h-8 text-gray-600 mb-4" />
-                      <p className="text-sm text-gray-600 mb-2">Expiry Date</p>
-                      <p className="text-2xl font-bold text-gray-900 mb-2">
-                        {new Date(profileData.packageExpiry).toLocaleDateString()}
-                      </p>
-                      <p className="text-sm text-gray-600">365 days remaining</p>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Account Usage */}
-              {activeTab === 'usage' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Account Usage</h2>
-                  
-                  <div className="space-y-4">
-                    <div className="p-6 bg-gray-50 rounded-xl">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm text-gray-600 mb-1">Last Login</p>
-                          <p className="text-lg font-semibold text-gray-900">{profileData.lastLogin}</p>
-                        </div>
-                        <Clock className="w-8 h-8 text-gray-400" />
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div className="p-6 bg-blue-50 rounded-xl text-center">
-                        <p className="text-3xl font-bold text-blue-600 mb-1">42</p>
-                        <p className="text-sm text-gray-600">Benchlist Candidates</p>
-                      </div>
-                      <div className="p-6 bg-blue-50 rounded-xl text-center">
-                        <p className="text-3xl font-bold text-blue-600 mb-1">128</p>
-                        <p className="text-sm text-gray-600">Candidates Submitted</p>
-                      </div>
-                      <div className="p-6 bg-blue-50 rounded-xl text-center">
-                        <p className="text-3xl font-bold text-blue-600 mb-1">23</p>
-                        <p className="text-sm text-gray-600">Active Job Applications</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
               {/* Theme Preferences */}
               {activeTab === 'preferences' && (
                 <motion.div
@@ -382,7 +163,7 @@ export default function VendorProfilePage() {
                       onClick={() => setTheme('light')}
                       className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${
                         theme === 'light'
-                          ? 'border-blue-500 bg-blue-50'
+                          ? 'border-blue-500 bg-green-50'
                           : 'border-gray-200 bg-white hover:border-blue-200'
                       }`}
                     >
@@ -433,7 +214,7 @@ export default function VendorProfilePage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleSave}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
                     >
                       <Save className="w-5 h-5" />
                       Save Preferences
@@ -500,7 +281,7 @@ export default function VendorProfilePage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleSave}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
                     >
                       <Lock className="w-5 h-5" />
                       Update Password
@@ -514,5 +295,7 @@ export default function VendorProfilePage() {
       </div>
       </div>
     </div>
-  );
+  )
 }
+
+export default CandidateProfile

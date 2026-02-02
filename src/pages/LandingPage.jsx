@@ -15,16 +15,16 @@ export default function LandingPage() {
 
   const dropdownRef = useRef(null);
 
-useEffect(() => {
-  function handleClickOutside(event) {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setOrgDropdownOpen(false);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOrgDropdownOpen(false);
+      }
     }
-  }
 
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => document.removeEventListener("mousedown", handleClickOutside);
-}, []);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
@@ -41,57 +41,57 @@ useEffect(() => {
   };
 
   const features = [
-    { 
-      icon: Upload, 
-      title: 'Smart Registration', 
+    {
+      icon: Upload,
+      title: 'Smart Registration',
       desc: 'Upload your CV or fill details manually with our intuitive form',
       color: 'from-blue-500 to-blue-600'
     },
-    { 
-      icon: Sparkles, 
-      title: 'AI Skill Evaluation', 
+    {
+      icon: Sparkles,
+      title: 'AI Skill Evaluation',
       desc: 'Advanced AI assesses your skills and matches you with perfect roles',
       color: 'from-purple-500 to-purple-600'
     },
-    { 
-      icon: Calendar, 
-      title: 'Flexible Scheduling', 
+    {
+      icon: Calendar,
+      title: 'Flexible Scheduling',
       desc: 'Book interviews at your convenience with multiple companies',
       color: 'from-green-500 to-green-600'
     },
-    { 
-      icon: Target, 
-      title: 'Perfect Matching', 
+    {
+      icon: Target,
+      title: 'Perfect Matching',
       desc: 'Get matched with positions that align with your career goals',
       color: 'from-orange-500 to-orange-600'
     },
   ];
 
   const benefits = [
-    { 
-      icon: Zap, 
-      title: 'Lightning Fast Placement', 
+    {
+      icon: Zap,
+      title: 'Lightning Fast Placement',
       desc: 'Average placement time of just 14 days',
       stat: '14 Days',
       color: 'bg-yellow-50 text-yellow-600'
     },
-    { 
-      icon: Building2, 
-      title: 'Top Companies', 
+    {
+      icon: Building2,
+      title: 'Top Companies',
       desc: 'Connect with 500+ hiring partners globally',
       stat: '500+',
       color: 'bg-blue-50 text-blue-600'
     },
-    { 
-      icon: Award, 
-      title: '95% Success Rate', 
+    {
+      icon: Award,
+      title: '95% Success Rate',
       desc: 'Industry-leading placement success rate',
       stat: '95%',
       color: 'bg-green-50 text-green-600'
     },
-    { 
-      icon: Users, 
-      title: 'Expert Support', 
+    {
+      icon: Users,
+      title: 'Expert Support',
       desc: 'Dedicated career counselors for guidance',
       stat: '24/7',
       color: 'bg-purple-50 text-purple-600'
@@ -198,7 +198,7 @@ useEffect(() => {
       </div>
 
       {/* Navigation */}
-      <motion.nav 
+      <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
@@ -206,7 +206,7 @@ useEffect(() => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.05 }}
               className="flex items-center gap-3"
             >
@@ -218,62 +218,62 @@ useEffect(() => {
                 <p className="text-xs text-gray-500">Your Career, Accelerated</p>
               </div>
             </motion.div>
-            
+
             <div className="hidden md:flex items-center gap-8">
               <a href="#features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</a>
               <a href="#how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">How It Works</a>
+              <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
+
               <a href="#testimonials" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Success Stories</a>
               <a href="#stats" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Stats</a>
-              <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
-              
+
               {/* For Organizations Dropdown */}
-<div className="relative" ref={dropdownRef}>
-  <button
-    onClick={() => setOrgDropdownOpen(prev => !prev)}
-    className="text-gray-600 hover:text-blue-600 transition-colors font-medium flex items-center gap-1"
-  >
-    For Organizations
-    <ChevronDown
-      className={`w-4 h-4 transition-transform ${
-        orgDropdownOpen ? "rotate-180" : ""
-      }`}
-    />
-  </button>
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setOrgDropdownOpen(prev => !prev)}
+                  className="text-gray-600 hover:text-blue-600 transition-colors font-medium flex items-center gap-1"
+                >
+                  For Organizations
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform ${orgDropdownOpen ? "rotate-180" : ""
+                      }`}
+                  />
+                </button>
 
-  <AnimatePresence>
-    {orgDropdownOpen && (
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 10 }}
-        className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50"
-      >
-        <Link
-          to="/pricing"
-          onClick={() => setOrgDropdownOpen(false)}
-          className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-        >
-          View Plans
-        </Link>
+                <AnimatePresence>
+                  {orgDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50"
+                    >
+                      <Link
+                        to="/pricing"
+                        onClick={() => setOrgDropdownOpen(false)}
+                        className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      >
+                        View Plans
+                      </Link>
 
-        <Link
-          to="/login"
-          onClick={() => setOrgDropdownOpen(false)}
-          className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-        >
-          Login
-        </Link>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</div>
+                      <Link
+                        to="/login/organization"
+                        onClick={() => setOrgDropdownOpen(false)}
+                        className="block px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      >
+                        Login
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
               <Link to="/login">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-6 py-2.5 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition-all"
                 >
-                Sign In
+                  Sign In
                 </motion.button>
               </Link>
               <Link to="/register/candidate">
@@ -282,12 +282,12 @@ useEffect(() => {
                   whileTap={{ scale: 0.95 }}
                   className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium shadow-lg"
                 >
-                Get Started
+                  Get Started
                 </motion.button>
               </Link>
             </div>
 
-            <button 
+            <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-gray-100"
             >
@@ -351,7 +351,7 @@ useEffect(() => {
                 transition={{ delay: 0.4 }}
                 className="text-xl text-gray-600 mb-8 leading-relaxed"
               >
-                Connect with top companies, showcase your skills with AI-powered assessments, 
+                Connect with top companies, showcase your skills with AI-powered assessments,
                 and land your dream job faster than ever before.
               </motion.p>
 
@@ -541,7 +541,7 @@ useEffect(() => {
                     </div>
                   </div>
                 </motion.div>
-                
+
                 {/* Floating Success Badge */}
                 <motion.div
                   animate={{
@@ -652,7 +652,7 @@ useEffect(() => {
       {/* Stats Section */}
       <section id="stats" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-20" />
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -732,15 +732,17 @@ useEffect(() => {
                 whileHover={{ y: -10, scale: 1.02 }}
                 className="group relative bg-white p-8 rounded-2xl border-2 border-gray-100 hover:border-transparent hover:shadow-2xl transition-all duration-300"
               >
-                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl blur-xl -z-10" 
-                     style={{backgroundImage: `linear-gradient(to bottom right, var(--tw-gradient-stops))`,
-                             background: `linear-gradient(135deg, ${feature.color.includes('blue') ? '#3b82f6' : feature.color.includes('purple') ? '#a855f7' : feature.color.includes('green') ? '#10b981' : '#f97316'}, transparent)`}} 
+                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl blur-xl -z-10"
+                  style={{
+                    backgroundImage: `linear-gradient(to bottom right, var(--tw-gradient-stops))`,
+                    background: `linear-gradient(135deg, ${feature.color.includes('blue') ? '#3b82f6' : feature.color.includes('purple') ? '#a855f7' : feature.color.includes('green') ? '#10b981' : '#f97316'}, transparent)`
+                  }}
                 />
-                
+
                 <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg`}>
                   <feature.icon className="w-8 h-8 text-white" />
                 </div>
-                
+
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   {feature.title}
                 </h3>
@@ -783,7 +785,7 @@ useEffect(() => {
           <div className="relative">
             {/* Connection Line */}
             <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 -translate-y-1/2" />
-            
+
             <motion.div
               variants={staggerContainer}
               initial="initial"
@@ -804,11 +806,11 @@ useEffect(() => {
                     <div className={`w-20 h-20 bg-gradient-to-br ${step.color} rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-xl`}>
                       <step.icon className="w-10 h-10 text-white" />
                     </div>
-                    
+
                     <div className="text-6xl font-bold text-gray-100 absolute top-4 right-4">
                       {step.step}
                     </div>
-                    
+
                     <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
                       {step.title}
                     </h3>
@@ -816,7 +818,7 @@ useEffect(() => {
                       {step.description}
                     </p>
                   </motion.div>
-                  
+
                   {index < howItWorks.length - 1 && (
                     <div className="hidden lg:block absolute top-1/2 -right-4 z-20">
                       <ChevronRight className="w-8 h-8 text-blue-400" />
@@ -898,7 +900,7 @@ useEffect(() => {
                   className="w-full"
                 />
               </div>
-              
+
               <motion.div
                 animate={{
                   y: [0, -20, 0],
@@ -973,11 +975,11 @@ useEffect(() => {
                     <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                
+
                 <p className="text-gray-700 mb-6 leading-relaxed italic">
                   "{testimonial.text}"
                 </p>
-                
+
                 <div className="flex items-center gap-4 pt-6 border-t border-gray-100">
                   <ImageWithFallback
                     src={testimonial.image}
@@ -1004,7 +1006,7 @@ useEffect(() => {
       {/* CTA Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-20" />
-        
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1017,7 +1019,7 @@ useEffect(() => {
           <p className="text-xl text-blue-100 mb-10">
             Join 50,000+ professionals who've transformed their careers. Get started in minutes.
           </p>
-          
+
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/register">
               <motion.button
@@ -1066,7 +1068,7 @@ useEffect(() => {
                 Accelerating careers with AI-powered job placement.
               </p>
             </div>
-            
+
             <div>
               <h4 className="font-bold mb-4">Platform</h4>
               <ul className="space-y-2 text-gray-400">
@@ -1076,7 +1078,7 @@ useEffect(() => {
                 <li><a href="#" className="hover:text-white transition-colors">API</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-bold mb-4">Resources</h4>
               <ul className="space-y-2 text-gray-400">
@@ -1086,7 +1088,7 @@ useEffect(() => {
                 <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-bold mb-4">Company</h4>
               <ul className="space-y-2 text-gray-400">
@@ -1097,7 +1099,7 @@ useEffect(() => {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400">
               © 2024 CareerLaunch. All rights reserved.

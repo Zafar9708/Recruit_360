@@ -24,12 +24,11 @@ export default function CandidateSidebar() {
 
   const menuItems = [
     { label: 'Dashboard', icon: Home, path: '/dashboard' },
-    { label: 'Browse Jobs', icon: Briefcase, path: '/jobs' },
-    { label: 'My Applications', icon: FileText, path: '/applications' },
-    { label: 'Interviews', icon: Calendar, path: '/interviews' },
+    { label: 'Explore Opportunities', icon: Briefcase, path: '/candidate/jobs' },
+    { label: 'Interviews', icon: Calendar, path: "/candidate/interviews" },
     { label: 'Skills Assessment', icon: Award, path: '/skills-assessment' },
-    { label: 'Profile', icon: User, path: '/profile' },
-    { label: 'Settings', icon: Settings, path: '/candidate-settings' },
+    { label: 'Profile', icon: User, path: "/candidate/profile" },
+    
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -150,7 +149,7 @@ export default function CandidateSidebar() {
           {/* Quick Action */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="mt-6 p-4 bg-linear-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100"
+            className="mt-36 p-4 bg-linear-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100"
           >
             <div className="flex gap-3 mb-3">
               <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">

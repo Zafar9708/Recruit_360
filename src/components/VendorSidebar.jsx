@@ -6,29 +6,30 @@ import {
   Briefcase,
   Users,
   User,
-  Settings,
   LogOut,
   Menu,
   X,
   Bell,
   ChevronRight,
   BookmarkCheck,
+  BarChart3,
+  ClipboardList,
 } from 'lucide-react';
 
 export default function VendorSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-
   const [isOpen, setIsOpen] = useState(true);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const menuItems = [
     { label: 'Dashboard', icon: Home, path: '/vendor/dashboard' },
-    { label: 'Career Opportunities', icon: Briefcase, path: '/vendor/jobs' },
-    { label: 'Bench Resources', icon: BookmarkCheck, path: '/vendor/benchlist' },
+    { label: 'Job Posting', icon: ClipboardList, path: '/vendor/job-postings' },
+    { label: 'Find Clients', icon: Briefcase, path: '/vendor/jobs' },
+    { label: 'Benchlist', icon: BookmarkCheck, path: '/vendor/benchlist' },
     { label: 'Independent Candidates', icon: Users, path: '/vendor/candidates' },
-    { label: 'My Info', icon: User, path: '/vendor/profile' },
-    { label: 'Business Insights', icon: Settings, path: '/vendor/settings' },
+    { label: 'My Profile', icon: User, path: '/vendor/profile' },
+    { label: 'Business Analytics', icon: BarChart3, path: '/vendor/analytics' },
   ];
 
   const handleLogout = () => {
@@ -45,11 +46,7 @@ export default function VendorSidebar() {
         onClick={() => setIsMobileOpen(!isMobileOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg border border-gray-200"
       >
-        {isMobileOpen ? (
-          <X className="w-6 h-6" />
-        ) : (
-          <Menu className="w-6 h-6" />
-        )}
+        {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
 
       {/* Mobile Overlay */}
@@ -72,7 +69,7 @@ export default function VendorSidebar() {
           width: isOpen ? 280 : 80,
           x: isMobileOpen || window.innerWidth >= 1024 ? 0 : -280,
         }}
-        className={`fixed left-0 top-0 h-screen bg-gradient-to-br from-blue-600 to-cyan-600 text-white z-40 transition-all duration-300 ${
+        className={`fixed left-0 top-0 h-screen bg-linear-to-br from-blue-600 to-cyan-600 text-white z-40 transition-all duration-300 ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
@@ -91,7 +88,7 @@ export default function VendorSidebar() {
                 {isOpen && (
                   <div>
                     <h2 className="font-bold text-lg">Vendor</h2>
-                    <p className="text-xs text-green-100">Portal</p>
+                    <p className="text-xs text-blue-100">Portal</p>
                   </div>
                 )}
               </motion.div>
@@ -126,7 +123,7 @@ export default function VendorSidebar() {
                   whileTap={{ scale: 0.98 }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                     active
-                      ? 'bg-white text-blue-500 shadow-lg'
+                      ? 'bg-white text-blue-600 shadow-lg'
                       : 'hover:bg-white/10 text-white'
                   }`}
                 >
@@ -141,7 +138,7 @@ export default function VendorSidebar() {
                   {active && isOpen && (
                     <motion.div
                       layoutId="activeIndicator"
-                      className="ml-auto w-2 h-2 bg-blue-500 rounded-full"
+                      className="ml-auto w-2 h-2 bg-blue-600 rounded-full"
                     />
                   )}
                 </motion.button>
@@ -157,9 +154,7 @@ export default function VendorSidebar() {
             >
               <Bell className="w-5 h-5 flex-shrink-0" />
               {isOpen && (
-                <span className="font-medium truncate">
-                  Notifications
-                </span>
+                <span className="font-medium truncate">Notifications</span>
               )}
             </button>
 
@@ -169,16 +164,14 @@ export default function VendorSidebar() {
             >
               <LogOut className="w-5 h-5 flex-shrink-0" />
               {isOpen && (
-                <span className="font-medium truncate">
-                  Logout
-                </span>
+                <span className="font-medium truncate">Logout</span>
               )}
             </button>
           </div>
         </div>
       </motion.aside>
 
-      {/* Spacer */}
+      {/* Spacer for content */}
       <div
         className={`hidden lg:block transition-all duration-300 ${
           isOpen ? 'w-[280px]' : 'w-[80px]'

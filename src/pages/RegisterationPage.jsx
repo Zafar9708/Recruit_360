@@ -5,26 +5,18 @@ import { toast } from 'sonner';
 import { Upload, User, Mail, Phone, Lock, ArrowLeft, Loader2 } from 'lucide-react';
 import * as Tabs from '@radix-ui/react-tabs';
 
-interface ManualRegistrationForm {
-  fullName: string;
-  email: string;
-  phone: string;
-  password: string;
-  confirmPassword: string;
-}
-
 export default function RegistrationPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('upload');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [uploadedFile, setUploadedFile] = useState(null);
   const [dragActive, setDragActive] = useState(false);
 
-  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<ManualRegistrationForm>();
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm();
 
   const password = watch('password');
 
-  const handleDrag = (e: React.DragEvent) => {
+  const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (e.type === 'dragenter' || e.type === 'dragover') {
@@ -34,7 +26,7 @@ export default function RegistrationPage() {
     }
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
@@ -43,13 +35,13 @@ export default function RegistrationPage() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       handleFileUpload(e.target.files[0]);
     }
   };
 
-  const handleFileUpload = async (file: File) => {
+  const handleFileUpload = async (file) => {
     const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     if (!validTypes.includes(file.type)) {
       toast.error('Please upload a PDF or DOC file');
@@ -71,7 +63,7 @@ export default function RegistrationPage() {
     }, 2500);
   };
 
-  const onManualSubmit = async (data: ManualRegistrationForm) => {
+  const onManualSubmit = async (data) => {
     if (data.password !== data.confirmPassword) {
       toast.error('Passwords do not match');
       return;
