@@ -108,6 +108,29 @@ export default function RegistrationPage() {
         <div className="bg-white py-10 px-6 shadow-[0_20px_50px_rgba(8,_112,_184,_0.07)] sm:rounded-3xl sm:px-10 border border-gray-100">
           
           <form onSubmit={handleSubmit(onRegisterSubmit)} className="space-y-5">
+            <div className="pt-2">
+              <label className="block text-[10px] font-black text-gray-400 uppercase mb-2 ml-1 tracking-widest flex justify-between">
+                Resume / CV (Optional)
+                <span className="lowercase font-normal">max 5MB</span>
+              </label>
+              <div className={`group relative border-2 border-dashed rounded-2xl p-4 text-center transition-all ${uploadedFile ? 'border-green-500 bg-green-50/50' : 'border-gray-200 hover:border-blue-400 bg-gray-50/30'}`}>
+                <input id="cv-upload" type="file" className="hidden" accept=".pdf,.doc,.docx" onChange={(e) => handleFileUpload(e.target.files[0])} />
+                {uploadedFile ? (
+                  <div className="flex items-center justify-between px-1">
+                    <div className="flex items-center text-xs font-bold text-gray-800 truncate">
+                      <CheckCircle2 className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                      {uploadedFile.name}
+                    </div>
+                    <label htmlFor="cv-upload" className="text-[10px] text-blue-600 hover:underline font-black uppercase cursor-pointer">Edit</label>
+                  </div>
+                ) : (
+                  <label htmlFor="cv-upload" className="cursor-pointer flex items-center justify-center gap-2 text-xs text-gray-500 font-bold py-1">
+                    <Upload className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
+                    <span>Upload PDF for AI processing</span>
+                  </label>
+                )}
+              </div>
+            </div>
             <InputField 
               label="Full Name" 
               register={register('fullName', { 
@@ -161,29 +184,7 @@ export default function RegistrationPage() {
               icon={<Lock className="w-4 h-4" />} 
             />
 
-            <div className="pt-2">
-              <label className="block text-[10px] font-black text-gray-400 uppercase mb-2 ml-1 tracking-widest flex justify-between">
-                Resume / CV (Optional)
-                <span className="lowercase font-normal">max 5MB</span>
-              </label>
-              <div className={`group relative border-2 border-dashed rounded-2xl p-4 text-center transition-all ${uploadedFile ? 'border-green-500 bg-green-50/50' : 'border-gray-200 hover:border-blue-400 bg-gray-50/30'}`}>
-                <input id="cv-upload" type="file" className="hidden" accept=".pdf,.doc,.docx" onChange={(e) => handleFileUpload(e.target.files[0])} />
-                {uploadedFile ? (
-                  <div className="flex items-center justify-between px-1">
-                    <div className="flex items-center text-xs font-bold text-gray-800 truncate">
-                      <CheckCircle2 className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                      {uploadedFile.name}
-                    </div>
-                    <label htmlFor="cv-upload" className="text-[10px] text-blue-600 hover:underline font-black uppercase cursor-pointer">Edit</label>
-                  </div>
-                ) : (
-                  <label htmlFor="cv-upload" className="cursor-pointer flex items-center justify-center gap-2 text-xs text-gray-500 font-bold py-1">
-                    <Upload className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
-                    <span>Upload PDF for AI processing</span>
-                  </label>
-                )}
-              </div>
-            </div>
+            
 
             <div className="pt-4 space-y-4">
               <button

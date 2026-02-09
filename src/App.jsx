@@ -30,13 +30,22 @@ import JobPostingDetailPage from './pages/JobPostingDetailPage';
 import JobCandidateDetailPage from './pages/JobCandidateDetailPage';
 import RegistrationPage from './pages/CandidateRegister/Register';
 import VerifyEmail from './pages/CandidateRegister/VerifyEmail';
+import SkillAssessment from './pages/SkillAssessment';
+import CandidateJobBoard from './pages/CandidateJobBoard'
+import CandidateAllInterviews from './pages/CandidateAllInterviews'
+import CandidateProfile from './pages/CandidateProfile';
+import EndClientAnalytics from './pages/EndClientAnalytics'
+import EndClientNotificationsPage from './pages/EndClientNotificationsPage';
+import AIInterviewPage from './pages/AIInterviewPage';
+import HomePage from './pages/HomePage';
+import Messages from './pages/CandidateMessages';
 
 export default function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-white">
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/enquiry" element={<EnquiryPage />} />
           <Route path="/register/candidate" element={<RegistrationPage />} />
@@ -71,6 +80,16 @@ export default function App() {
           <Route path="/end-client/dashboard" element={<EndClientDashboard />} />
           <Route path="/end-client/jobs" element={<EndClientJobsPage />} />
           <Route path="/end-client/candidates" element={<EndClientCandidatesPage />} />
+          <Route path="/skills-assessment" element={<SkillAssessment />} />
+          <Route path="/candidate/jobs" element={<CandidateJobBoard />} /> 
+          <Route path="/candidate/interviews" element={<CandidateAllInterviews />} />
+          <Route path="/candidate/profile" element={<CandidateProfile />} />
+          <Route path="/end-client/analytics" element={<EndClientAnalytics />} />
+          <Route path="/end-client/notifications" element={<EndClientNotificationsPage />} />
+          <Route path="/ai-interview" element={<AIInterviewPage />} />
+          <Route path="/candidate/messages" element={<Messages />} />
+
+
          {/*  <Route
             path="/end-client/interview/:candidateId"
             element={<EndClientInterviewPage />}

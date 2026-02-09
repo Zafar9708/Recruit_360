@@ -4,31 +4,37 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home,
   Briefcase,
-  FileText,
   Calendar,
   Award,
   User,
-  Settings,
   LogOut,
   Menu,
   X,
-  Bell,
+  TrendingUp,
+  ChevronRight,
   MessageSquare,
-  TrendingUp
+  Bell,
+  BarChart3
 } from 'lucide-react';
 
 export default function CandidateSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(true);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  const SIDEBAR_WIDTH = 280;
+  const COLLAPSED_WIDTH = 80;
 
   const menuItems = [
     { label: 'Dashboard', icon: Home, path: '/dashboard' },
-    { label: 'Explore Opportunities', icon: Briefcase, path: '/candidate/jobs' },
+    { label: 'Jobs', icon: Briefcase, path: '/candidate/jobs' },
     { label: 'Interviews', icon: Calendar, path: "/candidate/interviews" },
-    { label: 'Skills Assessment', icon: Award, path: '/skills-assessment' },
-    { label: 'Profile', icon: User, path: "/candidate/profile" },
-    
+    { label: 'Assessments', icon: Award, path: '/skills-assessment' },
+    { label: 'Messages', icon: MessageSquare, path: '/candidate/messages' },
+    { label: 'Profile', icon: User, path: "/end-client/profile" },
+    { label: 'Analytics', icon: BarChart3, path: '/candidate/analytics' },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -40,150 +46,145 @@ export default function CandidateSidebar() {
     navigate('/login');
   };
 
-  const handleNavigation = (path) => {
-    navigate(path);
-    setIsOpen(false);
-  };
+  const candidateName = localStorage.getItem('userName') || 'Candidate';
+  const candidateEmail = localStorage.getItem('userEmail') || 'candidate@example.com';
 
   return (
     <>
-      {/* Mobile Menu Button */}
+      {/* Mobile Toggle */}
       <button
-        onClick={() => setIsOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-60 p-3 bg-white text-blue-600 rounded-xl shadow-lg border border-gray-200 hover:bg-blue-50 transition-colors"
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg border border-blue-100"
       >
-        <Menu className="w-6 h-6" />
+        {isMobileOpen ? <X className="text-blue-950" /> : <Menu className="text-blue-950" />}
       </button>
 
-      {/* Overlay */}
+      {/* Mobile Sidebar */}
       <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
-          />
+        {isMobileOpen && (
+          <motion.aside
+            initial={{ x: -300 }}
+            animate={{ x: 0 }}
+            exit={{ x: -300 }}
+            className="lg:hidden fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-blue-950 to-blue-900 text-white z-40 shadow-2xl flex flex-col overflow-hidden"
+          >
+            <div className="p-4 border-b border-white/10 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-400 rounded-xl flex items-center justify-center shadow-lg shrink-0 text-lg font-bold">
+                  {candidateName.charAt(0).toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="font-bold text-base truncate">{candidateName}</h2>
+                  <p className="text-xs text-blue-200 truncate">{candidateEmail}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-hidden p-3 flex flex-col justify-between">
+              <div className="space-y-0.5">
+                {menuItems.map(({ label, icon: Icon, path }) => (
+                  <button
+                    key={path}
+                    onClick={() => { navigate(path); setIsMobileOpen(false); }}
+                    className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all ${isActive(path) ? 'bg-white text-blue-950 shadow-lg font-semibold' : 'hover:bg-white/10'}`}
+                  >
+                    <Icon size={18} />
+                    <span className="text-sm">{label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-4 border-t border-white/10 bg-blue-950 shrink-0">
+              <button onClick={handleLogout} className="w-full flex items-center justify-center gap-3 px-4 py-2.5 bg-red-600/10 hover:bg-red-600/20 rounded-lg text-red-200 transition-colors">
+                <LogOut size={18} />
+                <span className="text-sm font-semibold">Logout</span>
+              </button>
+            </div>
+          </motion.aside>
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed top-0 left-0 h-screen w-72 bg-white border-r border-gray-200
-          z-50 flex flex-col shadow-xl transition-transform duration-300
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0
-        `}
+      {/* Desktop Sidebar */}
+      <motion.aside
+        initial={false}
+        animate={{ width: isOpen ? SIDEBAR_WIDTH : COLLAPSED_WIDTH }}
+        className="fixed left-0 top-0 h-screen bg-gradient-to-b from-blue-950 to-blue-900 text-white z-40 hidden lg:flex flex-col shadow-xl overflow-hidden"
       >
-        {/* Header */}
-        <div className="p-6 border-b border-gray-200 bg-linear-to-br from-blue-50 to-cyan-50">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-linear-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
-                <User className="w-6 h-6 text-white" />
+        {/* Header Section */}
+        <div className="h-20 p-5 border-b border-white/10 flex items-center shrink-0">
+          <div className="flex items-center justify-between w-full min-w-0">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-400 rounded-xl flex items-center justify-center shadow-lg shrink-0 text-lg font-bold">
+                {candidateName.charAt(0).toUpperCase()}
               </div>
-              <div>
-                <h2 className="font-bold text-gray-900">
-                  {localStorage.getItem('userName') || 'Candidate'}
-                </h2>
-                <p className="text-xs text-blue-600 font-medium">Job Seeker</p>
-              </div>
+              {isOpen && (
+                <div className="min-w-0 flex-1">
+                  <h2 className="font-bold text-base truncate leading-none mb-1">{candidateName}</h2>
+                  <p className="text-[10px] text-blue-200 truncate">{candidateEmail}</p>
+                </div>
+              )}
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="lg:hidden p-2 hover:bg-white/50 rounded-lg transition-colors"
-            >
-              <X className="w-5 h-5 text-gray-600" />
+            <button onClick={() => setIsOpen(!isOpen)} className="p-1.5 hover:bg-white/10 rounded-lg transition-colors shrink-0 ml-1">
+              <ChevronRight className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} size={16} />
             </button>
-          </div>
-
-          {/* Quick Stats */}
-          <div className="grid grid-cols-3 gap-2 mt-4">
-            <div className="bg-white/80 rounded-lg p-2 text-center">
-              <div className="text-lg font-bold text-blue-600">15</div>
-              <div className="text-[10px] text-gray-600">Applied</div>
-            </div>
-            <div className="bg-white/80 rounded-lg p-2 text-center">
-              <div className="text-lg font-bold text-green-600">5</div>
-              <div className="text-[10px] text-gray-600">Interviews</div>
-            </div>
-            <div className="bg-white/80 rounded-lg p-2 text-center">
-              <div className="text-lg font-bold text-orange-600">95%</div>
-              <div className="text-[10px] text-gray-600">Profile</div>
-            </div>
           </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto p-4">
-          <div className="space-y-1">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.path);
-
-              return (
-                <motion.button
-                  key={item.path}
-                  onClick={() => handleNavigation(item.path)}
-                  whileHover={{ x: 4 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all group ${
-                    active
-                      ? 'bg-linear-to-r from-blue-600 to-cyan-600 text-white shadow-lg'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  <Icon
-                    className={`w-5 h-5 ${
-                      active ? 'text-white' : 'text-gray-500 group-hover:text-blue-600'
-                    }`}
-                  />
-                  <span className="font-medium text-sm">{item.label}</span>
-                </motion.button>
-              );
-            })}
+        {/* Navigation Area */}
+        <div className="flex-1 p-3 flex flex-col justify-between overflow-hidden">
+          <div className="space-y-0.5">
+            {menuItems.map(({ label, icon: Icon, path }) => (
+              <button
+                key={path}
+                onClick={() => navigate(path)}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all ${isActive(path) ? 'bg-white text-blue-950 shadow-lg font-semibold' : 'hover:bg-white/10'} ${!isOpen ? 'justify-center' : ''}`}
+              >
+                <Icon size={isOpen ? 18 : 22} />
+                {isOpen && <span className="text-sm">{label}</span>}
+              </button>
+            ))}
           </div>
 
-          {/* Quick Action */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="mt-36 p-4 bg-linear-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100"
-          >
-            <div className="flex gap-3 mb-3">
-              <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h4 className="font-bold text-sm">Boost Your Profile</h4>
-                <p className="text-xs text-gray-600">
-                  Complete your profile to get better matches
-                </p>
+          {/* Compact Profile Boost Section */}
+          {isOpen && (
+            <div className="mt-auto mb-2 p-2.5 bg-white/5 border border-white/10 rounded-xl shrink-0">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-blue-400 shrink-0" />
+                <div className="min-w-0">
+                  <h4 className="text-[11px] font-bold text-white truncate">Profile Boost</h4>
+                  <button 
+                    onClick={() => navigate('/profile-setup')}
+                    className="text-[10px] text-blue-400 font-bold hover:text-white transition-colors cursor-pointer"
+                  >
+                    Update Now →
+                  </button>
+                </div>
               </div>
             </div>
-            <button className="w-full py-2 bg-linear-to-r from-blue-600 to-cyan-600 text-white rounded-lg text-xs font-semibold">
-              Complete Now
-            </button>
-          </motion.div>
-        </nav>
+          )}
+        </div>
 
-        {/* Footer */}
-        <div className="p-4 border-t bg-gray-50">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+        {/* Footer Logout - Fixed to Bottom */}
+        <div className="p-4 border-t border-white/10 bg-blue-950 shrink-0">
+          <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-linear-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold"
+            className={`w-full flex items-center ${!isOpen ? 'justify-center' : 'gap-3'} px-4 py-2.5 bg-red-600/10 hover:bg-red-600/20 rounded-lg text-red-200 transition-colors shadow-inner`}
           >
-            <LogOut className="w-4 h-4" />
-            Logout
-          </motion.button>
+            <LogOut size={isOpen ? 18 : 22} />
+            {isOpen && <span className="text-sm font-semibold">Logout</span>}
+          </button>
+          
+          {isOpen && (
+            <p className="text-center text-[9px] text-blue-500/50 mt-2 uppercase tracking-widest font-bold">
+              v2.4.0
+            </p>
+          )}
         </div>
-      </aside>
+      </motion.aside>
 
       {/* Desktop Spacer */}
-      <div className="hidden lg:block w-72" />
+      <div className={`hidden lg:block transition-all duration-300 flex-shrink-0 ${isOpen ? 'w-[280px]' : 'w-[80px]'}`} />
     </>
   );
 }

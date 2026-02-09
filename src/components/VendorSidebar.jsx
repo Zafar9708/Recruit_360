@@ -19,8 +19,12 @@ import {
 export default function VendorSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [isOpen, setIsOpen] = useState(true);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  const SIDEBAR_WIDTH = 280;
+  const COLLAPSED_WIDTH = 80;
 
   const menuItems = [
     { label: 'Dashboard', icon: Home, path: '/vendor/dashboard' },
@@ -32,21 +36,25 @@ export default function VendorSidebar() {
     { label: 'Business Analytics', icon: BarChart3, path: '/vendor/analytics' },
   ];
 
+  const isActive = (path) => location.pathname === path;
+
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
   };
 
-  const isActive = (path) => location.pathname === path;
-
   return (
     <>
-      {/* Mobile Toggle Button */}
+      {/* Mobile Toggle */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg border border-gray-200"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow border border-blue-100"
       >
-        {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        {isMobileOpen ? (
+          <X className="text-blue-950 w-6 h-6" />
+        ) : (
+          <Menu className="text-blue-950 w-6 h-6" />
+        )}
       </button>
 
       {/* Mobile Overlay */}
@@ -57,48 +65,101 @@ export default function VendorSidebar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsMobileOpen(false)}
-            className="lg:hidden fixed inset-0 bg-black/50 z-40"
+            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
           />
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
+      {/* Mobile Sidebar */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.aside
+            initial={{ x: -300 }}
+            animate={{ x: 0 }}
+            exit={{ x: -300 }}
+            className="lg:hidden fixed left-0 top-0 h-screen w-72 bg-blue-950 text-white z-50"
+          >
+            <div className="flex flex-col h-full overflow-hidden">
+              <div className="p-6 border-b border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg flex-shrink-0">
+                    <Briefcase className="text-blue-950 w-6 h-6" />
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-lg leading-none">Vendor</h2>
+                    <p className="text-xs text-blue-300 mt-1">Recruitment Hub</p>
+                  </div>
+                </div>
+              </div>
+
+              <nav className="flex-1 p-4 space-y-1">
+                {menuItems.map(({ label, icon: Icon, path }) => (
+                  <button
+                    key={path}
+                    onClick={() => {
+                      navigate(path);
+                      setIsMobileOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                      isActive(path)
+                        ? 'bg-white text-blue-950 font-bold'
+                        : 'hover:bg-white/10 text-white/80 hover:text-white'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span className="text-sm">{label}</span>
+                  </button>
+                ))}
+              </nav>
+
+              <div className="p-4 border-t border-white/10">
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-600/20 rounded-xl text-red-200"
+                >
+                  <LogOut className="w-5 h-5" />
+                  <span className="text-sm">Logout</span>
+                </button>
+              </div>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Sidebar */}
       <motion.aside
         initial={false}
         animate={{
-          width: isOpen ? 280 : 80,
-          x: isMobileOpen || window.innerWidth >= 1024 ? 0 : -280,
+          width: isOpen ? SIDEBAR_WIDTH : COLLAPSED_WIDTH,
         }}
-        className={`fixed left-0 top-0 h-screen bg-linear-to-br from-blue-600 to-cyan-600 text-white z-40 transition-all duration-300 ${
-          isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        }`}
+        className="fixed left-0 top-0 h-screen bg-blue-950 text-white z-40 hidden lg:block border-r border-white/5 shadow-2xl"
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-hidden">
           {/* Header */}
-          <div className="p-6 border-b border-white/10">
+          <div className="p-6 border-b border-white/10 flex-shrink-0">
             <div className="flex items-center justify-between">
-              <motion.div
-                animate={{ opacity: isOpen ? 1 : 0 }}
-                className="flex items-center gap-3"
-              >
-                <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                  <Briefcase className="w-6 h-6 text-blue-600" />
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg flex-shrink-0">
+                  <Briefcase className="text-blue-950 w-6 h-6" />
                 </div>
-
                 {isOpen && (
-                  <div>
-                    <h2 className="font-bold text-lg">Vendor</h2>
-                    <p className="text-xs text-blue-100">Portal</p>
-                  </div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="whitespace-nowrap"
+                  >
+                    <h2 className="font-bold text-lg leading-none text-white">Vendor</h2>
+                    <p className="text-[11px] text-blue-400 font-medium uppercase tracking-wider mt-1">Portal</p>
+                  </motion.div>
                 )}
-              </motion.div>
+              </div>
 
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="hidden lg:block p-2 hover:bg-white/10 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors ml-2"
               >
                 <ChevronRight
-                  className={`w-5 h-5 transition-transform ${
+                  className={`w-5 h-5 transition-transform duration-300 ${
                     isOpen ? 'rotate-180' : ''
                   }`}
                 />
@@ -106,74 +167,64 @@ export default function VendorSidebar() {
             </div>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.path);
-
+          {/* Navigation - Content Fixed, No Scroll */}
+          <nav className="flex-1 p-4 space-y-1">
+            {menuItems.map(({ label, icon: Icon, path }) => {
+              const active = isActive(path);
               return (
-                <motion.button
-                  key={item.path}
-                  onClick={() => {
-                    navigate(item.path);
-                    setIsMobileOpen(false);
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                <button
+                  key={path}
+                  onClick={() => navigate(path)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all relative group ${
                     active
-                      ? 'bg-white text-blue-600 shadow-lg'
-                      : 'hover:bg-white/10 text-white'
+                      ? 'bg-white text-blue-950 font-bold shadow-lg shadow-blue-950/40'
+                      : 'hover:bg-white/10 text-white/70 hover:text-white'
                   }`}
                 >
-                  <Icon className="w-5 h-5 flex-shrink-0" />
-
+                  <Icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-blue-600' : ''}`} />
+                  
                   {isOpen && (
-                    <span className="font-medium truncate">
-                      {item.label}
-                    </span>
+                    <span className="text-sm truncate font-medium">{label}</span>
                   )}
 
-                  {active && isOpen && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="ml-auto w-2 h-2 bg-blue-600 rounded-full"
-                    />
+                  {!isOpen && (
+                    <div className="absolute left-16 px-3 py-2 bg-blue-900 text-white text-[11px] font-bold rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 uppercase tracking-widest shadow-2xl border border-white/10">
+                      {label}
+                    </div>
                   )}
-                </motion.button>
+                </button>
               );
             })}
           </nav>
 
-          {/* Footer */}
-          <div className="p-4 border-t border-white/10 space-y-2">
+          {/* Footer Actions */}
+          <div className="p-4 border-t border-white/10 flex-shrink-0">
             <button
-              onClick={() => navigate('/vendor/profile')}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/10 rounded-xl transition-colors"
+              onClick={() => navigate('/vendor/notifications')}
+              className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-white/10 rounded-xl transition-colors text-white/70 hover:text-white mb-1 ${
+                !isOpen ? 'justify-center' : ''
+              }`}
             >
-              <Bell className="w-5 h-5 flex-shrink-0" />
-              {isOpen && (
-                <span className="font-medium truncate">Notifications</span>
-              )}
+              <Bell className="w-5 h-5" />
+              {isOpen && <span className="text-sm font-medium">Notifications</span>}
             </button>
 
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-700 rounded-xl transition-colors"
+              className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 rounded-xl text-red-400 transition-colors ${
+                !isOpen ? 'justify-center' : ''
+              }`}
             >
-              <LogOut className="w-5 h-5 flex-shrink-0" />
-              {isOpen && (
-                <span className="font-medium truncate">Logout</span>
-              )}
+              <LogOut className="w-5 h-5" />
+              {isOpen && <span className="text-sm font-medium">Logout</span>}
             </button>
           </div>
         </div>
       </motion.aside>
 
-      {/* Spacer for content */}
+      {/* Desktop Layout Spacer */}
       <div
-        className={`hidden lg:block transition-all duration-300 ${
+        className={`hidden lg:block transition-all duration-300 ease-in-out ${
           isOpen ? 'w-[280px]' : 'w-[80px]'
         }`}
       />
