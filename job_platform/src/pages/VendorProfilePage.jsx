@@ -5,9 +5,10 @@ import {
   DollarSign, Clock, Palette, Lock, Save, Check
 } from 'lucide-react';
 import VendorSidebar from '../components/VendorSidebar';
+import ProfilePhotoUpload from '../components/ProfilePhotoUpload';
 
 export default function VendorProfilePage() {
-  const [activeTab, setActiveTab] = useState('account');
+  const [activeTab, setActiveTab] = useState('personal');
   const [theme, setTheme] = useState('light');
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -67,9 +68,9 @@ export default function VendorProfilePage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center gap-3"
+            className="mb-6 p-4 bg-green-50 border border-blue-200 rounded-xl flex items-center gap-3"
           >
-            <Check className="w-5 h-5 text-blue-500" />
+            <Check className="w-5 h-5 text-blue-600" />
             <p className="text-blue-800 font-semibold">Changes saved successfully!</p>
           </motion.div>
         )}
@@ -92,7 +93,7 @@ export default function VendorProfilePage() {
                       whileTap={{ scale: 0.98 }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left ${
                         isActive
-                          ? 'bg-gradient-to-br from-blue-600 to-cyan-600 text-white shadow-lg'
+                          ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg'
                           : 'text-gray-700 hover:bg-blue-50'
                       }`}
                     >
@@ -154,7 +155,15 @@ export default function VendorProfilePage() {
                 >
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Personal Information</h2>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-8">
+                    {/* Profile Photo Upload */}
+                    <div className="flex justify-center py-6 border-b border-gray-200">
+                      <ProfilePhotoUpload
+                        userName={profileData.fullName}
+                        onPhotoChange={(file) => console.log('Photo changed:', file)}
+                      />
+                    </div>
+                    
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -236,7 +245,7 @@ export default function VendorProfilePage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleSave}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
                     >
                       <Save className="w-5 h-5" />
                       Save Changes
@@ -285,7 +294,7 @@ export default function VendorProfilePage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleSave}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
                     >
                       <Save className="w-5 h-5" />
                       Save Changes
@@ -303,7 +312,7 @@ export default function VendorProfilePage() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Package Information</h2>
                   
                   <div className="grid md:grid-cols-2 gap-6">
-                    <div className="p-6 bg-gradient-to-br from-blue-50 to-blue-50 rounded-2xl border-2 border-blue-200">
+                    <div className="p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border-2 border-blue-200">
                       <DollarSign className="w-8 h-8 text-blue-600 mb-4" />
                       <p className="text-sm text-gray-600 mb-2">Current Package</p>
                       <p className="text-2xl font-bold text-gray-900 mb-2">{profileData.packageType}</p>
@@ -346,12 +355,12 @@ export default function VendorProfilePage() {
                         <p className="text-3xl font-bold text-blue-600 mb-1">42</p>
                         <p className="text-sm text-gray-600">Benchlist Candidates</p>
                       </div>
-                      <div className="p-6 bg-green-50 rounded-xl text-center">
+                      <div className="p-6 bg-blue-50 rounded-xl text-center">
                         <p className="text-3xl font-bold text-blue-600 mb-1">128</p>
                         <p className="text-sm text-gray-600">Candidates Submitted</p>
                       </div>
-                      <div className="p-6 bg-purple-50 rounded-xl text-center">
-                        <p className="text-3xl font-bold text-purple-600 mb-1">23</p>
+                      <div className="p-6 bg-blue-50 rounded-xl text-center">
+                        <p className="text-3xl font-bold text-blue-600 mb-1">23</p>
                         <p className="text-sm text-gray-600">Active Job Applications</p>
                       </div>
                     </div>
@@ -373,7 +382,7 @@ export default function VendorProfilePage() {
                       onClick={() => setTheme('light')}
                       className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${
                         theme === 'light'
-                          ? 'border-blue-500 bg-green-50'
+                          ? 'border-blue-500 bg-blue-50'
                           : 'border-gray-200 bg-white hover:border-blue-200'
                       }`}
                     >
@@ -424,7 +433,7 @@ export default function VendorProfilePage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleSave}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
                     >
                       <Save className="w-5 h-5" />
                       Save Preferences
@@ -491,7 +500,7 @@ export default function VendorProfilePage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleSave}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg"
                     >
                       <Lock className="w-5 h-5" />
                       Update Password

@@ -80,9 +80,10 @@ export default function PricingPage() {
             <div className="hidden md:flex items-center gap-8">
               <Link to="/#features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
               <Link to="/#how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">How It Works</Link>
+              <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
+
               <Link to="/#testimonials" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Success Stories</Link>
               <Link to="/#stats" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Stats</Link>
-              <Link to="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
               
               {/* For Organizations Dropdown */}
               <div className="relative">
