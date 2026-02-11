@@ -38,7 +38,9 @@ import EndClientNotificationsPage from './pages/EndClientNotificationsPage';
 import AIInterviewPage from './pages/AIInterviewPage';
 import HomePage from './pages/HomePage';
 import Messages from './pages/CandidateMessages';
-import VendorBenchListPage from './pages/VendorBenchlistPage';
+import VendorBenchListPage from './pages/VendorBenchListPage';
+
+
 export default function App() {
   return (
     <BrowserRouter>
