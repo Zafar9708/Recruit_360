@@ -38,8 +38,7 @@ import EndClientNotificationsPage from './pages/EndClientNotificationsPage';
 import AIInterviewPage from './pages/AIInterviewPage';
 import HomePage from './pages/HomePage';
 import Messages from './pages/CandidateMessages';
-import VendorBenchlistPage from './pages/VendorBenchlistPage';
-
+import VendorBenchListPage from './pages/VendorBenchlistPage';
 export default function App() {
   return (
     <BrowserRouter>
@@ -59,7 +58,7 @@ export default function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/vendor/dashboard" element={<VendorDashboard />} />
           <Route path="/vendor/jobs" element={<VendorJobsPage />} />
-          <Route path="/vendor/benchlist" element={<VendorBenchlistPage/>} />
+          <Route path="/vendor/benchlist" element={<VendorBenchListPage/>} />
           <Route
             path="/vendor/bench-candidate/:candidateId"
             element={<BenchCandidateDetailPage />}

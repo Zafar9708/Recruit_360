@@ -10,7 +10,7 @@ import VendorSidebar from '../components/VendorSidebar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-export default function VendorBenchlistPage() {
+export default function VendorBenchListPage() {
   /* ================= STATE MANAGEMENT ================= */
   const [searchTerm, setSearchTerm] = useState('');
   const [showUploadModal, setShowUploadModal] = useState(false);
