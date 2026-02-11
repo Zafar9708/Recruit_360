@@ -17,7 +17,6 @@ import EndClientInterviewPage from './pages/EndClientJobDetailPage';
 import EndClientCandidatesPage from './pages/EndClientCandidatesPage';
 import EndClientProfilePage from './pages/EndClientProfilePage';
 import VendorJobsPage from './pages/VendorJobsPage';
-import VendorBenchlistPage from './pages/VendorBenchlistPage';
 import VendorJobDetailsPage from './pages/VendorJobDetailPage';
 import VendorCandidatesPage from './pages/VendorCandidatesPage';
 import VendorProfilePage from './pages/VendorProfilePage';
@@ -39,6 +38,7 @@ import EndClientNotificationsPage from './pages/EndClientNotificationsPage';
 import AIInterviewPage from './pages/AIInterviewPage';
 import HomePage from './pages/HomePage';
 import Messages from './pages/CandidateMessages';
+import VendorBenchlistPage from './pages/VendorBenchlistPage';
 
 export default function App() {
   return (
@@ -59,7 +59,7 @@ export default function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/vendor/dashboard" element={<VendorDashboard />} />
           <Route path="/vendor/jobs" element={<VendorJobsPage />} />
-          <Route path="/vendor/benchlist" element={<VendorBenchlistPage />} />
+          <Route path="/vendor/benchlist" element={<VendorBenchlistPage/>} />
           <Route
             path="/vendor/bench-candidate/:candidateId"
             element={<BenchCandidateDetailPage />}
@@ -90,10 +90,7 @@ export default function App() {
           <Route path="/candidate/messages" element={<Messages />} />
 
 
-         {/*  <Route
-            path="/end-client/interview/:candidateId"
-            element={<EndClientInterviewPage />}
-          /> */}
+        
             <Route
             path="/end-client/interview/"
             element={<EndClientInterviewPage />}
