@@ -33,7 +33,7 @@ export default function CandidateSidebar() {
     { label: 'Interviews', icon: Calendar, path: "/candidate/interviews" },
     { label: 'Assessments', icon: Award, path: '/skills-assessment' },
     { label: 'Messages', icon: MessageSquare, path: '/candidate/messages' },
-    { label: 'Profile', icon: User, path: "/end-client/profile" },
+    { label: 'Profile', icon: User, path: "/candidate/profile" },
     { label: 'Analytics', icon: BarChart3, path: '/candidate/analytics' },
   ];
 

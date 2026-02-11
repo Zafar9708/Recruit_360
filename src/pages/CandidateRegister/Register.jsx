@@ -4,243 +4,368 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useGoogleLogin } from '@react-oauth/google'; 
 import { authApi } from '../../utils/api';
-import { Upload, Mail, Lock, ArrowLeft, Loader2, CheckCircle2, User, AlertCircle, Send } from 'lucide-react';
+import { Upload, Mail, Lock, User, Loader2, FileText, Sparkles, ArrowRight, Check, Briefcase, Shield } from 'lucide-react';
+
+// Mock resume parsing function
+const parseResume = (file) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        fullName: "Alex Johnson",
+        email: "alex.johnson@example.com",
+        phone: "+1 (555) 123-4567",
+        location: "San Francisco, CA",
+        skills: ["React", "TypeScript", "Node.js", "AWS"],
+        summary: "Senior Frontend Developer with 5+ years experience"
+      });
+    }, 1000);
+  });
+};
 
 export default function RegistrationPage() {
   const navigate = useNavigate();
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [isEmailSent, setIsEmailSent] = useState(false);
-  const [registeredEmail, setRegisteredEmail] = useState("");
+  const [isParsing, setIsParsing] = useState(false);
 
-  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm({
-    mode: 'onTouched' 
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm({
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
   });
-  
-  const password = watch('password');
 
-  // --- GOOGLE API INTEGRATION ---
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
         const response = await authApi.googleLogin({ token: tokenResponse.access_token });
         if (response.data.success) {
-          toast.success('Logged in with Google!');
           localStorage.setItem('token', response.data.token);
-          navigate('/dashboard');
+          navigate('/profile-setup');
         }
       } catch (error) {
-        toast.error('Google login failed. Please try again.');
+        toast.error('Google login failed');
       }
     },
   });
 
-  const handleFileUpload = (file) => {
-    const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    if (!validTypes.includes(file.type)) return toast.error('Please upload a PDF or DOC file');
-    if (file.size > 5 * 1024 * 1024) return toast.error('File size must be less than 5MB');
+  const handleFileUpload = async (file) => {
+    const validTypes = ['application/pdf', '.doc', '.docx'];
+    if (!validTypes.some(type => file.type.includes(type) || file.name.endsWith(type.replace('.', '')))) {
+      toast.error('Please upload PDF or DOC file');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('File must be less than 5MB');
+      return;
+    }
+    
     setUploadedFile(file);
-    toast.success('Resume attached successfully!');
-  };
-
-  // --- REGISTRATION API INTEGRATION ---
-  const onRegisterSubmit = async (data) => {
+    setIsParsing(true);
+    
     try {
-      const formData = new FormData();
+      const extractedData = await parseResume(file);
       
-      // 1. Append text fields
-      formData.append('fullName', data.fullName);
-      formData.append('email', data.email);
-      formData.append('password', data.password);
+      setValue('fullName', extractedData.fullName);
+      setValue('email', extractedData.email);
       
-      // 2. Append the file with the name the backend expects
-      if (uploadedFile) {
-        // We changed 'cv' to 'resume' to match your backend Multer config
-        formData.append('resume', uploadedFile); 
-      }
-
-      const response = await authApi.register(formData);
-
-      if (response.data.success) {
-        setRegisteredEmail(data.email);
-        setIsEmailSent(true);
-        toast.success('Verification email sent!');
-      }
+      localStorage.setItem('resumeData', JSON.stringify(extractedData));
+      
+      toast.success('Resume parsed successfully!');
     } catch (error) {
-      const message = error.response?.data?.message || 'Registration failed. Try again.';
-      toast.error(message);
+      toast.error('Failed to parse resume');
+    } finally {
+      setIsParsing(false);
     }
   };
 
-  // Show Success State after Registration
-  if (isEmailSent) {
-    return (
-      <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center items-center px-4">
-        <div className="bg-white p-10 rounded-3xl shadow-xl border border-gray-100 max-w-md w-full text-center space-y-6">
-          <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto">
-            <Send className="w-10 h-10 text-blue-600 animate-bounce" />
-          </div>
-          <h2 className="text-2xl font-black text-gray-900">Verify your email</h2>
-          <p className="text-gray-500 text-sm">
-            We've sent a verification link to <br/>
-            <span className="font-bold text-gray-800">{registeredEmail}</span>
-          </p>
-          <button onClick={() => setIsEmailSent(false)} className="text-blue-600 text-xs font-bold hover:underline">
-            Back to registration
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const onRegisterSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append('fullName', data.fullName);
+      formData.append('email', data.email);
+      formData.append('password', data.password);
+      if (uploadedFile) formData.append('resume', uploadedFile);
+
+      // Simulate API call
+      const response = await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            data: {
+              success: true,
+              token: 'dummy-token-123'
+            }
+          });
+        }, 1000);
+      });
+
+      if (response.data.success) {
+        localStorage.setItem('token', 'dummy-token-123');
+        localStorage.setItem('userName', data.fullName);
+        localStorage.setItem('userEmail', data.email);
+        localStorage.setItem('userRole', 'candidate');
+        
+        toast.success('Account created successfully!');
+        navigate('/profile-setup');
+      }
+    } catch (error) {
+      toast.error('Registration failed');
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Link to="/" className="inline-flex items-center text-xs font-bold text-gray-400 hover:text-blue-600 mb-6 transition-all uppercase tracking-widest">
-          <ArrowLeft className="w-3 h-3 mr-2" /> Back to portal
-        </Link>
-        <h2 className="text-3xl font-black text-gray-900 tracking-tight text-center">Get Started</h2>
-        <p className="mt-2 text-center text-sm text-gray-500 font-medium italic">
-          "Join 10,000+ professionals finding dreams jobs"
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center p-6">
+      <div className="w-full max-w-lg">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-4">
+           
+          </div>
+          <h2 className="text-3xl font-black text-blue-950 mb-2">Create Account</h2>
+          <p className="text-blue-600">Join thousands of professionals finding dream jobs</p>
+        </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-10 px-6 shadow-[0_20px_50px_rgba(8,_112,_184,_0.07)] sm:rounded-3xl sm:px-10 border border-gray-100">
-          
-          <form onSubmit={handleSubmit(onRegisterSubmit)} className="space-y-5">
-            <div className="pt-2">
-              <label className="block text-[10px] font-black text-gray-400 uppercase mb-2 ml-1 tracking-widest flex justify-between">
-                Resume / CV (Optional)
-                <span className="lowercase font-normal">max 5MB</span>
-              </label>
-              <div className={`group relative border-2 border-dashed rounded-2xl p-4 text-center transition-all ${uploadedFile ? 'border-green-500 bg-green-50/50' : 'border-gray-200 hover:border-blue-400 bg-gray-50/30'}`}>
-                <input id="cv-upload" type="file" className="hidden" accept=".pdf,.doc,.docx" onChange={(e) => handleFileUpload(e.target.files[0])} />
-                {uploadedFile ? (
-                  <div className="flex items-center justify-between px-1">
-                    <div className="flex items-center text-xs font-bold text-gray-800 truncate">
-                      <CheckCircle2 className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                      {uploadedFile.name}
-                    </div>
-                    <label htmlFor="cv-upload" className="text-[10px] text-blue-600 hover:underline font-black uppercase cursor-pointer">Edit</label>
-                  </div>
-                ) : (
-                  <label htmlFor="cv-upload" className="cursor-pointer flex items-center justify-center gap-2 text-xs text-gray-500 font-bold py-1">
-                    <Upload className="w-4 h-4 text-blue-400 group-hover:scale-110 transition-transform" />
-                    <span>Upload PDF for AI processing</span>
-                  </label>
-                )}
+        {/* Main Card */}
+        <div className="bg-white rounded-2xl shadow-xl border border-blue-100 overflow-hidden">
+          {/* Upload Section */}
+          <div className="p-8 border-b border-blue-100 bg-gradient-to-r from-blue-50 to-blue-100/30">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-blue-950">Quick Start with Resume</h3>
+                <p className="text-sm text-blue-600">Upload resume to auto-fill details</p>
               </div>
+              <Sparkles className="w-5 h-5 text-blue-600" />
             </div>
-            <InputField 
-              label="Full Name" 
-              register={register('fullName', { 
-                required: 'Full name is required',
-                minLength: { value: 3, message: 'Name is too short' },
-                pattern: { value: /^[a-zA-Z ]+$/, message: 'Only alphabets are allowed' }
-              })} 
-              error={errors.fullName} 
-              placeholder="Enter your full name" 
-              icon={<User className="w-4 h-4" />} 
-            />
-
-            <InputField 
-              label="Email Address" 
-              type="email" 
-              register={register('email', { 
-                required: 'Email is required',
-                pattern: { 
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 
-                  message: 'Invalid email address' 
-                }
-              })} 
-              error={errors.email} 
-              placeholder="you@company.com" 
-              icon={<Mail className="w-4 h-4" />} 
-            />
-
-            <InputField 
-              label="Password" 
-              type="password" 
-              register={register('password', { 
-                required: 'Password is required', 
-                minLength: { value: 8, message: 'Minimum 8 characters' },
-                pattern: {
-                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-                  message: 'Must include Uppercase, Lowercase, and Number'
-                }
-              })} 
-              error={errors.password} 
-              icon={<Lock className="w-4 h-4" />} 
-            />
-
-            <InputField 
-              label="Confirm Password" 
-              type="password" 
-              register={register('confirmPassword', { 
-                required: 'Please confirm your password',
-                validate: v => v === password || 'Passwords do not match' 
-              })} 
-              error={errors.confirmPassword} 
-              icon={<Lock className="w-4 h-4" />} 
-            />
-
             
+            <div className={`relative group border-2 border-dashed rounded-xl p-8 text-center transition-all ${
+              uploadedFile 
+                ? 'border-green-500 bg-green-50/30' 
+                : isParsing
+                ? 'border-blue-300'
+                : 'border-blue-200 hover:border-blue-400 cursor-pointer'
+            }`}>
+              <input 
+                id="cv-upload" 
+                type="file" 
+                className="hidden" 
+                accept=".pdf,.doc,.docx" 
+                onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0])} 
+              />
+              
+              {isParsing ? (
+                <div className="py-4">
+                  <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-3" />
+                  <p className="text-blue-700 font-medium">Parsing your resume...</p>
+                  <p className="text-sm text-blue-600">Extracting information...</p>
+                </div>
+              ) : uploadedFile ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                      <Check className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-bold text-blue-950 truncate">{uploadedFile.name}</p>
+                      <p className="text-sm text-green-600 font-medium">✓ Successfully uploaded</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => document.getElementById('cv-upload').click()}
+                    className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    Upload different file
+                  </button>
+                </div>
+              ) : (
+                <label htmlFor="cv-upload" className="cursor-pointer">
+                  <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Upload className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <p className="text-blue-950 font-semibold mb-2">Upload Resume</p>
+                  <p className="text-blue-600 text-sm">PDF or DOC up to 5MB</p>
+                  <p className="text-xs text-blue-500 mt-2">We'll auto-fill your information</p>
+                </label>
+              )}
+            </div>
+          </div>
 
-            <div className="pt-4 space-y-4">
+          {/* Registration Form */}
+          <div className="p-8">
+            <form onSubmit={handleSubmit(onRegisterSubmit)} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-blue-900 mb-2">Full Name</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+                    <input 
+                      {...register('fullName', { 
+                        required: 'Full name is required',
+                        minLength: { value: 2, message: 'Name is too short' }
+                      })} 
+                     
+                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
+                        errors.fullName ? 'border-red-300' : 'border-blue-200'
+                      }`}
+                    />
+                  </div>
+                  {errors.fullName && (
+                    <p className="mt-1 text-sm text-red-600">{errors.fullName.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-blue-900 mb-2">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+                    <input 
+                      type="email"
+                      {...register('email', { 
+                        required: 'Email is required',
+                        pattern: { 
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 
+                          message: 'Invalid email address' 
+                        }
+                      })} 
+                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
+                        errors.email ? 'border-red-300' : 'border-blue-200'
+                      }`}
+                    />
+                  </div>
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-blue-900 mb-2">Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+                    <input 
+                      type="password"
+                      {...register('password', { 
+                        required: 'Password is required', 
+                        minLength: { value: 6, message: 'Minimum 6 characters' }
+                      })} 
+                      placeholder="••••••••" 
+                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
+                        errors.password ? 'border-red-300' : 'border-blue-200'
+                      }`}
+                    />
+                  </div>
+                  {errors.password && (
+                    <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-blue-900 mb-2">Confirm Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+                    <input 
+                      type="password"
+                      {...register('confirmPassword', { 
+                        required: 'Please confirm your password',
+                        validate: v => v === watch('password') || 'Passwords must match' 
+                      })} 
+                      placeholder="••••••••" 
+                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
+                        errors.confirmPassword ? 'border-red-300' : 'border-blue-200'
+                      }`}
+                    />
+                  </div>
+                  {errors.confirmPassword && (
+                    <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-sm text-blue-600">
+                <Shield className="w-4 h-4" />
+                <span>Your data is secure and encrypted</span>
+              </div>
+
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full flex justify-center py-4 px-4 rounded-2xl shadow-xl shadow-blue-200 text-sm font-black text-white bg-blue-600 hover:bg-blue-700 transition-all active:scale-[0.98] disabled:opacity-70"
+                className="w-full py-3.5 bg-gradient-to-r from-blue-950 to-blue-900 text-white rounded-xl font-semibold hover:from-blue-900 hover:to-blue-800 transition-all disabled:opacity-70 flex items-center justify-center gap-2"
               >
-                {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'CREATE ACCOUNT'}
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Creating Account...
+                  </>
+                ) : (
+                  <>
+                    Create Account
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                )}
               </button>
+            </form>
 
-              <div className="relative py-2 text-center">
-                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-100"></div></div>
-                <span className="relative px-3 bg-white text-[10px] font-black text-gray-400 uppercase tracking-tighter">OR</span>
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-blue-100"></div>
               </div>
-
-              <button 
-                type="button"
-                onClick={() => loginWithGoogle()}
-                className="w-full flex items-center justify-center py-3.5 px-4 border border-gray-200 rounded-2xl bg-white text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all active:bg-gray-100"
-              >
-                <img className="h-5 w-5 mr-3" src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" />
-                Continue with Google
-              </button>
+              <div className="relative flex justify-center">
+                <span className="px-4 bg-white text-blue-600 text-sm font-medium">OR</span>
+              </div>
             </div>
-          </form>
 
-          <p className="mt-10 text-center text-sm text-gray-500 font-medium">
-            Already a member?{' '}
-            <Link to="/login" className="text-blue-600 font-black hover:text-blue-700 underline underline-offset-4">
-              Sign In
-            </Link>
-          </p>
+            <button 
+              onClick={() => loginWithGoogle()}
+              className="w-full py-3.5 border border-blue-200 rounded-xl text-blue-900 hover:bg-blue-50 transition-colors font-medium flex items-center justify-center gap-3"
+            >
+              <img className="w-5 h-5" src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" />
+              Sign up with Google
+            </button>
+
+            <div className="mt-8 pt-6 border-t border-blue-100 text-center">
+              <p className="text-blue-700">
+                Already have an account?{' '}
+                <Link to="/login" className="text-blue-950 font-semibold hover:text-blue-800">
+                  Sign In
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Features */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="flex items-center gap-3 p-3 bg-white/80 rounded-xl border border-blue-100">
+            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <FileText className="w-4 h-4 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-blue-950">AI Resume Parser</p>
+              <p className="text-xs text-blue-600">Auto-fill your details</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-white/80 rounded-xl border border-blue-100">
+            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-blue-950">Smart Matching</p>
+              <p className="text-xs text-blue-600">Find relevant jobs</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-white/80 rounded-xl border border-blue-100">
+            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Shield className="w-4 h-4 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-blue-950">Secure Platform</p>
+              <p className="text-xs text-blue-600">Encrypted & private</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-// Reuse your custom InputField component
-function InputField({ label, type = "text", register, error, placeholder, icon }) {
-  return (
-    <div className="w-full">
-      <label className="block text-[10px] font-black text-gray-400 uppercase mb-2 ml-1 tracking-widest">{label}</label>
-      <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-300 group-focus-within:text-blue-500 transition-colors pointer-events-none">
-          {icon}
-        </div>
-        <input 
-          {...register} 
-          type={type} 
-          placeholder={placeholder} 
-          className={`block w-full pl-11 pr-4 py-3.5 border ${error ? 'border-pink-300 bg-red-50' : 'border-gray-100 bg-gray-50/20'} rounded-2xl text-sm font-medium focus:ring-4 focus:ring-blue-50 focus:border-blue-500 outline-none transition-all`} 
-        />
-        {error && <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pink-500" />}
-      </div>
-      {error && <p className="mt-2 text-[10px] text-pink-500 font-black uppercase tracking-tight ml-1">{error.message}</p>}
     </div>
   );
 }

@@ -39,7 +39,13 @@ import AIInterviewPage from './pages/AIInterviewPage';
 import HomePage from './pages/HomePage';
 import Messages from './pages/CandidateMessages';
 import VendorBenchListPage from './pages/VendorBenchListPage';
-
+import CandidateAnalytics from './pages/CandidateAnalytics';
+import EndClientJobDetailPage from './pages/EndClientJobDetailPage';
+import EndClientJobApplicantsPage from './pages/EndClientJobApplicantsPage';
+import EndClientApplicantDetailsPage from './pages/EndClientApplicantDetailsPage'
+import AIInterview from './components/AIInterview';
+import EndClientLoginPage from './pages/EndClientLoginPage';
+import VendorLoginPage from './pages/CandidateRegister/VendorLoginPage';
 
 export default function App() {
   return (
@@ -88,7 +94,21 @@ export default function App() {
           <Route path="/end-client/analytics" element={<EndClientAnalytics />} />
           <Route path="/end-client/notifications" element={<EndClientNotificationsPage />} />
           <Route path="/ai-interview" element={<AIInterviewPage />} />
+          <Route path="/ai-interviews" element={<AIInterview />} />
+
           <Route path="/candidate/messages" element={<Messages />} />
+          <Route path="/candidate/analytics" element={<CandidateAnalytics />} />
+          <Route path="/end-client/jobs/:jobId" element={<EndClientJobDetailPage />} />
+          <Route path="/end-client/jobs/:jobId/applicants" element={<EndClientJobApplicantsPage />} />
+          <Route path="/end-client/jobs/:jobId/applicants/:applicantId" element={<EndClientApplicantDetailsPage />} />
+          <Route path="/login/end-client" element={<EndClientLoginPage />} />
+          <Route path="/login/vendor" element={<VendorLoginPage />} />
+
+
+
+
+
+
 
 
         
