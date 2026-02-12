@@ -46,6 +46,7 @@ import EndClientApplicantDetailsPage from './pages/EndClientApplicantDetailsPage
 import AIInterview from './components/AIInterview';
 import EndClientLoginPage from './pages/EndClientLoginPage';
 import VendorLoginPage from './pages/CandidateRegister/VendorLoginPage';
+import ClientCandidateDetails from './pages/ClientCandidateDetails';
 
 export default function App() {
   return (
@@ -103,6 +104,8 @@ export default function App() {
           <Route path="/end-client/jobs/:jobId/applicants/:applicantId" element={<EndClientApplicantDetailsPage />} />
           <Route path="/login/end-client" element={<EndClientLoginPage />} />
           <Route path="/login/vendor" element={<VendorLoginPage />} />
+          <Route path="/client/job/:jobId/candidate/:candidateId" element={<ClientCandidateDetails />} />
+
 
 
 

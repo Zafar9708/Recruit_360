@@ -27,7 +27,7 @@ export default function RegistrationPage() {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [isParsing, setIsParsing] = useState(false);
 
-  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm({
+  const { register, handleSubmit, setValue,watch, formState: { errors, isSubmitting } } = useForm({
     defaultValues: {
       fullName: '',
       email: '',

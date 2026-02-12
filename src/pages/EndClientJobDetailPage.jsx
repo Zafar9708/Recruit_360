@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import EndClientSidebar from '../components/EndClientSidebar';
 
-// Mock job data
+// Mock job data - ADD ALL JOBS HERE
 const jobs = {
   "1": {
     id: "1", 
@@ -17,7 +17,7 @@ const jobs = {
     type: "Full-time", 
     workMode: "Hybrid", 
     experience: "5-8 years", 
-    salary: "$140K - $180K", 
+    salary: "$140k - $180k", 
     applicants: 45, 
     status: "Active", 
     skills: ["React", "Node.js", "AWS", "TypeScript", "GraphQL"], 
@@ -34,7 +34,125 @@ const jobs = {
       "Experience with TypeScript and GraphQL",
       "Excellent problem-solving skills"
     ],
-    postedDate: "2024-02-15"
+    postedDate: "2024-02-15",
+    urgency: "High",
+    jobId: "JOB-001"
+  },
+  "2": {
+    id: "2", 
+    title: "Product Manager", 
+    department: "Product", 
+    location: "New York, NY", 
+    type: "Full-time", 
+    workMode: "Hybrid", 
+    experience: "5+ Years", 
+    salary: "$130k - $160k", 
+    applicants: 32, 
+    status: "Active", 
+    skills: ["Agile", "Roadmap", "SQL", "JIRA", "User Research"], 
+    desc: "Drive the product vision for our next-gen fintech application. Lead cross-functional teams, define product requirements, and deliver exceptional user experiences.",
+    responsibilities: [
+      "Define product strategy and roadmap",
+      "Gather and prioritize requirements",
+      "Work closely with engineering and design teams",
+      "Analyze market trends and competitor products"
+    ],
+    requirements: [
+      "5+ years of product management experience",
+      "Strong analytical and problem-solving skills",
+      "Experience with agile methodologies",
+      "Excellent communication and leadership skills"
+    ],
+    postedDate: "2024-02-03",
+    urgency: "Medium",
+    jobId: "JOB-002"
+  },
+  "3": {
+    id: "3", 
+    title: "UX Designer", 
+    department: "Design", 
+    location: "London, UK", 
+    type: "Contract", 
+    workMode: "Remote", 
+    experience: "3-5 Years", 
+    salary: "£70k - £90k", 
+    applicants: 28, 
+    status: "Active", 
+    skills: ["Figma", "Prototyping", "User Research", "Wireframing"], 
+    desc: "Transform complex workflows into elegant user experiences. Create intuitive interfaces and conduct user testing to validate design decisions.",
+    responsibilities: [
+      "Create user flows, wireframes, and prototypes",
+      "Conduct user research and usability testing",
+      "Collaborate with product and engineering teams",
+      "Maintain design systems and component libraries"
+    ],
+    requirements: [
+      "3+ years of UX/UI design experience",
+      "Proficiency in Figma and prototyping tools",
+      "Experience with user research methodologies",
+      "Strong portfolio demonstrating design process"
+    ],
+    postedDate: "2024-01-28",
+    urgency: "High",
+    jobId: "JOB-003"
+  },
+  "4": {
+    id: "4", 
+    title: "Data Analyst", 
+    department: "Analytics", 
+    location: "Austin, TX", 
+    type: "Full-time", 
+    workMode: "Hybrid", 
+    experience: "2-4 Years", 
+    salary: "$90k - $110k", 
+    applicants: 19, 
+    status: "Draft", 
+    skills: ["Python", "Tableau", "R", "SQL", "Excel"], 
+    desc: "Analyze user behavior data to provide actionable business insights. Build dashboards and reports to support data-driven decision making.",
+    responsibilities: [
+      "Analyze complex datasets to identify trends",
+      "Create interactive dashboards and reports",
+      "Collaborate with stakeholders to define metrics",
+      "Present findings to leadership teams"
+    ],
+    requirements: [
+      "2+ years of data analysis experience",
+      "Proficiency in SQL and Python/R",
+      "Experience with Tableau or similar BI tools",
+      "Strong analytical and communication skills"
+    ],
+    postedDate: "2024-02-02",
+    urgency: "Low",
+    jobId: "JOB-004"
+  },
+  "5": {
+    id: "5",
+    title: "DevOps Engineer",
+    department: "Engineering",
+    location: "Remote",
+    type: "Full-time",
+    workMode: "Remote",
+    experience: "4-6 years",
+    salary: "$130k - $160k",
+    applicants: 23,
+    status: "Active",
+    skills: ["AWS", "Kubernetes", "Docker", "Terraform", "CI/CD"],
+    desc: "Build and maintain our cloud infrastructure. Implement CI/CD pipelines and ensure high availability of our services.",
+    responsibilities: [
+      "Design and maintain AWS infrastructure",
+      "Implement CI/CD pipelines using Jenkins/GitHub Actions",
+      "Monitor system performance and troubleshoot issues",
+      "Automate deployment processes"
+    ],
+    requirements: [
+      "4+ years of DevOps experience",
+      "Strong AWS and Kubernetes knowledge",
+      "Experience with Infrastructure as Code (Terraform)",
+      "Scripting skills in Python or Bash"
+    ],
+    postedDate: "2024-02-10",
+    urgency: "High",
+    jobId: "JOB-005"
   }
 };
 
@@ -47,8 +165,16 @@ export default function JobDetailsPage() {
     return (
       <div className="flex min-h-screen bg-blue-50">
         <EndClientSidebar />
-        <div className="flex-1 p-8 flex items-center justify-center">
-          <p className="text-blue-600">Job not found</p>
+        <div className="flex-1 p-8 flex flex-col items-center justify-center">
+          <Briefcase className="w-16 h-16 text-blue-300 mb-4" />
+          <p className="text-xl font-bold text-blue-950 mb-2">Job Not Found</p>
+          <p className="text-blue-600 mb-6">The job posting you're looking for doesn't exist or has been removed.</p>
+          <button 
+            onClick={() => navigate('/end-client/jobs')}
+            className="px-6 py-3 bg-blue-950 text-white rounded-lg font-semibold hover:bg-blue-900 transition-colors"
+          >
+            View All Jobs
+          </button>
         </div>
       </div>
     );
@@ -96,12 +222,21 @@ export default function JobDetailsPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-3">
                       <span className={`px-3 py-1 text-xs font-bold rounded-full ${
-                        job.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                        job.status === 'Active' ? 'bg-green-100 text-green-700' : 
+                        job.status === 'Draft' ? 'bg-gray-100 text-gray-600' :
+                        'bg-blue-100 text-blue-700'
                       }`}>
                         {job.status}
                       </span>
                       <span className="text-xs font-semibold text-blue-600">
                         Posted on {job.postedDate}
+                      </span>
+                      <span className={`px-2 py-1 rounded-full text-[10px] font-bold ${
+                        job.urgency === 'High' ? 'bg-red-50 text-red-600' : 
+                        job.urgency === 'Medium' ? 'bg-amber-50 text-amber-600' : 
+                        'bg-blue-50 text-blue-600'
+                      }`}>
+                        {job.urgency} Priority
                       </span>
                     </div>
                     <h2 className="text-3xl font-black text-blue-950 mb-3">{job.title}</h2>
@@ -113,6 +248,7 @@ export default function JobDetailsPage() {
                         <MapPin size={18} /> {job.location}
                       </span>
                     </div>
+                    <p className="text-xs text-blue-500 mt-2">Job ID: {job.jobId}</p>
                   </div>
                   
                   <button 

@@ -324,7 +324,14 @@ const JobApplicationModal = ({ job, isOpen, onClose, onApply }) => {
               <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertCircle className="w-5 h-5 text-amber-600" />
-                  <p className="text-sm font-medium text-gray-900">Your match score: {job.matchScore}%</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    Your match score: <span className={`font-bold ${
+                      job.matchScore >= 90 ? 'text-emerald-600' :
+                      job.matchScore >= 80 ? 'text-blue-600' :
+                      job.matchScore >= 70 ? 'text-amber-600' :
+                      'text-gray-600'
+                    }`}>{job.matchScore}%</span>
+                  </p>
                 </div>
                 <p className="text-sm text-gray-600">
                   Based on your profile, you have a {job.matchScore >= 80 ? 'high' : job.matchScore >= 60 ? 'good' : 'fair'} chance of getting shortlisted.
@@ -363,7 +370,7 @@ const JobApplicationModal = ({ job, isOpen, onClose, onApply }) => {
 };
 
 // Job Detail Page Component
-const JobDetailPage = ({ job, onBack, onApply }) => {
+const JobDetailPage = ({ job, onBack, onApply, isSidebarOpen, setIsSidebarOpen }) => {
   const [showApplyModal, setShowApplyModal] = useState(false);
 
   const getMatchColor = (score) => {
@@ -374,239 +381,250 @@ const JobDetailPage = ({ job, onBack, onApply }) => {
   };
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-        {/* Back Button */}
-        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-6 py-4">
-            <button
-              onClick={onBack}
-              className="flex items-center gap-2 text-blue-900 hover:text-blue-950 font-medium"
-            >
-              <ChevronRight className="w-5 h-5 rotate-180" />
-              Back to Jobs
-            </button>
+    <div className="flex min-h-screen bg-white">
+      {/* Sidebar */}
+      <CandidateSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+      
+      {/* Main Content */}
+      <main className="flex-1 lg:ml-72">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+          {/* Back Button */}
+          <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-gray-200">
+            <div className="max-w-7xl mx-auto px-6 py-4">
+              <button
+                onClick={onBack}
+                className="flex items-center gap-2 text-blue-900 hover:text-blue-950 font-medium"
+              >
+                <ChevronRight className="w-5 h-5 rotate-180" />
+                Back to Jobs
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Job Header */}
-        <div className="bg-gradient-to-r from-blue-900 to-blue-950 text-white">
-          <div className="max-w-7xl mx-auto px-6 py-12">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                    <Briefcase className="w-8 h-8" />
-                  </div>
-                  <div>
-                    <h1 className="text-3xl font-bold mb-2">{job.title}</h1>
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2">
-                        <Building className="w-5 h-5 text-blue-200" />
-                        <span className="text-lg">Wrocus</span>
+          {/* Job Header */}
+          <div className="bg-gradient-to-r from-blue-900 to-blue-950 text-white">
+            <div className="max-w-7xl mx-auto px-6 py-12">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                      <Briefcase className="w-8 h-8" />
+                    </div>
+                    <div>
+                      <h1 className="text-3xl font-bold mb-2">{job.title}</h1>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
+                          <Building className="w-5 h-5 text-blue-200" />
+                          <span className="text-lg">Wrocus</span>
+                        </div>
+                        <div className="text-blue-200">•</div>
+                        <div className="px-3 py-1 bg-white/20 rounded-lg text-sm">
+                          Client: {job.client}
+                        </div>
+                        <div className="text-blue-200">•</div>
+                        <span className="text-sm bg-white/20 px-3 py-1 rounded-lg">ID: {job.id}</span>
                       </div>
-                      <div className="text-blue-200">•</div>
-                      <div className="px-3 py-1 bg-white/20 rounded-lg text-sm">
-                        Client: {job.client}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4">
+                    <div className={`px-4 py-2 ${
+                      job.matchScore >= 90 ? 'bg-gradient-to-r from-emerald-500 to-emerald-600' :
+                      job.matchScore >= 80 ? 'bg-gradient-to-r from-blue-500 to-blue-600' :
+                      job.matchScore >= 70 ? 'bg-gradient-to-r from-amber-500 to-amber-600' :
+                      'bg-gradient-to-r from-gray-500 to-gray-600'
+                    } text-white rounded-xl font-bold shadow-lg`}>
+                      {job.matchScore}% Match
+                    </div>
+                    {job.featured && (
+                      <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-sm font-bold rounded-lg">
+                        Featured Role
+                      </span>
+                    )}
+                    {job.urgency && (
+                      <span className="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-bold rounded-lg">
+                        Urgent Hiring
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Job Content */}
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="grid lg:grid-cols-3 gap-8">
+              {/* Main Content */}
+              <div className="lg:col-span-2 space-y-8">
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                    <p className="text-sm text-gray-600 mb-1">Experience</p>
+                    <p className="font-bold text-gray-900 text-lg">{job.experience}</p>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                    <p className="text-sm text-gray-600 mb-1">Location</p>
+                    <p className="font-bold text-gray-900 text-lg">{job.location}</p>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                    <p className="text-sm text-gray-600 mb-1">Salary Range</p>
+                    <p className="font-bold text-gray-900 text-lg">{job.salary}</p>
+                  </div>
+                  <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                    <p className="text-sm text-gray-600 mb-1">Job Type</p>
+                    <p className="font-bold text-gray-900 text-lg">{job.jobType}</p>
+                  </div>
+                </div>
+
+                {/* About Wrocus */}
+                <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Building className="w-5 h-5 text-blue-900" />
+                    About Wrocus
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    Wrocus is a premier staffing and recruitment platform connecting top talent with leading companies. 
+                    We specialize in technology roles and have successfully placed thousands of professionals in their dream jobs.
+                  </p>
+                </section>
+
+                {/* Job Description */}
+                <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-blue-900" />
+                    Job Description
+                  </h3>
+                  <div className="prose max-w-none">
+                    <pre className="text-gray-700 whitespace-pre-wrap font-sans leading-relaxed">
+                      {job.fullJD}
+                    </pre>
+                  </div>
+                </section>
+
+                {/* Requirements */}
+                <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Requirements & Qualifications</h3>
+                  <div className="grid gap-3">
+                    {job.requirements.map((req, index) => (
+                      <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                        <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700">{req}</span>
                       </div>
-                      <div className="text-blue-200">•</div>
-                      <span className="text-sm bg-white/20 px-3 py-1 rounded-lg">ID: {job.id}</span>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Benefits */}
+                <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Benefits & Perks</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {job.benefits.map((benefit, index) => (
+                      <div key={index} className="flex items-center gap-3 p-3 bg-emerald-50 rounded-lg">
+                        <Award className="w-4 h-4 text-emerald-600" />
+                        <span className="text-gray-700">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </div>
+
+              {/* Sidebar */}
+              <div className="space-y-6">
+                {/* Client Info */}
+                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                  <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Building className="w-5 h-5" />
+                    About the Client
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4">{job.companyDetails}</p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <UsersIcon className="w-4 h-4 text-gray-600" />
+                      <span className="text-sm">500-1000 employees</span>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <Globe className="w-4 h-4 text-gray-600" />
+                      <span className="text-sm">Technology · SaaS · Enterprise</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-4">
-                  <div className={`px-4 py-2 bg-gradient-to-r ${getMatchColor(job.matchScore)} text-white rounded-xl font-bold`}>
-                    {job.matchScore}% Match
+                {/* Contact Info */}
+                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                  <h3 className="font-bold text-gray-900 mb-4">Contact Information</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                      <Mail className="w-4 h-4 text-blue-900" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-gray-900">{job.contact.name}</p>
+                        <p className="text-xs text-gray-500">{job.contact.title}</p>
+                        <p className="text-sm text-blue-900">{job.contact.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                      <Phone className="w-4 h-4 text-blue-900" />
+                      <span className="text-sm text-blue-900">{job.contact.phone}</span>
+                    </div>
                   </div>
-                  {job.featured && (
-                    <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-sm font-bold rounded-lg">
-                      Featured Role
-                    </span>
-                  )}
-                  {job.urgency && (
-                    <span className="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-bold rounded-lg">
-                      Urgent Hiring
-                    </span>
-                  )}
+                </div>
+
+                {/* Match Analysis */}
+                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                  <h3 className="font-bold text-gray-900 mb-4">Your Match Analysis</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm text-gray-600">Technical Skills</span>
+                        <span className="text-sm font-bold text-blue-900">92%</span>
+                      </div>
+                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style={{ width: '92%' }}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm text-gray-600">Experience Match</span>
+                        <span className="text-sm font-bold text-blue-900">85%</span>
+                      </div>
+                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style={{ width: '85%' }}></div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm text-gray-600">Culture Fit</span>
+                        <span className="text-sm font-bold text-blue-900">78%</span>
+                      </div>
+                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style={{ width: '78%' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="sticky top-6 space-y-3">
+                  <button
+                    onClick={() => setShowApplyModal(true)}
+                    className="w-full py-4 bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-xl font-bold hover:shadow-xl transition-all text-lg shadow-lg"
+                  >
+                    Apply Now
+                  </button>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button className="py-3 border border-blue-900 text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transition-all">
+                      Save Job
+                    </button>
+                    <button className="py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all">
+                      Share
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Job Content */}
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Quick Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                  <p className="text-sm text-gray-600 mb-1">Experience</p>
-                  <p className="font-bold text-gray-900 text-lg">{job.experience}</p>
-                </div>
-                <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                  <p className="text-sm text-gray-600 mb-1">Location</p>
-                  <p className="font-bold text-gray-900 text-lg">{job.location}</p>
-                </div>
-                <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                  <p className="text-sm text-gray-600 mb-1">Salary Range</p>
-                  <p className="font-bold text-gray-900 text-lg">{job.salary}</p>
-                </div>
-                <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                  <p className="text-sm text-gray-600 mb-1">Job Type</p>
-                  <p className="font-bold text-gray-900 text-lg">{job.jobType}</p>
-                </div>
-              </div>
-
-              {/* About Wrocus */}
-              <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <Building className="w-5 h-5 text-blue-900" />
-                  About Wrocus
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Wrocus is a premier staffing and recruitment platform connecting top talent with leading companies. 
-                  We specialize in technology roles and have successfully placed thousands of professionals in their dream jobs.
-                </p>
-              </section>
-
-              {/* Job Description */}
-              <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-blue-900" />
-                  Job Description
-                </h3>
-                <div className="prose max-w-none">
-                  <pre className="text-gray-700 whitespace-pre-wrap font-sans leading-relaxed">
-                    {job.fullJD}
-                  </pre>
-                </div>
-              </section>
-
-              {/* Requirements */}
-              <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Requirements & Qualifications</h3>
-                <div className="grid gap-3">
-                  {job.requirements.map((req, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                      <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700">{req}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* Benefits */}
-              <section className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Benefits & Perks</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {job.benefits.map((benefit, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-emerald-50 rounded-lg">
-                      <Award className="w-4 h-4 text-emerald-600" />
-                      <span className="text-gray-700">{benefit}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </div>
-
-            {/* Sidebar */}
-            <div className="space-y-6">
-              {/* Client Info */}
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <Building className="w-5 h-5" />
-                  About the Client
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">{job.companyDetails}</p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <UsersIcon className="w-4 h-4 text-gray-600" />
-                    <span className="text-sm">500-1000 employees</span>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <Globe className="w-4 h-4 text-gray-600" />
-                    <span className="text-sm">Technology · SaaS · Enterprise</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Contact Info */}
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-4">Contact Information</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                    <Mail className="w-4 h-4 text-blue-900" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">{job.contact.name}</p>
-                      <p className="text-xs text-gray-500">{job.contact.title}</p>
-                      <p className="text-sm text-blue-900">{job.contact.email}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                    <Phone className="w-4 h-4 text-blue-900" />
-                    <span className="text-sm text-blue-900">{job.contact.phone}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Match Analysis */}
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="font-bold text-gray-900 mb-4">Your Match Analysis</h3>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm text-gray-600">Technical Skills</span>
-                      <span className="text-sm font-bold text-blue-900">92%</span>
-                    </div>
-                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style={{ width: '92%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm text-gray-600">Experience Match</span>
-                      <span className="text-sm font-bold text-blue-900">85%</span>
-                    </div>
-                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style={{ width: '85%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm text-gray-600">Culture Fit</span>
-                      <span className="text-sm font-bold text-blue-900">78%</span>
-                    </div>
-                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style={{ width: '78%' }}></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="sticky top-6 space-y-3">
-                <button
-                  onClick={() => setShowApplyModal(true)}
-                  className="w-full py-4 bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-xl font-bold hover:shadow-xl transition-all text-lg shadow-lg"
-                >
-                  Apply Now
-                </button>
-                <div className="grid grid-cols-2 gap-3">
-                  <button className="py-3 border border-blue-900 text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transition-all">
-                    Save Job
-                  </button>
-                  <button className="py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all">
-                    Share
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </main>
 
       {/* Application Modal */}
       <JobApplicationModal
@@ -615,7 +633,7 @@ const JobDetailPage = ({ job, onBack, onApply }) => {
         onClose={() => setShowApplyModal(false)}
         onApply={onApply}
       />
-    </>
+    </div>
   );
 };
 
@@ -623,7 +641,7 @@ const JobDetailPage = ({ job, onBack, onApply }) => {
 const JobBoard = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [viewMode, setViewMode] = useState('grid'); // 'grid', 'table', 'kanban'
+  const [viewMode, setViewMode] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState({
     experience: '',
@@ -636,7 +654,10 @@ const JobBoard = () => {
   const [sortBy, setSortBy] = useState('match');
   const [showFilters, setShowFilters] = useState(false);
   const [savedJobs, setSavedJobs] = useState(new Set());
-  const [appliedJobs, setAppliedJobs] = useState(new Set());
+  const [appliedJobs, setAppliedJobs] = useState(new Set([
+    'JOB-1000', 'JOB-1001', 'JOB-1002', 'JOB-1003', 'JOB-1004', 
+    'JOB-1005', 'JOB-1006', 'JOB-1007', 'JOB-1008', 'JOB-1009'
+  ]));
   const [showKanban, setShowKanban] = useState(false);
   const navigate = useNavigate();
 
@@ -700,11 +721,6 @@ const JobBoard = () => {
     const newApplied = new Set(appliedJobs);
     newApplied.add(jobId);
     setAppliedJobs(newApplied);
-    
-    // After applying, redirect to dashboard after 2 seconds
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 2000);
   };
 
   const getMatchColor = (score) => {
@@ -723,7 +739,15 @@ const JobBoard = () => {
 
   // Show Job Detail Page
   if (selectedJob) {
-    return <JobDetailPage job={selectedJob} onBack={() => setSelectedJob(null)} onApply={handleApplyJob} />;
+    return (
+      <JobDetailPage 
+        job={selectedJob} 
+        onBack={() => setSelectedJob(null)} 
+        onApply={handleApplyJob}
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+    );
   }
 
   return (
@@ -749,7 +773,7 @@ const JobBoard = () => {
                 className="px-4 py-2.5 bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-lg font-medium hover:shadow-lg transition-all flex items-center gap-2"
               >
                 <Briefcase className="w-4 h-4" />
-                My Applications ({appliedJobs.size})
+                My Applications (10)
               </button>
             </div>
           </div>
@@ -1003,11 +1027,17 @@ const JobBoard = () => {
                       </div>
                       <div className="text-right">
                         <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-bold ${
-                          job.matchScore >= 90 ? 'bg-emerald-50 text-emerald-700' :
-                          job.matchScore >= 80 ? 'bg-blue-50 text-blue-700' :
-                          'bg-amber-50 text-amber-700'
+                          job.matchScore >= 90 ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' :
+                          job.matchScore >= 80 ? 'bg-blue-100 text-blue-700 border border-blue-200' :
+                          job.matchScore >= 70 ? 'bg-amber-100 text-amber-700 border border-amber-200' :
+                          'bg-gray-100 text-gray-700 border border-gray-200'
                         }`}>
-                          <Target className="w-3 h-3" />
+                          <Target className={`w-3 h-3 ${
+                            job.matchScore >= 90 ? 'text-emerald-600' :
+                            job.matchScore >= 80 ? 'text-blue-600' :
+                            job.matchScore >= 70 ? 'text-amber-600' :
+                            'text-gray-600'
+                          }`} />
                           {job.matchScore}% Match
                         </div>
                       </div>
@@ -1109,13 +1139,23 @@ const JobBoard = () => {
                         </td>
                         <td className="py-5 px-6">
                           <div className="flex items-center gap-2">
-                            <div className="w-20 bg-gray-200 rounded-full h-2">
+                            <div className="w-20 bg-gray-200 rounded-full h-2.5 overflow-hidden">
                               <div 
-                                className={`h-full rounded-full ${getMatchColor(job.matchScore)}`}
+                                className={`h-full rounded-full ${
+                                  job.matchScore >= 90 ? 'bg-gradient-to-r from-emerald-500 to-emerald-600' :
+                                  job.matchScore >= 80 ? 'bg-gradient-to-r from-blue-500 to-blue-600' :
+                                  job.matchScore >= 70 ? 'bg-gradient-to-r from-amber-500 to-amber-600' :
+                                  'bg-gradient-to-r from-gray-500 to-gray-600'
+                                }`}
                                 style={{ width: `${job.matchScore}%` }}
                               ></div>
                             </div>
-                            <span className={`font-bold ${getMatchTextColor(job.matchScore)}`}>
+                            <span className={`font-bold ${
+                              job.matchScore >= 90 ? 'text-emerald-700' :
+                              job.matchScore >= 80 ? 'text-blue-700' :
+                              job.matchScore >= 70 ? 'text-amber-700' :
+                              'text-gray-700'
+                            }`}>
                               {job.matchScore}%
                             </span>
                           </div>

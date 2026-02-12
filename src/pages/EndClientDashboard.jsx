@@ -16,8 +16,6 @@ import JobCardsView from '../components/JobCardsView';
 export default function EndClientDashboard() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedJob, setSelectedJob] = useState(null);
-  const [showApplicants, setShowApplicants] = useState(false);
   const [showJobsPage, setShowJobsPage] = useState(false);
 
   // --- DATA MODELS ---
@@ -54,14 +52,15 @@ export default function EndClientDashboard() {
       applicants: 45, 
       status: 'Active', 
       urgency: 'High', 
-      location: 'Remote', 
-      exp: '7-10 Years', 
+      location: 'San Francisco, CA', 
+      exp: '5-8 years', 
       salary: '$140k - $180k', 
       type: 'Full-Time', 
-      skills: 'React, Node.js, AWS', 
-      desc: 'We are looking for a high-level architect to lead our core platform migration.',
+      workMode: 'Hybrid',
+      skills: 'React, Node.js, AWS, TypeScript, GraphQL', 
+      desc: 'We are looking for a high-level architect to lead our core platform migration. You will be responsible for designing scalable systems, mentoring junior developers, and driving technical decisions across the organization.',
       jobId: 'JOB-001',
-      postedDate: '2024-02-01'
+      postedDate: '2024-02-15'
     },
     { 
       id: 2,
@@ -70,12 +69,13 @@ export default function EndClientDashboard() {
       applicants: 32, 
       status: 'Active', 
       urgency: 'Medium', 
-      location: 'New York', 
+      location: 'New York, NY', 
       exp: '5+ Years', 
       salary: '$130k - $160k', 
-      type: 'Full-Time', 
-      skills: 'Agile, Roadmap, SQL', 
-      desc: 'Drive the product vision for our next-gen fintech application.',
+      type: 'Full-Time',
+      workMode: 'Hybrid',
+      skills: 'Agile, Roadmap, SQL, JIRA, User Research', 
+      desc: 'Drive the product vision for our next-gen fintech application. Lead cross-functional teams, define product requirements, and deliver exceptional user experiences.',
       jobId: 'JOB-002',
       postedDate: '2024-02-03'
     },
@@ -86,12 +86,13 @@ export default function EndClientDashboard() {
       applicants: 28, 
       status: 'Active', 
       urgency: 'High', 
-      location: 'London', 
+      location: 'London, UK', 
       exp: '3-5 Years', 
       salary: '£70k - £90k', 
-      type: 'Contract', 
-      skills: 'Figma, Prototyping, Research', 
-      desc: 'Transform complex workflows into elegant user experiences.',
+      type: 'Contract',
+      workMode: 'Remote',
+      skills: 'Figma, Prototyping, User Research, Wireframing', 
+      desc: 'Transform complex workflows into elegant user experiences. Create intuitive interfaces and conduct user testing to validate design decisions.',
       jobId: 'JOB-003',
       postedDate: '2024-01-28'
     },
@@ -102,21 +103,16 @@ export default function EndClientDashboard() {
       applicants: 19, 
       status: 'Draft', 
       urgency: 'Low', 
-      location: 'Hybrid', 
+      location: 'Austin, TX', 
       exp: '2-4 Years', 
       salary: '$90k - $110k', 
-      type: 'Full-Time', 
-      skills: 'Python, Tableau, R', 
-      desc: 'Analyze user behavior data to provide actionable business insights.',
+      type: 'Full-Time',
+      workMode: 'Hybrid',
+      skills: 'Python, Tableau, R, SQL, Excel', 
+      desc: 'Analyze user behavior data to provide actionable business insights. Build dashboards and reports to support data-driven decision making.',
       jobId: 'JOB-004',
       postedDate: '2024-02-02'
     },
-  ];
-
-  const mockApplicants = [
-    { id: 1, name: 'Jonathan Reeves', status: 'Interview', match: 98, location: 'San Francisco', exp: '8 yrs' },
-    { id: 2, name: 'Sasha Petrova', status: 'Review', match: 92, location: 'Austin, TX', exp: '7 yrs' },
-    { id: 3, name: 'Marcus Miller', status: 'Shortlisted', match: 88, location: 'Remote', exp: '10 yrs' },
   ];
 
   return (
@@ -156,7 +152,7 @@ export default function EndClientDashboard() {
                   onClick={() => setIsModalOpen(true)}
                   className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition-all shadow-sm"
                 >
-                  <Plus size={18} /> Create Requisition
+                  <Plus size={18} /> Create Job
                 </button>
               </div>
             </header>
@@ -251,131 +247,21 @@ export default function EndClientDashboard() {
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="font-bold text-blue-950 text-lg">Live Job Postings</h3>
-                  <button className="text-sm text-blue-600 font-bold hover:text-blue-800">View All</button>
+                  <button 
+                    onClick={() => setShowJobsPage(true)}
+                    className="text-sm text-blue-600 font-bold hover:text-blue-800"
+                  >
+                    View All
+                  </button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {openPositions.map((job, index) => (
+                  {openPositions.map((job) => (
                     <JobCard key={job.id} job={job} />
                   ))}
                 </div>
               </div>
             </main>
           </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* JOB DETAILS & APPLICANT LIST SLIDE-OVER */}
-      <AnimatePresence>
-        {selectedJob && (
-          <div className="fixed inset-0 z-[110] flex justify-end">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedJob(null)} className="absolute inset-0 bg-blue-950/20 backdrop-blur-sm" />
-            <motion.div 
-              initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="relative w-full max-w-xl bg-white shadow-2xl h-full flex flex-col overflow-hidden"
-            >
-              {/* SLIDING WRAPPER */}
-              <div className="relative flex-1 flex flex-col h-full overflow-hidden">
-                
-                {/* PAGE 1: JOB DETAILS */}
-                <div className={`absolute inset-0 flex flex-col bg-white transition-transform duration-500 ${showApplicants ? '-translate-x-full' : 'translate-x-0'}`}>
-                  <div className="p-8 border-b border-blue-100 flex items-center justify-between sticky top-0 bg-white z-10">
-                    <button onClick={() => setSelectedJob(null)} className="p-2 hover:bg-blue-50 rounded-full text-blue-600 transition-colors"><X size={20}/></button>
-                    <div className="flex gap-2">
-                      <button className="p-2 hover:bg-blue-50 rounded-lg text-blue-600"><Share2 size={18}/></button>
-                      <button className="p-2 hover:bg-blue-50 rounded-lg text-blue-600"><Edit3 size={18}/></button>
-                    </div>
-                  </div>
-
-                  <div className="p-10 space-y-8 overflow-y-auto flex-1">
-                    <div>
-                      <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest">{selectedJob.status}</span>
-                      <h2 className="text-3xl font-bold text-blue-950 mt-4 leading-tight">{selectedJob.title}</h2>
-                      <p className="text-blue-700 font-medium mt-2 flex items-center gap-2"><Building2 size={16}/> {selectedJob.department} • {selectedJob.location}</p>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      {[{l: 'Experience', v: selectedJob.exp}, {l: 'Salary Range', v: selectedJob.salary}, {l: 'Employment', v: selectedJob.type}, {l: 'Applicants', v: `${selectedJob.applicants} Active`}].map((item, idx) => (
-                        <div key={idx} className="p-4 bg-blue-50 rounded-xl border border-blue-100">
-                          <p className="text-[10px] font-black text-blue-600 uppercase tracking-wider">{item.l}</p>
-                          <p className={`text-sm font-bold mt-1 ${idx === 3 ? 'text-blue-600' : 'text-blue-950'}`}>{item.v}</p>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="space-y-3">
-                      <h4 className="text-xs font-black uppercase text-blue-600 tracking-widest">Core Stack</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedJob.skills.split(',').map((skill, i) => (
-                          <span key={i} className="px-3 py-1.5 bg-white border border-blue-200 rounded-lg text-xs font-bold text-blue-950">{skill.trim()}</span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <h4 className="text-xs font-black uppercase text-blue-600 tracking-widest">Overview</h4>
-                      <p className="text-sm text-blue-700 leading-relaxed font-medium">{selectedJob.desc}</p>
-                    </div>
-
-                    <div className="pt-8 border-t border-blue-100">
-                      <button 
-                        onClick={() => setShowApplicants(true)}
-                        className="w-full py-4 bg-blue-950 text-white rounded-xl font-bold hover:bg-blue-900 transition-all shadow-lg flex items-center justify-center gap-2"
-                      >
-                        <Users size={18}/> View All Applicants
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* PAGE 2: APPLICANTS LIST */}
-                <div className={`absolute inset-0 flex flex-col bg-white transition-transform duration-500 ${showApplicants ? 'translate-x-0' : 'translate-x-full'}`}>
-                  <div className="p-8 border-b border-blue-100 flex items-center gap-4 sticky top-0 bg-white z-10">
-                    <button onClick={() => setShowApplicants(false)} className="p-2 hover:bg-blue-50 rounded-full text-blue-600"><ArrowLeft size={20}/></button>
-                    <div>
-                      <h3 className="font-bold text-blue-950">Applicant Roster</h3>
-                      <p className="text-[10px] text-blue-600 font-bold uppercase tracking-tight">{selectedJob.title}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 overflow-y-auto">
-                    <table className="w-full text-left">
-                      <thead className="bg-blue-50 border-b border-blue-100">
-                        <tr className="text-[10px] uppercase font-black text-blue-600">
-                          <th className="px-8 py-4">Candidate</th>
-                          <th className="px-8 py-4">Match</th>
-                          <th className="px-8 py-4 text-right">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-blue-50">
-                        {mockApplicants.map((app) => (
-                          <tr key={app.id} className="hover:bg-blue-50 transition-colors">
-                            <td className="px-8 py-5">
-                              <p className="text-sm font-bold text-blue-950">{app.name}</p>
-                              <p className="text-[10px] text-blue-600 font-medium">{app.exp} • {app.location}</p>
-                            </td>
-                            <td className="px-8 py-5">
-                              <div className="flex items-center gap-2">
-                                <div className="w-12 h-1.5 bg-blue-100 rounded-full overflow-hidden">
-                                  <div className="h-full bg-blue-600" style={{ width: `${app.match}%` }} />
-                                </div>
-                                <span className="text-[10px] font-black text-blue-600">{app.match}%</span>
-                              </div>
-                            </td>
-                            <td className="px-8 py-5 text-right space-x-1">
-                              <button className="p-2 text-blue-600 hover:text-blue-800"><Mail size={16}/></button>
-                              <button className="p-2 text-blue-600 hover:text-blue-800"><Download size={16}/></button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-              </div>
-            </motion.div>
-          </div>
         )}
       </AnimatePresence>
 
@@ -389,29 +275,31 @@ export default function EndClientDashboard() {
   );
 }
 
-// Job Card Component
+// Job Card Component - FIXED title overflow and navigation
 function JobCard({ job }) {
-  const [selectedJob, setSelectedJob] = useState(null);
+  const navigate = useNavigate();
   
   return (
     <motion.div 
       whileHover={{ y: -5, scale: 1.02 }}
-      className="bg-white border border-blue-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-all cursor-pointer"
-      onClick={() => setSelectedJob(job)}
+      className="bg-white border border-blue-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col h-full"
+      onClick={() => navigate(`/end-client/jobs/${job.id}`)}
     >
       <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
               <Briefcase size={16} />
             </div>
-            <span className="font-bold text-blue-950 text-sm truncate">{job.title}</span>
+            <span className="font-bold text-blue-950 text-sm truncate max-w-[180px]" title={job.title}>
+              {job.title}
+            </span>
           </div>
-          <div className="flex items-center gap-2 mb-3">
-            <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold whitespace-nowrap">
               {job.department}
             </span>
-            <span className={`px-2 py-1 rounded-full text-[10px] font-bold ${
+            <span className={`px-2 py-1 rounded-full text-[10px] font-bold whitespace-nowrap ${
               job.urgency === 'High' ? 'bg-red-50 text-red-600' : 
               job.urgency === 'Medium' ? 'bg-amber-50 text-amber-600' : 
               'bg-blue-50 text-blue-600'
@@ -422,14 +310,16 @@ function JobCard({ job }) {
         </div>
       </div>
       
-      <div className="space-y-3">
+      <div className="space-y-3 flex-1">
         <div className="flex items-center justify-between text-xs">
           <span className="text-blue-600 font-bold">Applicants</span>
           <span className="font-bold text-blue-950">{job.applicants}</span>
         </div>
         <div className="flex items-center justify-between text-xs">
           <span className="text-blue-600 font-bold">Location</span>
-          <span className="font-medium text-blue-700">{job.location}</span>
+          <span className="font-medium text-blue-700 truncate max-w-[120px]" title={job.location}>
+            {job.location}
+          </span>
         </div>
         <div className="flex items-center justify-between text-xs">
           <span className="text-blue-600 font-bold">Type</span>
@@ -437,7 +327,13 @@ function JobCard({ job }) {
         </div>
       </div>
       
-      <button className="w-full mt-6 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg font-bold text-sm transition-colors">
+      <button 
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/end-client/jobs/${job.id}`);
+        }}
+        className="w-full mt-6 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg font-bold text-sm transition-colors"
+      >
         View Details
       </button>
     </motion.div>
@@ -460,22 +356,34 @@ function CreateJobModal({ isOpen, onClose }) {
             <h2 className="text-xl font-bold text-blue-950">Create New Job Posting</h2>
             <p className="text-blue-600 text-xs font-medium">Fill in the details to broadcast to your vendor network.</p>
           </div>
-          <button onClick={onClose} className="text-blue-600 hover:text-red-500 transition-colors"><X size={24} /></button>
+          <button onClick={onClose} className="text-blue-600 hover:text-red-500 transition-colors">
+            <X size={24} />
+          </button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-10 py-8 space-y-8">
           {/* BASIC INFO SECTION */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">Basic Information</h3>
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
+              Basic Information
+            </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Job Title</label>
-                <input type="text" placeholder="e.g. Senior Java Developer" className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600 focus:bg-white transition-all" />
+                <input 
+                  type="text" 
+                  placeholder="e.g. Senior Java Developer" 
+                  className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600 focus:bg-white transition-all" 
+                />
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Department</label>
                 <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600">
-                  <option>Engineering</option><option>Product</option><option>Design</option>
+                  <option>Engineering</option>
+                  <option>Product</option>
+                  <option>Design</option>
+                  <option>Marketing</option>
+                  <option>Sales</option>
                 </select>
               </div>
             </div>
@@ -483,32 +391,105 @@ function CreateJobModal({ isOpen, onClose }) {
 
           {/* SPECIFICATIONS SECTION */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">Specifications</h3>
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
+              Specifications
+            </h3>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Experience</label>
-                <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950"><option>Mid-Level</option><option>Senior</option></select>
+                <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950">
+                  <option>Entry Level</option>
+                  <option>Mid-Level</option>
+                  <option>Senior</option>
+                  <option>Lead</option>
+                </select>
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Work Mode</label>
-                <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950"><option>Remote</option><option>Hybrid</option></select>
+                <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950">
+                  <option>Remote</option>
+                  <option>Hybrid</option>
+                  <option>On-site</option>
+                </select>
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Type</label>
-                <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950"><option>Full-Time</option><option>Contract</option></select>
+                <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950">
+                  <option>Full-Time</option>
+                  <option>Part-Time</option>
+                  <option>Contract</option>
+                  <option>Freelance</option>
+                </select>
               </div>
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-blue-700">Detailed Description</label>
-            <textarea rows="4" placeholder="Outline the key responsibilities..." className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm font-medium text-blue-950 outline-none focus:border-blue-600 focus:bg-white" />
+          {/* COMPENSATION SECTION */}
+          <div className="space-y-4">
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
+              Compensation
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-blue-700">Salary Range</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. $100k - $130k" 
+                  className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600" 
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-blue-700">Location</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Remote, New York" 
+                  className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600" 
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* SKILLS SECTION */}
+          <div className="space-y-4">
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
+              Required Skills
+            </h3>
+            <div className="space-y-1.5">
+              <input 
+                type="text" 
+                placeholder="e.g. React, Node.js, AWS (comma separated)" 
+                className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600" 
+              />
+            </div>
+          </div>
+
+          {/* DESCRIPTION SECTION */}
+          <div className="space-y-4">
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
+              Job Description
+            </h3>
+            <div className="space-y-1.5">
+              <textarea 
+                rows="6" 
+                placeholder="Outline the key responsibilities, requirements, and benefits..." 
+                className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm font-medium text-blue-950 outline-none focus:border-blue-600 focus:bg-white resize-none"
+              />
+            </div>
           </div>
         </div>
 
         <div className="px-10 py-6 border-t border-blue-100 bg-blue-50/50 flex justify-end gap-3 shrink-0 rounded-b-2xl">
-          <button onClick={onClose} className="px-6 py-2.5 text-sm font-bold text-blue-600">Discard</button>
-          <button className="px-8 py-2.5 bg-blue-950 text-white rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-900 shadow-md"><Send size={16} /> Publish Requisition</button>
+          <button 
+            onClick={onClose} 
+            className="px-6 py-2.5 text-sm font-bold text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
+          >
+            Discard
+          </button>
+          <button 
+            className="px-8 py-2.5 bg-blue-950 text-white rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-900 shadow-md transition-all"
+          >
+            <Send size={16} /> Publish Requisition
+          </button>
         </div>
       </motion.div>
     </div>
