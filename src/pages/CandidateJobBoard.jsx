@@ -11,7 +11,7 @@ import {
   FileText, Bell, Settings, Check, TrendingDown, AlertCircle
 } from 'lucide-react';
 
-// Professional sidebar import
+// Professional sidebar component
 const CandidateSidebar = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -401,48 +401,50 @@ const JobDetailPage = ({ job, onBack, onApply, isSidebarOpen, setIsSidebarOpen }
             </div>
           </div>
 
-          {/* Job Header */}
+          {/* Job Header - FIXED */}
           <div className="bg-gradient-to-r from-blue-900 to-blue-950 text-white">
-            <div className="max-w-7xl mx-auto px-6 py-12">
-              <div className="flex items-start justify-between">
+            <div className="max-w-7xl mx-auto px-6 py-8 md:py-12">
+              <div className="flex flex-col md:flex-row items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                      <Briefcase className="w-8 h-8" />
+                  <div className="flex flex-wrap items-center gap-4 mb-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shrink-0">
+                      <Briefcase className="w-7 h-7 md:w-8 md:h-8" />
                     </div>
                     <div>
-                      <h1 className="text-3xl font-bold mb-2">{job.title}</h1>
-                      <div className="flex items-center gap-3">
+                      <h1 className="text-2xl md:text-3xl font-bold mb-2">{job.title}</h1>
+                      <div className="flex flex-wrap items-center gap-3">
                         <div className="flex items-center gap-2">
-                          <Building className="w-5 h-5 text-blue-200" />
-                          <span className="text-lg">Wrocus</span>
+                          <Building className="w-4 h-4 md:w-5 md:h-5 text-blue-200" />
+                          <span className="text-base md:text-lg">Wrocus</span>
                         </div>
-                        <div className="text-blue-200">•</div>
-                        <div className="px-3 py-1 bg-white/20 rounded-lg text-sm">
+                        <span className="text-blue-200 hidden sm:inline">•</span>
+                        <span className="text-sm bg-white/20 px-3 py-1 rounded-lg whitespace-nowrap">
                           Client: {job.client}
-                        </div>
-                        <div className="text-blue-200">•</div>
-                        <span className="text-sm bg-white/20 px-3 py-1 rounded-lg">ID: {job.id}</span>
+                        </span>
+                        <span className="text-blue-200 hidden sm:inline">•</span>
+                        <span className="text-sm bg-white/20 px-3 py-1 rounded-lg whitespace-nowrap">
+                          ID: {job.id}
+                        </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex flex-wrap items-center gap-3">
                     <div className={`px-4 py-2 ${
                       job.matchScore >= 90 ? 'bg-gradient-to-r from-emerald-500 to-emerald-600' :
                       job.matchScore >= 80 ? 'bg-gradient-to-r from-blue-500 to-blue-600' :
                       job.matchScore >= 70 ? 'bg-gradient-to-r from-amber-500 to-amber-600' :
                       'bg-gradient-to-r from-gray-500 to-gray-600'
-                    } text-white rounded-xl font-bold shadow-lg`}>
+                    } text-white rounded-xl font-bold shadow-lg whitespace-nowrap`}>
                       {job.matchScore}% Match
                     </div>
                     {job.featured && (
-                      <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-sm font-bold rounded-lg">
+                      <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-sm font-bold rounded-lg whitespace-nowrap">
                         Featured Role
                       </span>
                     )}
                     {job.urgency && (
-                      <span className="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-bold rounded-lg">
+                      <span className="px-3 py-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-bold rounded-lg whitespace-nowrap">
                         Urgent Hiring
                       </span>
                     )}
@@ -998,7 +1000,7 @@ const JobBoard = () => {
             </div>
           </div>
 
-          {/* Grid View */}
+          {/* Grid View - FIXED */}
           {viewMode === 'grid' && !showKanban && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {sortedJobs.slice(0, 9).map((job, index) => (
@@ -1011,28 +1013,33 @@ const JobBoard = () => {
                   className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
                 >
                   <div className="p-6">
-                    {/* Job Header */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="px-2 py-1 bg-blue-100 text-blue-900 text-xs font-bold rounded">
-                            WROCUS
-                          </div>
-                          <div className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
-                            Client: {job.client}
-                          </div>
-                          <div className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-full">{job.id}</div>
+                    {/* Job Header - FIXED */}
+                    <div className="flex flex-col gap-3 mb-4">
+                      {/* Top row with badges */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        <div className="px-2 py-1 bg-blue-100 text-blue-900 text-xs font-bold rounded shrink-0">
+                          WROCUS
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{job.title}</h3>
+                        <div className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded shrink-0">
+                          Client: {job.client}
+                        </div>
+                        <div className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-full shrink-0">
+                          {job.id}
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-bold ${
+                      
+                      {/* Title and Match Score - Side by side */}
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="text-xl font-bold text-gray-900 flex-1 leading-tight">
+                          {job.title}
+                        </h3>
+                        <div className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold shrink-0 ${
                           job.matchScore >= 90 ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' :
                           job.matchScore >= 80 ? 'bg-blue-100 text-blue-700 border border-blue-200' :
                           job.matchScore >= 70 ? 'bg-amber-100 text-amber-700 border border-amber-200' :
                           'bg-gray-100 text-gray-700 border border-gray-200'
                         }`}>
-                          <Target className={`w-3 h-3 ${
+                          <Target className={`w-3.5 h-3.5 ${
                             job.matchScore >= 90 ? 'text-emerald-600' :
                             job.matchScore >= 80 ? 'text-blue-600' :
                             job.matchScore >= 70 ? 'text-amber-600' :
@@ -1046,20 +1053,20 @@ const JobBoard = () => {
                     {/* Job Details */}
                     <div className="space-y-3 mb-6">
                       <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">{job.experience} experience</span>
+                        <Clock className="w-4 h-4 text-gray-400 shrink-0" />
+                        <span className="text-sm text-gray-600 truncate">{job.experience} experience</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">{job.location}</span>
+                        <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
+                        <span className="text-sm text-gray-600 truncate">{job.location}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <DollarSign className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">{job.salary}</span>
+                        <DollarSign className="w-4 h-4 text-gray-400 shrink-0" />
+                        <span className="text-sm text-gray-600 truncate">{job.salary}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Briefcase className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-600">{job.jobType}</span>
+                        <Briefcase className="w-4 h-4 text-gray-400 shrink-0" />
+                        <span className="text-sm text-gray-600 truncate">{job.jobType}</span>
                       </div>
                     </div>
 
@@ -1072,11 +1079,11 @@ const JobBoard = () => {
                         View Details
                       </button>
                       {appliedJobs.has(job.id) ? (
-                        <button className="px-4 py-3 bg-emerald-100 text-emerald-700 rounded-lg font-medium text-sm">
+                        <button className="px-4 py-3 bg-emerald-100 text-emerald-700 rounded-lg font-medium text-sm whitespace-nowrap">
                           Applied ✓
                         </button>
                       ) : (
-                        <button className="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        <button className="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors shrink-0">
                           <Bookmark className="w-5 h-5 text-gray-600" />
                         </button>
                       )}
@@ -1087,7 +1094,7 @@ const JobBoard = () => {
             </div>
           )}
 
-          {/* Table View */}
+          {/* Table View - FIXED */}
           {viewMode === 'table' && !showKanban && (
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
@@ -1138,8 +1145,8 @@ const JobBoard = () => {
                           <span className="font-bold text-gray-900">{job.salary}</span>
                         </td>
                         <td className="py-5 px-6">
-                          <div className="flex items-center gap-2">
-                            <div className="w-20 bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                          <div className="flex items-center gap-2 min-w-[100px]">
+                            <div className="w-16 bg-gray-200 rounded-full h-2 overflow-hidden">
                               <div 
                                 className={`h-full rounded-full ${
                                   job.matchScore >= 90 ? 'bg-gradient-to-r from-emerald-500 to-emerald-600' :
@@ -1150,7 +1157,7 @@ const JobBoard = () => {
                                 style={{ width: `${job.matchScore}%` }}
                               ></div>
                             </div>
-                            <span className={`font-bold ${
+                            <span className={`font-bold whitespace-nowrap ${
                               job.matchScore >= 90 ? 'text-emerald-700' :
                               job.matchScore >= 80 ? 'text-blue-700' :
                               job.matchScore >= 70 ? 'text-amber-700' :
@@ -1187,7 +1194,7 @@ const JobBoard = () => {
             </div>
           )}
 
-          {/* Kanban View */}
+          {/* Kanban View - FIXED */}
           {showKanban && (
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {[
@@ -1203,38 +1210,48 @@ const JobBoard = () => {
                 return (
                   <div key={column.title} className="space-y-4">
                     <div className={`bg-gradient-to-r ${column.color} text-white rounded-xl p-4`}>
-                      <h3 className="font-bold text-lg">{column.title}</h3>
+                      <h3 className="font-bold text-base md:text-lg">{column.title}</h3>
                       <p className="text-sm opacity-90">{columnJobs.length} jobs</p>
                     </div>
                     
-                    <div className="space-y-4">
+                    <div className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-1">
                       {columnJobs.map((job) => (
                         <motion.div
                           key={job.id}
                           whileHover={{ scale: 1.02 }}
                           className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-all"
                         >
-                          <div className="flex items-start justify-between mb-3">
-                            <div>
-                              <div className="flex items-center gap-2 mb-2">
-                                <span className="text-xs px-2 py-1 bg-blue-100 text-blue-900 rounded">WROCUS</span>
-                                <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded">{job.id}</span>
-                              </div>
-                              <h4 className="font-bold text-gray-900 text-sm mb-1">{job.title}</h4>
-                              <p className="text-xs text-gray-500">Client: {job.client}</p>
+                          <div className="flex flex-col gap-2 mb-3">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-xs px-2 py-1 bg-blue-100 text-blue-900 rounded shrink-0">WROCUS</span>
+                              <span className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded shrink-0">{job.id}</span>
                             </div>
+                            
+                            <div className="flex items-start justify-between gap-2">
+                              <h4 className="font-bold text-gray-900 text-sm flex-1">{job.title}</h4>
+                              <div className={`px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap shrink-0 ${
+                                job.matchScore >= 90 ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' :
+                                job.matchScore >= 80 ? 'bg-blue-100 text-blue-700 border border-blue-200' :
+                                job.matchScore >= 70 ? 'bg-amber-100 text-amber-700 border border-amber-200' :
+                                'bg-gray-100 text-gray-700 border border-gray-200'
+                              }`}>
+                                {job.matchScore}%
+                              </div>
+                            </div>
+                            
+                            <p className="text-xs text-gray-500 truncate">Client: {job.client}</p>
                           </div>
                           
                           <div className="space-y-2 mb-4">
                             <div className="flex items-center gap-2 text-xs text-gray-600">
-                              <Clock className="w-3 h-3" />
-                              {job.experience}
+                              <Clock className="w-3 h-3 shrink-0" />
+                              <span className="truncate">{job.experience}</span>
                             </div>
                             <div className="flex items-center gap-2 text-xs text-gray-600">
-                              <MapPin className="w-3 h-3" />
-                              {job.location}
+                              <MapPin className="w-3 h-3 shrink-0" />
+                              <span className="truncate">{job.location}</span>
                             </div>
-                            <div className="text-xs font-bold text-gray-900">{job.salary}</div>
+                            <div className="text-xs font-bold text-gray-900 truncate">{job.salary}</div>
                           </div>
                           
                           <button

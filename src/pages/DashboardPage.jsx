@@ -40,7 +40,8 @@ import {
   Code,
   MessageSquare,
   Trophy,
-  X
+  X,
+  Check
 } from 'lucide-react';
 import * as Progress from '@radix-ui/react-progress';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
@@ -56,6 +57,14 @@ export default function DashboardPage() {
   });
   const [showInterviewPopup, setShowInterviewPopup] = useState(false);
   const [popupMounted, setPopupMounted] = useState(false);
+  
+  // New state for job applications and success messages
+  const [appliedJobs, setAppliedJobs] = useState(() => {
+    const saved = localStorage.getItem('appliedJobs');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [showSuccessMessage, setShowSuccessMessage] = useState(null);
+  const [selectedJobMatch, setSelectedJobMatch] = useState(null);
 
   const profileCompleteness = 95;
 
@@ -65,7 +74,7 @@ export default function DashboardPage() {
       const timer = setTimeout(() => {
         setShowInterviewPopup(true);
         setPopupMounted(true);
-      }, 5000); // 5 seconds
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
@@ -97,6 +106,16 @@ export default function DashboardPage() {
       document.body.style.overflow = 'auto';
     };
   }, [showInterviewPopup]);
+
+  // Auto-hide success message after 3 seconds
+  useEffect(() => {
+    if (showSuccessMessage) {
+      const timer = setTimeout(() => {
+        setShowSuccessMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccessMessage]);
 
   const upcomingInterviews = [
     {
@@ -138,7 +157,7 @@ export default function DashboardPage() {
   ];
 
   const applicationStats = [
-    { name: 'Applied', value: 15, color: '#1e40af' },
+    { name: 'Applied', value: 15 + appliedJobs.length, color: '#1e40af' },
     { name: 'Screening', value: 8, color: '#4f46e5' },
     { name: 'Interviews', value: 5, color: '#059669' },
     { name: 'Offers', value: 2, color: '#d97706' },
@@ -163,7 +182,10 @@ export default function DashboardPage() {
       salary: '$120K - $150K',
       location: 'Remote',
       type: 'Full-time',
-      posted: '2 days ago'
+      posted: '2 days ago',
+      skills: ['AWS', 'Kubernetes', 'Terraform', 'Python'],
+      experience: '5+ years',
+      description: 'Looking for an experienced Cloud Architect to design and implement cloud infrastructure solutions.'
     },
     {
       id: 2,
@@ -173,7 +195,10 @@ export default function DashboardPage() {
       salary: '$110K - $140K',
       location: 'San Francisco',
       type: 'Full-time',
-      posted: '1 week ago'
+      posted: '1 week ago',
+      skills: ['TensorFlow', 'PyTorch', 'Python', 'Computer Vision'],
+      experience: '3+ years',
+      description: 'Join our AI team to develop cutting-edge machine learning models for computer vision applications.'
     },
     {
       id: 3,
@@ -183,7 +208,10 @@ export default function DashboardPage() {
       salary: '$100K - $130K',
       location: 'New York',
       type: 'Full-time',
-      posted: '3 days ago'
+      posted: '3 days ago',
+      skills: ['Network Security', 'Penetration Testing', 'Python', 'AWS Security'],
+      experience: '4+ years',
+      description: 'Seeking a Security Engineer to protect our infrastructure and conduct security assessments.'
     },
   ];
 
@@ -213,8 +241,8 @@ export default function DashboardPage() {
     },
     { 
       label: 'Applications', 
-      value: '15', 
-      change: '+3 this week', 
+      value: String(15 + appliedJobs.length), 
+      change: `+${appliedJobs.length} this week`, 
       icon: FileText, 
       color: 'bg-gradient-to-br from-blue-50/50 to-white',
       iconColor: 'text-blue-900',
@@ -281,10 +309,234 @@ export default function DashboardPage() {
     linkElement.click();
   };
 
+  // Handle apply for job
+  const handleApplyJob = (job) => {
+    // Check if already applied
+    if (appliedJobs.some(j => j.id === job.id)) {
+      setShowSuccessMessage({
+        type: 'info',
+        message: `You've already applied for ${job.role} at ${job.company}`
+      });
+      return;
+    }
+
+    // Add to applied jobs
+    const newAppliedJob = {
+      ...job,
+      appliedDate: new Date().toISOString(),
+      status: 'Applied'
+    };
+    
+    const updatedAppliedJobs = [...appliedJobs, newAppliedJob];
+    setAppliedJobs(updatedAppliedJobs);
+    localStorage.setItem('appliedJobs', JSON.stringify(updatedAppliedJobs));
+    
+    // Show success message
+    setShowSuccessMessage({
+      type: 'success',
+      message: `Successfully applied for ${job.role} at ${job.company}!`
+    });
+  };
+
+  // Handle show match score
+  const handleShowMatchScore = (job) => {
+    setSelectedJobMatch(job);
+  };
+
+  // Close match score modal
+  const closeMatchScore = () => {
+    setSelectedJobMatch(null);
+  };
+
+  // Check if job is applied
+  const isJobApplied = (jobId) => {
+    return appliedJobs.some(job => job.id === jobId);
+  };
+
   return (
     <div className="flex min-h-screen bg-white">
       <CandidateSidebar />
       
+      {/* Success Message Toast */}
+      <AnimatePresence>
+        {showSuccessMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -50, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: -50, x: '-50%' }}
+            className={`fixed top-24 left-1/2 transform -translate-x-1/2 z-[200] px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 ${
+              showSuccessMessage.type === 'success' 
+                ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white' 
+                : 'bg-gradient-to-r from-blue-500 to-blue-600 text-white'
+            }`}
+          >
+            {showSuccessMessage.type === 'success' ? (
+              <CheckCircle className="w-5 h-5" />
+            ) : (
+              <AlertCircle className="w-5 h-5" />
+            )}
+            <span className="font-medium">{showSuccessMessage.message}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Match Score Modal */}
+      <AnimatePresence>
+        {selectedJobMatch && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[150]"
+              onClick={closeMatchScore}
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="fixed inset-0 flex items-center justify-center z-[151] p-4"
+            >
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl overflow-hidden w-full max-w-lg">
+                {/* Header */}
+                <div className="relative bg-gradient-to-r from-blue-900 to-blue-950 p-6">
+                  <button
+                    onClick={closeMatchScore}
+                    className="absolute top-4 right-4 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+                  >
+                    <X className="w-4 h-4 text-white" />
+                  </button>
+                  
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                      <Target className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-1">{selectedJobMatch.role}</h3>
+                      <p className="text-blue-200 text-sm">{selectedJobMatch.company}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Content */}
+                <div className="p-6">
+                  {/* Match Score */}
+                  <div className="text-center mb-6">
+                    <div className="inline-block">
+                      <div className={`text-5xl font-bold ${getScoreColor(selectedJobMatch.match)} mb-2`}>
+                        {selectedJobMatch.match}%
+                      </div>
+                      <p className="text-gray-600 text-sm">Overall Match Score</p>
+                    </div>
+                  </div>
+                  
+                  {/* Match Breakdown */}
+                  <div className="space-y-4 mb-6">
+                    <h4 className="font-semibold text-gray-900">Match Analysis</h4>
+                    
+                    <div className="space-y-3">
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-gray-600">Skills Match</span>
+                          <span className="font-semibold text-blue-900">{selectedJobMatch.match - 5}%</span>
+                        </div>
+                        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${selectedJobMatch.match - 5}%` }}
+                            transition={{ duration: 0.5 }}
+                            className="h-full bg-blue-900 rounded-full"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-gray-600">Experience Match</span>
+                          <span className="font-semibold text-blue-900">{selectedJobMatch.match - 10}%</span>
+                        </div>
+                        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${selectedJobMatch.match - 10}%` }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            className="h-full bg-blue-900 rounded-full"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-gray-600">Location Match</span>
+                          <span className="font-semibold text-blue-900">{selectedJobMatch.location === 'Remote' ? 100 : 90}%</span>
+                        </div>
+                        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${selectedJobMatch.location === 'Remote' ? 100 : 90}%` }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="h-full bg-blue-900 rounded-full"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Skills */}
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-gray-900 mb-3">Required Skills</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedJobMatch.skills?.map((skill, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1.5 bg-blue-50 text-blue-900 rounded-lg text-xs font-medium border border-blue-200"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Actions */}
+                  <div className="flex gap-3">
+                    {isJobApplied(selectedJobMatch.id) ? (
+                      <div className="w-full py-3 bg-emerald-50 text-emerald-700 rounded-lg font-medium flex items-center justify-center gap-2 border border-emerald-200">
+                        <CheckCircle className="w-5 h-5" />
+                        Already Applied
+                      </div>
+                    ) : (
+                      <>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => {
+                            handleApplyJob(selectedJobMatch);
+                            closeMatchScore();
+                          }}
+                          className="flex-1 py-3 bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-lg font-semibold hover:shadow-lg transition-all"
+                        >
+                          Apply Now
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={closeMatchScore}
+                          className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all"
+                        >
+                          Close
+                        </motion.button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Interview Popup */}
       <AnimatePresence>
         {showInterviewPopup && !interviewData && popupMounted && (
@@ -486,9 +738,6 @@ export default function DashboardPage() {
 
         {/* Main Content */}
         <div className="px-6 py-6">
-          {/* AI Interview Section */}
-          
-
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {stats.map((stat, index) => (
@@ -1103,13 +1352,35 @@ export default function DashboardPage() {
 
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-gray-500">{job.posted}</span>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="px-3 py-1.5 bg-blue-900 text-white rounded-lg text-xs font-medium hover:bg-blue-950 transition-all"
-                      >
-                        Apply Now
-                      </motion.button>
+                      <div className="flex gap-2">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => handleShowMatchScore(job)}
+                          className="px-3 py-1.5 bg-blue-900 text-white rounded-lg text-xs font-medium hover:bg-blue-950 transition-all flex items-center gap-1"
+                        >
+                          <Target className="w-3 h-3" />
+                          View Match
+                        </motion.button>
+                        {isJobApplied(job.id) ? (
+                          <span className="px-3 py-1.5 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-medium border border-emerald-200 flex items-center gap-1">
+                            <CheckCircle className="w-3 h-3" />
+                            Applied
+                          </span>
+                        ) : (
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => {
+                              handleApplyJob(job);
+                            }}
+                            className="px-3 py-1.5 bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-lg text-xs font-medium hover:shadow-lg transition-all flex items-center gap-1"
+                          >
+                            <Rocket className="w-3 h-3" />
+                            Apply Now
+                          </motion.button>
+                        )}
+                      </div>
                     </div>
                   </motion.div>
                 ))}
@@ -1127,7 +1398,27 @@ export default function DashboardPage() {
               </div>
 
               <div className="space-y-3">
-                {recentActivity.map((activity, index) => (
+                {/* Show recent applications first */}
+                {appliedJobs.slice(0, 2).map((job, index) => (
+                  <motion.div
+                    key={`applied-${job.id}-${index}`}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="flex items-start gap-3 p-3 bg-emerald-50 rounded-lg border border-emerald-200"
+                  >
+                    <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <CheckCircle className="w-4 h-4 text-emerald-700" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900 text-sm">Application submitted</p>
+                      <p className="text-xs text-gray-700">{job.role} at {job.company}</p>
+                      <p className="text-xs text-gray-500 mt-1">Just now</p>
+                    </div>
+                  </motion.div>
+                ))}
+                
+                {/* Show other activities */}
+                {recentActivity.slice(appliedJobs.length > 0 ? 1 : 0).map((activity, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, x: -10 }}

@@ -11,10 +11,9 @@ import {
 const cards = [
   {
     role: "Recruiters",
-    title: "ATS Dashboard",
-    desc: "Manage the entire hiring pipeline from job creation to offer rollout.",
+    title: "ATS Hub",
+    desc: "Organize your hiring pipeline and manage talent acquisition from discovery to placement.",
     icon: <PersonSearch sx={{ fontSize: 32 }} />,
-    // Matching the Center Card (Purple/Indigo)
     gradient: "from-purple-500 to-indigo-600", 
     lightBg: "bg-purple-50",
     textColor: "text-purple-600",
@@ -24,9 +23,8 @@ const cards = [
   {
     role: "Job Seekers",
     title: "Candidate Portal",
-    desc: "Discover opportunities and manage your job applications in one place.",
+    desc: "Discover opportunities and manage your job applications in one centralized place.",
     icon: <BusinessCenter sx={{ fontSize: 32 }} />,
-    // Matching the "Users" floating icon (Sky Blue)
     gradient: "from-sky-400 to-blue-500",
     lightBg: "bg-sky-50",
     textColor: "text-sky-600",
@@ -35,10 +33,9 @@ const cards = [
   },
   {
     role: "Companies",
-    title: "Client Workspace",
-    desc: "Review shortlisted candidates and track hiring progress in real time.",
+    title: "Client Portal",
+    desc: "Find pre-assessed pools of candidates and track your hiring progress in real time.",
     icon: <CorporateFare sx={{ fontSize: 32 }} />,
-    // Matching the CTA Button & Shield icon (Orange)
     gradient: "from-orange-400 to-orange-600",
     lightBg: "bg-orange-50",
     textColor: "text-orange-600",
@@ -48,9 +45,8 @@ const cards = [
   {
     role: "Partners",
     title: "Vendor Network",
-    desc: "Submit candidates and track performance and payouts seamlessly.",
+    desc: "Find top talent and discover new clients to work with on a unified platform.",
     icon: <Handshake sx={{ fontSize: 32 }} />,
-    // Matching the Lightbulb icon (Yellow/Amber)
     gradient: "from-yellow-400 to-amber-500",
     lightBg: "bg-yellow-50",
     textColor: "text-amber-600",
@@ -61,7 +57,7 @@ const cards = [
 
 export default function DashboardImageCards() {
   return (
-    <section className="bg-white py-24 mt-10 px-6">
+    <section className="bg-white py-0 mt-5 px-6">
       {/* Heading Section */}
       <div className="max-w-4xl mx-auto text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
@@ -85,7 +81,7 @@ export default function DashboardImageCards() {
                        shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]
                        transition-all duration-300 flex flex-col h-full"
           >
-            {/* Icon Header - Matched to Hero Floating Icons */}
+            {/* Icon Header */}
             <div className={`w-16 h-16 rounded-2xl mb-8 flex items-center justify-center
                             shadow-sm transition-transform group-hover:scale-110 duration-300
                             ${card.lightBg} ${card.textColor}`}>
@@ -105,7 +101,7 @@ export default function DashboardImageCards() {
               {card.desc}
             </p>
 
-            {/* Action Button - Gradient matched to Center Card */}
+            {/* Action Button */}
             <Link
               to={card.link}
               className={`w-full py-4 px-4 rounded-2xl flex items-center justify-center gap-2 

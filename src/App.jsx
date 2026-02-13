@@ -47,6 +47,7 @@ import AIInterview from './components/AIInterview';
 import EndClientLoginPage from './pages/EndClientLoginPage';
 import VendorLoginPage from './pages/CandidateRegister/VendorLoginPage';
 import ClientCandidateDetails from './pages/ClientCandidateDetails';
+import AboutUs from './pages/AboutUs';
 
 export default function App() {
   return (
@@ -54,6 +55,8 @@ export default function App() {
       <div className="min-h-screen bg-white">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutUs/>} />
+
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/enquiry" element={<EnquiryPage />} />
           <Route path="/register/candidate" element={<RegistrationPage />} />
