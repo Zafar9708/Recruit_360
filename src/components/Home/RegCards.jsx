@@ -7,6 +7,7 @@ import {
   CorporateFare, 
   Handshake 
 } from "@mui/icons-material";
+import { ArrowRight } from "lucide-react";
 
 const cards = [
   {
@@ -57,16 +58,8 @@ const cards = [
 
 export default function DashboardImageCards() {
   return (
-    <section className="bg-white py-0 mt-5 px-6">
-      {/* Heading Section */}
-      <div className="max-w-4xl mx-auto text-center mb-16">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
-          Ready to get started?
-        </h2>
-        <p className="mt-5 text-lg text-gray-500 max-w-2xl mx-auto">
-          Select your portal below to access your dedicated workspace and manage your recruitment workflow.
-        </p>
-      </div>
+    <section className="bg-gray-50 py-5 mt-20  px-6">
+     
 
       {/* Cards Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -127,6 +120,30 @@ export default function DashboardImageCards() {
           Powering recruitment for 5,000+ teams worldwide
         </p>
       </div>
+       <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-20 flex flex-col items-center text-center p-12 bg-white border border-slate-100 rounded-[3rem] shadow-xl shadow-slate-200/20"
+        >
+          <div className="flex -space-x-4 mb-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-slate-200 flex items-center justify-center overflow-hidden">
+                <img src={`https://i.pravatar.cc/150?u=${i+10}`} alt="user" />
+              </div>
+            ))}
+            <div className="w-12 h-12 rounded-full border-4 border-white bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
+              +10k
+            </div>
+          </div>
+          <h3 className="text-2xl font-bold text-slate-900 mb-2">Ready to optimize your hiring?</h3>
+          <p className="text-slate-500 font-medium mb-8">Join 10,000+ partners already using RecruitX360.</p>
+          <button className="px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-blue-600 transition-all flex items-center gap-3 group">
+            Get Started Now
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </motion.div>
     </section>
+    
   );
 }

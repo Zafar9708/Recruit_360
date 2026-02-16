@@ -89,29 +89,7 @@ export default function FeaturesSection() {
         </div>
 
         {/* Bottom CTA Area */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-20 flex flex-col items-center text-center p-12 bg-white border border-slate-100 rounded-[3rem] shadow-xl shadow-slate-200/20"
-        >
-          <div className="flex -space-x-4 mb-6">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-slate-200 flex items-center justify-center overflow-hidden">
-                <img src={`https://i.pravatar.cc/150?u=${i+10}`} alt="user" />
-              </div>
-            ))}
-            <div className="w-12 h-12 rounded-full border-4 border-white bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
-              +10k
-            </div>
-          </div>
-          <h3 className="text-2xl font-bold text-slate-900 mb-2">Ready to optimize your hiring?</h3>
-          <p className="text-slate-500 font-medium mb-8">Join 10,000+ partners already using RecruitX360.</p>
-          <button className="px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-blue-600 transition-all flex items-center gap-3 group">
-            Get Started Now
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </motion.div>
+       
       </div>
     </section>
   );

@@ -223,20 +223,22 @@ export default function Footer() {
               <div className="flex items-start gap-2 md:gap-3">
                 <MapPin className="w-4 h-4 md:w-5 md:h-5 text-gray-400 flex-shrink-0 mt-0.5" />
                 <span className="text-xs sm:text-sm text-gray-600">
-                  123 Innovation Street, Tech City
+                  Logix Technova,A-209,210,Plot A-4
+                  <br>
+                  </br>
+                  Sector 132,Noida-Greater Noida Expressway
                 </span>
               </div>
               <div className="flex items-center gap-2 md:gap-3">
                 <Mail className="w-4 h-4 md:w-5 md:h-5 text-gray-400 flex-shrink-0" />
                 <a href="mailto:contact@Recruit_X.com" className="text-xs sm:text-sm text-gray-600 hover:text-purple-600 transition-colors break-all">
-                  contact@Recruit_X.com
+                  info@wrocus.com
                 </a>
               </div>
               <div className="flex items-center gap-2 md:gap-3">
                 <Phone className="w-4 h-4 md:w-5 md:h-5 text-gray-400 flex-shrink-0" />
                 <a href="tel:+1234567890" className="text-xs sm:text-sm text-gray-600 hover:text-purple-600 transition-colors">
-                  +1 (234) 567-890
-                </a>
+                 0120-496-3453                </a>
               </div>
             </div>
 

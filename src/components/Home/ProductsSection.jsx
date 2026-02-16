@@ -1,56 +1,92 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  UserCog, Users, Building2, Handshake, 
-  BarChart3, Cpu, TrendingUp, Check, 
-  ArrowRight, Shield, Activity
+  Building2, Handshake, Users, 
+  Cpu, Check, Play, Plus, 
+  Search, Bell, FileText, 
+  BarChart3, Settings, TrendingUp, Layout
 } from "lucide-react";
 
 const STAKEHOLDERS = [
   {
-    id: "hr",
-    role: "HR & Recruiters",
-    icon: <UserCog size={20} />,
-    color: "from-blue-500 to-indigo-600",
-    accent: "blue",
-    features: ["AI Resume Scoring", "Workflow Automation", "Interview Scheduler"],
-    value: "Eliminates 70% of manual administrative tasks."
-  },
-  {
-    id: "candidate",
-    role: "Candidates",
-    icon: <Users size={20} />,
-    color: "from-orange-400 to-red-500",
-    accent: "orange",
-    features: ["Live Tracking Portal", "Professional Profiles", "Auto-Match Jobs"],
-    value: "Increases candidate engagement by 85%."
+    id: "client",
+    role: "Client Hiring",
+    icon: <Building2 size={16} />,
+    gradient: "from-orange-500 to-yellow-500",
+    accent: "orange-500",
+    desc: "Post requirements, access databases, and receive direct vendor submissions.",
+    mockup: {
+      header: "Hiring Terminal",
+      stats: ["12 Reqs", "45 Subs", "9 Intv"],
+      items: [
+        { title: "React Architect", meta: "Direct Vendor Sub", time: "2m ago" },
+        { title: "Product Manager", meta: "Database Match", time: "1h ago" }
+      ]
+    }
   },
   {
     id: "vendor",
-    role: "Vendors & Partners",
-    icon: <Handshake size={20} />,
-    color: "from-emerald-400 to-teal-600",
-    accent: "emerald",
-    features: ["Bench Management", "Bulk Submissions", "Payout Tracking"],
-    value: "Reduces vendor-to-client submission time by 3x."
-  },
-  {
-    id: "c-suite",
-    role: "CFO & CTO",
-    icon: <Shield size={20} />,
-    color: "from-slate-700 to-slate-900",
-    accent: "slate",
-    features: ["SOC2 Compliance", "Cost-per-hire Analytics", "REST API Access"],
-    value: "Full spend visibility and enterprise-grade security."
+    role: "Vendor Portal",
+    icon: <Handshake size={16} />,
+    gradient: "from-yellow-400 to-orange-500",
+    accent: "yellow-600",
+    desc: "Bulk bench uploads and profile submission tracking with real-time status.",
+    mockup: {
+      header: "Vendor Sync",
+      stats: ["120 Bench", "18 Subs", "92% Acc."],
+      items: [
+        { title: "Bench Upload", meta: "32 Profiles Added", time: "Success" },
+        { title: "Client A-102", meta: "Viewed by HR", time: "Update" }
+      ]
+    }
   },
   {
     id: "sales",
-    role: "Sales & AMs",
-    icon: <TrendingUp size={20} />,
-    color: "from-yellow-400 to-orange-500",
-    accent: "yellow",
-    features: ["Requirement CRM", "Commission Tracking", "Client Heatmaps"],
-    value: "Aligns recruitment pipeline with revenue targets."
+    role: "Sales",
+    icon: <TrendingUp size={16} />,
+    gradient: "from-orange-600 to-purple-500",
+    accent: "orange-600",
+    desc: "Manage requirements and track hiring status to align with revenue targets.",
+    mockup: {
+      header: "Sales Dashboard",
+      stats: ["15 New Req", "22 Pending", "4 Closed"],
+      items: [
+        { title: "Cloud Eng Role", meta: "New Requirement", time: "Urgent" },
+        { title: "Oracle DBA", meta: "Closing Stage", time: "80%" }
+      ]
+    }
+  },
+  {
+    id: "candidate",
+    role: "Candidate Portal",
+    icon: <Users size={16} />,
+    gradient: "from-purple-500 to-indigo-600",
+    accent: "purple-600",
+    desc: "Self-service profiles and live application tracking for higher engagement.",
+    mockup: {
+      header: "Career Hub",
+      stats: ["8 Apps", "4 Views", "1 Offer"],
+      items: [
+        { title: "Google Cloud", meta: "Round 2 Interview", time: "10 AM" },
+        { title: "FinTech Inc", meta: "Application Sent", time: "Active" }
+      ]
+    }
+  },
+  {
+    id: "ats",
+    role: "Core ATS",
+    icon: <Cpu size={16} />,
+    gradient: "from-indigo-600 to-purple-500",
+    accent: "indigo-600",
+    desc: "End-to-end workflow automation from shortlisting to final placement.",
+    mockup: {
+      header: "ATS Engine",
+      stats: ["85% Score", "12 Hired", "4d Fill"],
+      items: [
+        { title: "Workflow Bot", meta: "Email Triggered", time: "Auto" },
+        { title: "Parsing Engine", meta: "50 Files Synced", time: "Live" }
+      ]
+    }
   }
 ];
 
@@ -58,124 +94,126 @@ export default function ProductEcosystem() {
   const [active, setActive] = useState(STAKEHOLDERS[0]);
 
   return (
-    <section className="bg-white py-24">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="products" className="bg-white py-12 px-6 min-h-screen">
+      <div className="max-w-7xl mx-auto">
         
-        {/* Top Header Section */}
-        <div className="mb-20">
-          <h2 className="text-6xl font-black text-slate-900 tracking-tighter mb-4">
-            RecruitX360 <span className="text-slate-300">Hub</span>
+        {/* Header - Compact */}
+        <div className="mb-10">
+          <h2 className="text-5xl font-black text-indigo-950 tracking-tighter mb-2">
+            RecruitX<span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-yellow-500 to-purple-500">360</span>
           </h2>
-          <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">
-            Multi-Persona Enterprise Architecture
-          </p>
+          <p className="text-sm font-bold text-indigo-900/40 uppercase tracking-widest">Enterprise Architecture</p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-4 min-h-[600px]">
-          
-          {/* LEFT: Persona Selector (Interactive Menu) */}
-          <div className="lg:w-1/3 flex flex-col gap-2">
-            {STAKEHOLDERS.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => setActive(s)}
-                className={`relative group flex items-center justify-between p-6 rounded-3xl transition-all duration-300 ${
-                  active.id === s.id 
-                  ? "bg-slate-900 text-white shadow-2xl" 
-                  : "bg-slate-50 text-slate-500 hover:bg-slate-100"
-                }`}
-              >
-                <div className="flex items-center gap-4 relative z-10">
-                  <div className={`p-2 rounded-xl ${active.id === s.id ? "bg-white/10" : "bg-white shadow-sm"}`}>
-                    {s.icon}
-                  </div>
-                  <span className="font-black text-lg">{s.role}</span>
-                </div>
-                {active.id === s.id && (
-                  <motion.div layoutId="arrow" className="text-white/40">
-                    <ArrowRight size={20} />
-                  </motion.div>
-                )}
-              </button>
-            ))}
-          </div>
+        {/* TABS - Compact & High-End */}
+        <div className="inline-flex p-1 bg-indigo-50/50 rounded-xl border border-indigo-100 mb-12 flex-wrap">
+          {STAKEHOLDERS.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setActive(s)}
+              className={`px-5 py-2 rounded-lg flex items-center gap-2 transition-all duration-200 ${
+                active.id === s.id ? "bg-white shadow-sm text-indigo-950" : "text-indigo-900/30 hover:text-indigo-900"
+              }`}
+            >
+              <span className={active.id === s.id ? `text-${active.accent}` : ""}>{s.icon}</span>
+              <span className="text-xs font-black whitespace-nowrap">{s.role}</span>
+            </button>
+          ))}
+        </div>
 
-          {/* RIGHT: Visual Content Area (Deep Dive) */}
-          <div className="lg:w-2/3 relative">
+        {/* MAIN DISPLAY */}
+        <div className="grid lg:grid-cols-12 gap-8 items-center">
+          
+          {/* Content Left */}
+          <div className="lg:col-span-4">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active.id}
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="h-full bg-slate-900 rounded-[3rem] p-10 md:p-16 text-white overflow-hidden relative"
+                exit={{ opacity: 0, x: 10 }}
+                className="space-y-6"
               >
-                {/* Visual Background Elements */}
-                <div className={`absolute top-0 right-0 w-80 h-80 bg-gradient-to-br ${active.color} opacity-20 blur-[100px]`} />
-                
-                <div className="relative z-10 flex flex-col h-full justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-8">
-                      <Activity className="text-white/40" size={16} />
-                      <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Real-Time Operations</span>
+                <div className={`h-1 w-12 bg-gradient-to-r ${active.gradient}`} />
+                <h3 className="text-4xl font-black text-indigo-950 tracking-tight leading-tight">
+                  The <span className={`text-transparent bg-clip-text bg-gradient-to-r ${active.gradient}`}>{active.role}</span> Solution
+                </h3>
+                <p className="text-md font-bold text-indigo-950/60 leading-relaxed">
+                  {active.desc}
+                </p>
+                <div className="space-y-3">
+                  {["Automated Tracking", "Real-time Sync", "Direct Submissions"].map((f, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <Check size={14} className={`text-${active.accent}`} strokeWidth={4} />
+                      <span className="text-sm font-black text-indigo-950/80">{f}</span>
                     </div>
-                    
-                    <h3 className="text-4xl md:text-5xl font-black mb-6 tracking-tight leading-tight">
-                      Empowering <br />
-                      <span className={`bg-gradient-to-r ${active.color} bg-clip-text text-transparent`}>
-                        {active.role}
-                      </span>
-                    </h3>
-                    
-                    <p className="text-slate-400 text-xl font-medium mb-10 max-w-xl">
-                      {active.value}
-                    </p>
-
-                    <div className="space-y-4">
-                      {active.features.map((f, i) => (
-                        <div key={i} className="flex items-center gap-4 group">
-                          <div className={`w-6 h-6 rounded-full flex items-center justify-center border border-white/20 group-hover:bg-white transition-colors`}>
-                            <Check size={12} className="group-hover:text-slate-900" />
-                          </div>
-                          <span className="text-lg font-bold text-white/80">{f}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Product Interface Mockup Element */}
-                  <div className="mt-12 pt-12 border-t border-white/10 flex items-center justify-between">
-                    <div>
-                      <div className="text-white/40 text-[10px] font-black uppercase tracking-widest mb-2">Module Security</div>
-                      <div className="flex items-center gap-2">
-                        <Shield size={14} className="text-emerald-400" />
-                        <span className="text-xs font-bold">End-to-End Encrypted</span>
-                      </div>
-                    </div>
-                    <button className="bg-white text-slate-900 px-8 py-3 rounded-full font-black text-sm hover:scale-105 transition-transform">
-                      View Demo
-                    </button>
-                  </div>
+                  ))}
                 </div>
+                <button className={`mt-4 px-6 py-3 rounded-xl bg-indigo-950 text-white font-black text-xs tracking-widest flex items-center gap-2 hover:scale-105 transition-transform`}>
+                  LAUNCH APP <Play size={10} fill="white" />
+                </button>
               </motion.div>
             </AnimatePresence>
           </div>
-        </div>
 
-        {/* Global Architecture Footer */}
-        <div className="mt-12 flex flex-wrap justify-between gap-8 p-10 border border-slate-100 rounded-[2rem] bg-slate-50/50">
-           <div className="flex flex-col">
-              <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Platform Core</span>
-              <span className="text-xl font-black text-slate-800 tracking-tight underline decoration-blue-500">Recruit_X Database</span>
-           </div>
-           <div className="flex flex-col">
-              <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">API Gateway</span>
-              <span className="text-xl font-black text-slate-800 tracking-tight">Enterprise Sync</span>
-           </div>
-           <div className="flex flex-col">
-              <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest">Global Reach</span>
-              <span className="text-xl font-black text-slate-800 tracking-tight">10k+ Live Nodes</span>
-           </div>
+          {/* App Mockup Right with Sidebar */}
+          <div className="lg:col-span-8">
+            <motion.div
+              key={`app-${active.id}`}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white border-[4px] border-indigo-950 rounded-[2rem] shadow-2xl overflow-hidden flex min-h-[420px]"
+            >
+              {/* RESTORED SIDEBAR */}
+              <div className="w-16 bg-indigo-950 flex flex-col items-center py-6 gap-6">
+                <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${active.gradient} flex items-center justify-center text-white`}><Layout size={16}/></div>
+                <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white/40"><BarChart3 size={16}/></div>
+                <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white/40"><FileText size={16}/></div>
+                <div className="mt-auto w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/20"><Settings size={16}/></div>
+              </div>
+
+              {/* APP CONTENT */}
+              <div className="flex-1">
+                <div className="p-6 border-b border-indigo-50 flex justify-between items-center bg-white">
+                  <h4 className="font-black text-indigo-950 text-sm uppercase tracking-tighter">{active.mockup.header}</h4>
+                  <div className="flex gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center"><Search size={14} className="text-indigo-950/40"/></div>
+                    <div className="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center relative">
+                      <Bell size={14} className="text-indigo-950/40"/>
+                      <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-orange-500" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 border-b border-indigo-50">
+                  {active.mockup.stats.map((s, idx) => (
+                    <div key={idx} className="p-4 text-center border-r border-indigo-50 last:border-0">
+                      <p className="text-[9px] font-black text-indigo-900/30 uppercase mb-0.5">{s.split(' ')[1]}</p>
+                      <p className="text-base font-black text-indigo-950">{s.split(' ')[0]}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="p-6 space-y-3">
+                  {active.mockup.items.map((item, i) => (
+                    <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-indigo-50 bg-white">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${active.gradient} opacity-20`} />
+                        <div>
+                          <p className="font-black text-indigo-950 text-xs">{item.title}</p>
+                          <p className="text-[9px] font-bold text-indigo-900/30 uppercase">{item.meta}</p>
+                        </div>
+                      </div>
+                      <span className="text-[9px] font-black text-orange-500 bg-orange-50 px-2 py-0.5 rounded-md">{item.time}</span>
+                    </div>
+                  ))}
+                  <div className="pt-2 border-t border-dashed border-indigo-100 flex justify-center">
+                    <button className="text-[9px] font-black text-indigo-900/20 uppercase tracking-widest hover:text-indigo-950 transition-colors">+ View All Activity</button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

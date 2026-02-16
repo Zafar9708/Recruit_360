@@ -5,6 +5,7 @@ import RegCards from "../components/Home/RegCards";
 import AboutSection from '../components/Home/AboutSection'; // Import the About section
 import FeaturesSection from '../components/Home/FeaturesSection';
 import Footer from '../components/Home/FooterSection';
+import ProductEcosystem from '../components/Home/ProductsSection';
 // import ProductPage from '../components/Home/ProductsSection';
 
 function HomePage() {
@@ -16,6 +17,7 @@ function HomePage() {
       <HeroIllustration/>
       <AboutSection /> 
       <FeaturesSection />
+      <ProductEcosystem />
       {/* <ProductPage /> */}
       <RegCards/>
       <Footer />

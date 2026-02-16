@@ -117,21 +117,21 @@ export default function Navbar() {
                   >
                     <div className="py-1">
                       <Link
-                        to="/candidate/login"
+                        to="/register/candidate"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors"
                       >
                         <User className="w-4 h-4" />
                         <span>Candidate</span>
                       </Link>
                       <Link
-                        to="/client/login"
+                        to="/login/end-client"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors"
                       >
                         <Building2 className="w-4 h-4" />
                         <span>Client</span>
                       </Link>
                       <Link
-                        to="/vendor/login"
+                        to="/login/vendor"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors"
                       >
                         <Briefcase className="w-4 h-4" />
