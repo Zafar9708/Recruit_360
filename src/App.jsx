@@ -8,7 +8,6 @@ import LoginPage from './pages/LoginPage';
 import OrganizationLoginPage from './pages/OrganizationLoginPage';
 import ProfileSetupPage from './pages/ProfileSetupPage';
 import DashboardPage from './pages/DashboardPage';
-import AdminDashboard from './pages/AdminDashboard';
 import VendorDashboard from './pages/VendorDashboard';
 import EndClientDashboard from './pages/EndClientDashboard';
 import InterviewSchedulingPage from './pages/InterviewSchedulingPage';
@@ -48,6 +47,10 @@ import EndClientLoginPage from './pages/EndClientLoginPage';
 import VendorLoginPage from './pages/CandidateRegister/VendorLoginPage';
 import ClientCandidateDetails from './pages/ClientCandidateDetails';
 import AboutUs from './pages/AboutUs';
+import VerifyOTPPage from './pages/CandidateRegister/VerifyOTPPage';
+import TestInterview from './components/TestInterview';
+import AdminLoginPage from './pages/Admin/AdminLogin';
+import AdminDashboard from './pages/Admin/AdminDashboard';
 
 export default function App() {
   return (
@@ -99,7 +102,6 @@ export default function App() {
           <Route path="/end-client/notifications" element={<EndClientNotificationsPage />} />
           <Route path="/ai-interview" element={<AIInterviewPage />} />
           <Route path="/ai-interviews" element={<AIInterview />} />
-
           <Route path="/candidate/messages" element={<Messages />} />
           <Route path="/candidate/analytics" element={<CandidateAnalytics />} />
           <Route path="/end-client/jobs/:jobId" element={<EndClientJobDetailPage />} />
@@ -108,7 +110,10 @@ export default function App() {
           <Route path="/login/end-client" element={<EndClientLoginPage />} />
           <Route path="/login/vendor" element={<VendorLoginPage />} />
           <Route path="/client/job/:jobId/candidate/:candidateId" element={<ClientCandidateDetails />} />
-
+          <Route path="/verify-otp" element={<VerifyOTPPage />} />
+          <Route path="/ai-interviews-test" element={<TestInterview />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          {/* <Route path="/login/admin" element={<AdminLoginPage />} /> */}
 
 
 

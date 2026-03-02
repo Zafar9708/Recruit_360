@@ -626,13 +626,18 @@ function SkillAssessment() {
                       </div>
 
                       {/* Action Button */}
-                      <button
-                        onClick={() => setActiveTest(test)}
-                        className="w-full py-3.5 bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-xl font-bold hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-3"
-                      >
-                        <Play className="w-5 h-5" />
-                        Start Assessment
-                      </button>
+                    <button
+      onClick={() => {
+        // You can still set state or perform logic before navigating
+        // setActiveTest(test); 
+        
+        navigate('/ai-interviews'); // 3. Navigate
+      }}
+      className="w-full py-3.5 bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-xl font-bold hover:shadow-xl hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-3"
+    >
+      <Play className="w-5 h-5" />
+      Start Assessment
+    </button>
                     </div>
                   </motion.div>
                 ))}

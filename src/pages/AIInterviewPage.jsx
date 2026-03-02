@@ -72,7 +72,7 @@ export default function AIInterviewPage() {
             bgColor: 'bg-gradient-to-br from-blue-50 to-cyan-50',
             borderColor: 'border-blue-200',
             textColor: 'text-blue-700',
-            duration: 30, // minutes
+            duration:15, // minutes
             questionCount: 12,
             difficulty: 'Easy',
             difficultyColor: 'bg-emerald-100 text-emerald-700',
@@ -95,7 +95,7 @@ export default function AIInterviewPage() {
             bgColor: 'bg-gradient-to-br from-purple-50 to-pink-50',
             borderColor: 'border-purple-200',
             textColor: 'text-purple-700',
-            duration: 45,
+            duration: 30,
             questionCount: 18,
             difficulty: 'Medium',
             difficultyColor: 'bg-amber-100 text-amber-700',
@@ -118,7 +118,7 @@ export default function AIInterviewPage() {
             bgColor: 'bg-gradient-to-br from-rose-50 to-orange-50',
             borderColor: 'border-rose-200',
             textColor: 'text-rose-700',
-            duration: 60,
+            duration: 45,
             questionCount: 24,
             difficulty: 'Hard',
             difficultyColor: 'bg-rose-100 text-rose-700',

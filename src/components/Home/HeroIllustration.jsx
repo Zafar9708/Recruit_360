@@ -1,7 +1,21 @@
-import { Check, Lightbulb, Shield, Eye, Users,  Search } from "lucide-react";
+import { Check, Lightbulb, Shield, Eye, Users,Play , Search } from "lucide-react";
 import { motion } from "framer-motion";
+import { useNavigate } from 'react-router-dom';
 
 export default function HeroIllustration() {
+  const navigate = useNavigate();
+  const testData = {
+    id: "USER_" + Math.floor(Math.random() * 1000),
+    name: "John Doe", 
+    jd: "Looking for a React developer with Python FastAPI experience." 
+  };
+
+  const handleStart = () => {
+    // Navigate to the route defined in App.js
+    navigate('/ai-interviews-test', { 
+      state: { candidateData: testData } 
+    });
+  };
   return (
     <>
     <motion.div
@@ -112,6 +126,14 @@ export default function HeroIllustration() {
                      hover:bg-orange-600 transition">
     Request a Demo
   </button>
+
+  <button
+        onClick={handleStart}
+        className="w-full py-3.5 bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-xl font-bold flex items-center justify-center gap-3"
+      >
+        <Play className="w-5 h-5" />
+        Start Assessment
+      </button>
 </div>
 
 

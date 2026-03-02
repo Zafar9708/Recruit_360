@@ -1,33 +1,36 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useGoogleLogin } from '@react-oauth/google'; 
+import { useGoogleLogin } from '@react-oauth/google';
 import { authApi } from '../../utils/api';
 import { Upload, Mail, Lock, User, Loader2, FileText, Sparkles, ArrowRight, Check, Briefcase, Shield } from 'lucide-react';
 
-// Mock resume parsing function
-const parseResume = (file) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        fullName: "Alex Johnson",
-        email: "alex.johnson@example.com",
-        phone: "+1 (555) 123-4567",
-        location: "San Francisco, CA",
-        skills: ["React", "TypeScript", "Node.js", "AWS"],
-        summary: "Senior Frontend Developer with 5+ years experience"
-      });
-    }, 1000);
+// API service for resume upload
+const uploadResumeToServer = async (file) => {
+  const formData = new FormData();
+  formData.append('resume', file);
+  
+  const response = await fetch('http://localhost:5000/api/resume/upload', {
+    method: 'POST',
+    body: formData
   });
+  
+  if (!response.ok) {
+    throw new Error('Upload failed');
+  }
+  
+  return response.json();
 };
 
 export default function RegistrationPage() {
   const navigate = useNavigate();
   const [uploadedFile, setUploadedFile] = useState(null);
   const [isParsing, setIsParsing] = useState(false);
+  const [resumeData, setResumeData] = useState(null);
 
-  const { register, handleSubmit, setValue,watch, formState: { errors, isSubmitting } } = useForm({
+  const { register, handleSubmit, setValue, watch, formState: { errors, isSubmitting } } = useForm({
     defaultValues: {
       fullName: '',
       email: '',
@@ -51,11 +54,14 @@ export default function RegistrationPage() {
   });
 
   const handleFileUpload = async (file) => {
-    const validTypes = ['application/pdf', '.doc', '.docx'];
-    if (!validTypes.some(type => file.type.includes(type) || file.name.endsWith(type.replace('.', '')))) {
+    const validTypes = ['application/pdf', 'application/msword', 
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    
+    if (!validTypes.includes(file.type)) {
       toast.error('Please upload PDF or DOC file');
       return;
     }
+    
     if (file.size > 5 * 1024 * 1024) {
       toast.error('File must be less than 5MB');
       return;
@@ -65,63 +71,72 @@ export default function RegistrationPage() {
     setIsParsing(true);
     
     try {
-      const extractedData = await parseResume(file);
+      // Upload to your backend API
+      const response = await uploadResumeToServer(file);
       
-      setValue('fullName', extractedData.fullName);
-      setValue('email', extractedData.email);
-      
-      localStorage.setItem('resumeData', JSON.stringify(extractedData));
-      
-      toast.success('Resume parsed successfully!');
+      if (response.success && response.candidate) {
+        const extractedData = response.candidate;
+        setResumeData(extractedData);
+        
+        // Auto-fill registration form
+        setValue('fullName', extractedData.fullName || '');
+        setValue('email', extractedData.email || '');
+        
+        // Store complete resume data in sessionStorage (temporary)
+        sessionStorage.setItem('resumeData', JSON.stringify(extractedData));
+        
+        toast.success('Resume parsed successfully!');
+      } else {
+        throw new Error('Invalid response format');
+      }
     } catch (error) {
+      console.error('Upload error:', error);
       toast.error('Failed to parse resume');
     } finally {
       setIsParsing(false);
     }
   };
 
-  const onRegisterSubmit = async (data) => {
-    try {
-      const formData = new FormData();
-      formData.append('fullName', data.fullName);
-      formData.append('email', data.email);
-      formData.append('password', data.password);
-      if (uploadedFile) formData.append('resume', uploadedFile);
+ const onRegisterSubmit = async (data) => {
+  try {
+    const combinedData = {
+      ...data,
+      ...(resumeData || {}),
+      password: data.password,
+      registrationStep: 'completed'
+    };
 
-      // Simulate API call
-      const response = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            data: {
-              success: true,
-              token: 'dummy-token-123'
-            }
-          });
-        }, 1000);
+    // Store temporary data
+localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
+
+    // 🔥 REAL BACKEND CALL
+    const response = await axios.post(
+      "http://localhost:5000/api/auth/send-otp",
+      { email: data.email }
+    );
+
+    if (response.data.success) {
+      toast.success("OTP sent to your email!");
+
+      navigate('/verify-otp', { 
+        state: { email: data.email }
       });
-
-      if (response.data.success) {
-        localStorage.setItem('token', 'dummy-token-123');
-        localStorage.setItem('userName', data.fullName);
-        localStorage.setItem('userEmail', data.email);
-        localStorage.setItem('userRole', 'candidate');
-        
-        toast.success('Account created successfully!');
-        navigate('/profile-setup');
-      }
-    } catch (error) {
-      toast.error('Registration failed');
+    } else {
+      toast.error("Failed to send OTP");
     }
-  };
+
+  } catch (error) {
+    console.error("OTP error:", error);
+    toast.error("Failed to send OTP");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center p-6">
       <div className="w-full max-w-lg">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-           
-          </div>
           <h2 className="text-3xl font-black text-blue-950 mb-2">Create Account</h2>
           <p className="text-blue-600">Join thousands of professionals finding dream jobs</p>
         </div>
@@ -149,7 +164,7 @@ export default function RegistrationPage() {
                 id="cv-upload" 
                 type="file" 
                 className="hidden" 
-                accept=".pdf,.doc,.docx" 
+                accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
                 onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0])} 
               />
               
@@ -204,7 +219,6 @@ export default function RegistrationPage() {
                         required: 'Full name is required',
                         minLength: { value: 2, message: 'Name is too short' }
                       })} 
-                     
                       className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
                         errors.fullName ? 'border-red-300' : 'border-blue-200'
                       }`}

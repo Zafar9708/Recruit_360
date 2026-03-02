@@ -840,7 +840,7 @@ export default function DashboardPage() {
             </div>
 
             {/* HR Contact Card */}
-            <div className="bg-gradient-to-br from-blue-900 to-blue-950 rounded-xl p-6 text-white relative overflow-hidden">
+            {/* <div className="bg-gradient-to-br from-blue-900 to-blue-950 rounded-xl p-6 text-white relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-16 translate-x-16" />
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12" />
               
@@ -885,7 +885,7 @@ export default function DashboardPage() {
                   Schedule Call
                 </motion.button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Charts and Activity */}
@@ -1215,16 +1215,6 @@ export default function DashboardPage() {
                 <h3 className="text-lg font-bold text-gray-900 mb-1">Upcoming Interviews</h3>
                 <p className="text-gray-600 text-sm">You have {upcomingInterviews.length} interviews scheduled</p>
               </div>
-              <Link to="/schedule-interview">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-950 transition-all text-sm font-medium"
-                >
-                  <Calendar className="w-4 h-4" />
-                  Schedule New
-                </motion.button>
-              </Link>
             </div>
 
             <div className="space-y-3">
