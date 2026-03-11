@@ -11,6 +11,7 @@ const STAKEHOLDERS = [
   {
     id: "client",
     role: "Client Hiring",
+    path: "/login/end-client", // Updated Path
     icon: <Building2 size={16} />,
     gradient: "from-orange-500 to-yellow-500",
     accent: "orange-500",
@@ -27,6 +28,7 @@ const STAKEHOLDERS = [
   {
     id: "vendor",
     role: "Vendor Portal",
+    path: "/login/vendor", // Updated Path
     icon: <Handshake size={16} />,
     gradient: "from-yellow-400 to-orange-500",
     accent: "yellow-600",
@@ -41,24 +43,9 @@ const STAKEHOLDERS = [
     }
   },
   {
-    id: "sales",
-    role: "Sales",
-    icon: <TrendingUp size={16} />,
-    gradient: "from-orange-600 to-purple-500",
-    accent: "orange-600",
-    desc: "Manage requirements and track hiring status to align with revenue targets.",
-    mockup: {
-      header: "Sales Dashboard",
-      stats: ["15 New Req", "22 Pending", "4 Closed"],
-      items: [
-        { title: "Cloud Eng Role", meta: "New Requirement", time: "Urgent" },
-        { title: "Oracle DBA", meta: "Closing Stage", time: "80%" }
-      ]
-    }
-  },
-  {
     id: "candidate",
     role: "Candidate Portal",
+    path: "/register/candidate", // Updated Path
     icon: <Users size={16} />,
     gradient: "from-purple-500 to-indigo-600",
     accent: "purple-600",
@@ -75,6 +62,7 @@ const STAKEHOLDERS = [
   {
     id: "ats",
     role: "Core ATS",
+    path: "https://ats-frontend-one.vercel.app", // Updated Path
     icon: <Cpu size={16} />,
     gradient: "from-indigo-600 to-purple-500",
     accent: "indigo-600",
@@ -92,6 +80,15 @@ const STAKEHOLDERS = [
 
 export default function ProductEcosystem() {
   const [active, setActive] = useState(STAKEHOLDERS[0]);
+
+  // Handler for navigation
+  const handleLaunch = () => {
+    if (active.path.startsWith('http')) {
+      window.open(active.path, '_blank'); // Open external link in new tab
+    } else {
+      window.location.href = active.path; // Navigate internal links
+    }
+  };
 
   return (
     <section id="products" className="bg-white py-12 px-6 min-h-screen">
@@ -149,7 +146,11 @@ export default function ProductEcosystem() {
                     </div>
                   ))}
                 </div>
-                <button className={`mt-4 px-6 py-3 rounded-xl bg-indigo-950 text-white font-black text-xs tracking-widest flex items-center gap-2 hover:scale-105 transition-transform`}>
+                {/* Updated Button with onClick */}
+                <button 
+                  onClick={handleLaunch}
+                  className={`mt-4 px-6 py-3 rounded-xl bg-indigo-950 text-white font-black text-xs tracking-widest flex items-center gap-2 hover:scale-105 transition-transform`}
+                >
                   LAUNCH APP <Play size={10} fill="white" />
                 </button>
               </motion.div>
@@ -164,7 +165,6 @@ export default function ProductEcosystem() {
               animate={{ opacity: 1, scale: 1 }}
               className="bg-white border-[4px] border-indigo-950 rounded-[2rem] shadow-2xl overflow-hidden flex min-h-[420px]"
             >
-              {/* RESTORED SIDEBAR */}
               <div className="w-16 bg-indigo-950 flex flex-col items-center py-6 gap-6">
                 <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${active.gradient} flex items-center justify-center text-white`}><Layout size={16}/></div>
                 <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white/40"><BarChart3 size={16}/></div>
@@ -172,7 +172,6 @@ export default function ProductEcosystem() {
                 <div className="mt-auto w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/20"><Settings size={16}/></div>
               </div>
 
-              {/* APP CONTENT */}
               <div className="flex-1">
                 <div className="p-6 border-b border-indigo-50 flex justify-between items-center bg-white">
                   <h4 className="font-black text-indigo-950 text-sm uppercase tracking-tighter">{active.mockup.header}</h4>

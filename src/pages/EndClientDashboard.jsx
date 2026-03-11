@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Briefcase, Users, Clock, TrendingUp, Plus, Eye, Award, 
@@ -13,16 +13,129 @@ import { useNavigate } from 'react-router-dom';
 import EndClientSidebar from '../components/EndClientSidebar';
 import JobCardsView from '../components/JobCardsView';
 
+const API_BASE = "http://localhost:8000";
+
+/* ── Dummy fallback jobs (same shape used by JobCard) ───────────── */
+const DUMMY_JOBS = [
+  { 
+    id: 1,
+    title: 'Senior Full Stack Developer', 
+    department: 'Engineering', 
+    applicants: 45, 
+    status: 'Active', 
+    urgency: 'High', 
+    location: 'San Francisco, CA', 
+    exp: '5-8 years', 
+    salary: '$140k - $180k', 
+    type: 'Full-Time', 
+    workMode: 'Hybrid',
+  },
+  { 
+    id: 2,
+    title: 'Product Manager', 
+    department: 'Product', 
+    applicants: 32, 
+    status: 'Active', 
+    urgency: 'Medium', 
+    location: 'New York, NY', 
+    exp: '5+ Years', 
+    salary: '$130k - $160k', 
+    type: 'Full-Time',
+    workMode: 'Hybrid',
+  },
+  { 
+    id: 3,
+    title: 'UX Designer', 
+    department: 'Design', 
+    applicants: 28, 
+    status: 'Active', 
+    urgency: 'High', 
+    location: 'London, UK', 
+    exp: '3-5 Years', 
+    salary: '£70k - £90k', 
+    type: 'Contract',
+    workMode: 'Remote',
+  },
+  { 
+    id: 4,
+    title: 'Data Analyst', 
+    department: 'Analytics', 
+    applicants: 19, 
+    status: 'Draft', 
+    urgency: 'Low', 
+    location: 'Austin, TX', 
+    exp: '2-4 Years', 
+    salary: '$90k - $110k', 
+    type: 'Full-Time',
+    workMode: 'Hybrid',
+  },
+];
+
+/* ── Normalize API job → JobCard shape ──────────────────────────── */
+function normalizeApiJob(job) {
+  const parseArr = (val) => {
+    if (Array.isArray(val)) return val;
+    try { return JSON.parse(val); } catch { return []; }
+  };
+
+  const locations = parseArr(job.locations);
+  const locationStr = locations.length
+    ? locations.join(", ")
+    : job.work_mode === "Remote" ? "Remote" : "—";
+
+  const salary = job.min_salary && job.max_salary
+    ? `${job.currency} ${Number(job.min_salary).toLocaleString()} – ${Number(job.max_salary).toLocaleString()}`
+    : "Not disclosed";
+
+  return {
+    id:         job.id,
+    title:      job.title      || "Untitled Position",
+    department: job.department || "General",
+    applicants: job.applicants ?? 0,
+    status:     job.status     ?? "Active",
+    urgency:    job.priority   || "Medium",
+    location:   locationStr,
+    exp:        job.experience_level || "Not specified",
+    salary,
+    type:       job.job_type  || "Full-time",
+    workMode:   job.work_mode || "Remote",
+  };
+}
+
 export default function EndClientDashboard() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showJobsPage, setShowJobsPage] = useState(false);
 
-  // --- DATA MODELS ---
+  /* ── Jobs from API ─────────────────────────────────────────────── */
+  const [jobs,      setJobs]      = useState([]);
+  const [jobsReady, setJobsReady] = useState(false);
+
+  const fetchJobs = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_BASE}/jobs/`, {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      setJobs(data.map(normalizeApiJob));
+    } catch {
+      setJobs(DUMMY_JOBS);
+    } finally {
+      setJobsReady(true);
+    }
+  }, []);
+
+  useEffect(() => { fetchJobs(); }, [fetchJobs]);
+
+  /* ── Active jobs count (for the stat card) ─────────────────────── */
+  const activeJobsCount = jobs.filter(j => (j.status ?? "Active") === "Active").length;
+
+  /* ── Static data ────────────────────────────────────────────────── */
   const stats = [
     { 
       label: 'Active Jobs', 
-      value: '24', 
+      value: jobsReady ? String(activeJobsCount) : '…', 
       change: '+6 this week', 
       icon: Briefcase, 
       color: 'text-blue-600', 
@@ -30,13 +143,13 @@ export default function EndClientDashboard() {
       clickable: true,
       onClick: () => setShowJobsPage(true)
     },
-    { label: 'Total Applications', value: '186', change: '+42 new', icon: Users, color: 'text-emerald-600', bgColor: 'bg-emerald-50' },
-    { label: 'Pending Interviews', value: '38', change: '12 for today', icon: Clock, color: 'text-amber-600', bgColor: 'bg-amber-50' },
-    { label: 'Successful Hires', value: '15', change: '+3 this month', icon: CheckCircle2, color: 'text-indigo-600', bgColor: 'bg-indigo-50' },
+    { label: 'Total Applications', value: '186', change: '+42 new',      icon: Users,        color: 'text-emerald-600', bgColor: 'bg-emerald-50' },
+    { label: 'Pending Interviews', value: '38',  change: '12 for today', icon: Clock,        color: 'text-amber-600',  bgColor: 'bg-amber-50'   },
+    { label: 'Successful Hires',   value: '15',  change: '+3 this month',icon: CheckCircle2, color: 'text-indigo-600', bgColor: 'bg-indigo-50'  },
   ];
 
   const hiringTrends = [
-    { month: 'Jan', applications: 120, hired: 8 },
+    { month: 'Jan', applications: 120, hired: 8  },
     { month: 'Feb', applications: 145, hired: 10 },
     { month: 'Mar', applications: 165, hired: 12 },
     { month: 'Apr', applications: 178, hired: 14 },
@@ -44,76 +157,8 @@ export default function EndClientDashboard() {
     { month: 'Jun', applications: 210, hired: 18 },
   ];
 
-  const openPositions = [
-    { 
-      id: 1,
-      title: 'Senior Full Stack Developer', 
-      department: 'Engineering', 
-      applicants: 45, 
-      status: 'Active', 
-      urgency: 'High', 
-      location: 'San Francisco, CA', 
-      exp: '5-8 years', 
-      salary: '$140k - $180k', 
-      type: 'Full-Time', 
-      workMode: 'Hybrid',
-      skills: 'React, Node.js, AWS, TypeScript, GraphQL', 
-      desc: 'We are looking for a high-level architect to lead our core platform migration. You will be responsible for designing scalable systems, mentoring junior developers, and driving technical decisions across the organization.',
-      jobId: 'JOB-001',
-      postedDate: '2024-02-15'
-    },
-    { 
-      id: 2,
-      title: 'Product Manager', 
-      department: 'Product', 
-      applicants: 32, 
-      status: 'Active', 
-      urgency: 'Medium', 
-      location: 'New York, NY', 
-      exp: '5+ Years', 
-      salary: '$130k - $160k', 
-      type: 'Full-Time',
-      workMode: 'Hybrid',
-      skills: 'Agile, Roadmap, SQL, JIRA, User Research', 
-      desc: 'Drive the product vision for our next-gen fintech application. Lead cross-functional teams, define product requirements, and deliver exceptional user experiences.',
-      jobId: 'JOB-002',
-      postedDate: '2024-02-03'
-    },
-    { 
-      id: 3,
-      title: 'UX Designer', 
-      department: 'Design', 
-      applicants: 28, 
-      status: 'Active', 
-      urgency: 'High', 
-      location: 'London, UK', 
-      exp: '3-5 Years', 
-      salary: '£70k - £90k', 
-      type: 'Contract',
-      workMode: 'Remote',
-      skills: 'Figma, Prototyping, User Research, Wireframing', 
-      desc: 'Transform complex workflows into elegant user experiences. Create intuitive interfaces and conduct user testing to validate design decisions.',
-      jobId: 'JOB-003',
-      postedDate: '2024-01-28'
-    },
-    { 
-      id: 4,
-      title: 'Data Analyst', 
-      department: 'Analytics', 
-      applicants: 19, 
-      status: 'Draft', 
-      urgency: 'Low', 
-      location: 'Austin, TX', 
-      exp: '2-4 Years', 
-      salary: '$90k - $110k', 
-      type: 'Full-Time',
-      workMode: 'Hybrid',
-      skills: 'Python, Tableau, R, SQL, Excel', 
-      desc: 'Analyze user behavior data to provide actionable business insights. Build dashboards and reports to support data-driven decision making.',
-      jobId: 'JOB-004',
-      postedDate: '2024-02-02'
-    },
-  ];
+  /* ── Show only first 4 for the dashboard preview ────────────────── */
+  const previewJobs = jobs.slice(0, 4);
 
   return (
     <div className="flex min-h-screen bg-gray-50/50 text-slate-900 font-sans">
@@ -243,7 +288,7 @@ export default function EndClientDashboard() {
                 </div>
               </div>
 
-              {/* OPEN POSITIONS CARDS */}
+              {/* LIVE JOB POSTINGS */}
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="font-bold text-blue-950 text-lg">Live Job Postings</h3>
@@ -254,11 +299,32 @@ export default function EndClientDashboard() {
                     View All
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {openPositions.map((job) => (
-                    <JobCard key={job.id} job={job} />
-                  ))}
-                </div>
+
+                {/* Loading skeleton */}
+                {!jobsReady ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {[1,2,3,4].map(i => (
+                      <div key={i} className="bg-white border border-blue-100 rounded-xl p-6 shadow-sm animate-pulse">
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-8 h-8 bg-blue-100 rounded-lg"/>
+                          <div className="h-4 bg-blue-100 rounded w-3/4"/>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="h-3 bg-blue-50 rounded w-full"/>
+                          <div className="h-3 bg-blue-50 rounded w-2/3"/>
+                          <div className="h-3 bg-blue-50 rounded w-1/2"/>
+                        </div>
+                        <div className="h-9 bg-blue-50 rounded-lg mt-6"/>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {previewJobs.map((job) => (
+                      <JobCard key={job.id} job={job} />
+                    ))}
+                  </div>
+                )}
               </div>
             </main>
           </motion.div>
@@ -275,7 +341,7 @@ export default function EndClientDashboard() {
   );
 }
 
-// Job Card Component - FIXED title overflow and navigation
+// ── JobCard Component (unchanged) ────────────────────────────────
 function JobCard({ job }) {
   const navigate = useNavigate();
   
@@ -340,7 +406,7 @@ function JobCard({ job }) {
   );
 }
 
-// Create Job Modal Component
+// ── CreateJobModal Component (unchanged) ─────────────────────────
 function CreateJobModal({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 z-[120] flex items-center justify-center p-6">
@@ -362,132 +428,78 @@ function CreateJobModal({ isOpen, onClose }) {
         </div>
 
         <div className="flex-1 overflow-y-auto px-10 py-8 space-y-8">
-          {/* BASIC INFO SECTION */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
-              Basic Information
-            </h3>
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">Basic Information</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Job Title</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. Senior Java Developer" 
-                  className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600 focus:bg-white transition-all" 
-                />
+                <input type="text" placeholder="e.g. Senior Java Developer" className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600 focus:bg-white transition-all" />
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Department</label>
                 <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600">
-                  <option>Engineering</option>
-                  <option>Product</option>
-                  <option>Design</option>
-                  <option>Marketing</option>
-                  <option>Sales</option>
+                  <option>Engineering</option><option>Product</option><option>Design</option><option>Marketing</option><option>Sales</option>
                 </select>
               </div>
             </div>
           </div>
 
-          {/* SPECIFICATIONS SECTION */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
-              Specifications
-            </h3>
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">Specifications</h3>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Experience</label>
                 <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950">
-                  <option>Entry Level</option>
-                  <option>Mid-Level</option>
-                  <option>Senior</option>
-                  <option>Lead</option>
+                  <option>Entry Level</option><option>Mid-Level</option><option>Senior</option><option>Lead</option>
                 </select>
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Work Mode</label>
                 <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950">
-                  <option>Remote</option>
-                  <option>Hybrid</option>
-                  <option>On-site</option>
+                  <option>Remote</option><option>Hybrid</option><option>On-site</option>
                 </select>
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Type</label>
                 <select className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950">
-                  <option>Full-Time</option>
-                  <option>Part-Time</option>
-                  <option>Contract</option>
-                  <option>Freelance</option>
+                  <option>Full-Time</option><option>Part-Time</option><option>Contract</option><option>Freelance</option>
                 </select>
               </div>
             </div>
           </div>
 
-          {/* COMPENSATION SECTION */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
-              Compensation
-            </h3>
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">Compensation</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Salary Range</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. $100k - $130k" 
-                  className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600" 
-                />
+                <input type="text" placeholder="e.g. $100k - $130k" className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600" />
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-blue-700">Location</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. Remote, New York" 
-                  className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600" 
-                />
+                <input type="text" placeholder="e.g. Remote, New York" className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600" />
               </div>
             </div>
           </div>
 
-          {/* SKILLS SECTION */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
-              Required Skills
-            </h3>
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">Required Skills</h3>
             <div className="space-y-1.5">
-              <input 
-                type="text" 
-                placeholder="e.g. React, Node.js, AWS (comma separated)" 
-                className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600" 
-              />
+              <input type="text" placeholder="e.g. React, Node.js, AWS (comma separated)" className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-2.5 text-sm font-medium text-blue-950 outline-none focus:border-blue-600" />
             </div>
           </div>
 
-          {/* DESCRIPTION SECTION */}
           <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">
-              Job Description
-            </h3>
+            <h3 className="text-xs font-black uppercase text-blue-600 tracking-widest border-l-4 border-blue-600 pl-3">Job Description</h3>
             <div className="space-y-1.5">
-              <textarea 
-                rows="6" 
-                placeholder="Outline the key responsibilities, requirements, and benefits..." 
-                className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm font-medium text-blue-950 outline-none focus:border-blue-600 focus:bg-white resize-none"
-              />
+              <textarea rows="6" placeholder="Outline the key responsibilities, requirements, and benefits..." className="w-full bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm font-medium text-blue-950 outline-none focus:border-blue-600 focus:bg-white resize-none"/>
             </div>
           </div>
         </div>
 
         <div className="px-10 py-6 border-t border-blue-100 bg-blue-50/50 flex justify-end gap-3 shrink-0 rounded-b-2xl">
-          <button 
-            onClick={onClose} 
-            className="px-6 py-2.5 text-sm font-bold text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
-          >
-            Discard
-          </button>
-          <button 
-            className="px-8 py-2.5 bg-blue-950 text-white rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-900 shadow-md transition-all"
-          >
+          <button onClick={onClose} className="px-6 py-2.5 text-sm font-bold text-blue-600 hover:bg-blue-100 rounded-lg transition-colors">Discard</button>
+          <button className="px-8 py-2.5 bg-blue-950 text-white rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-900 shadow-md transition-all">
             <Send size={16} /> Publish Requisition
           </button>
         </div>

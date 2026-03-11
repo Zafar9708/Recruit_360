@@ -59,7 +59,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutUs/>} />
-
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/enquiry" element={<EnquiryPage />} />
           <Route path="/register/candidate" element={<RegistrationPage />} />
