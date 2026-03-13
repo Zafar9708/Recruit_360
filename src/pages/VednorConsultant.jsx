@@ -11,7 +11,7 @@ import VendorSidebar from '../components/VendorSidebar';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /* ─────────────────────────────────────────────────────────────
-   ALL CANDIDATES — 15 records
+   ALL CANDIDATES — 15 US + 15 Indian = 30 records
 ───────────────────────────────────────────────────────────── */
 const ALL_CANDIDATES = [
   {
@@ -194,10 +194,195 @@ const ALL_CANDIDATES = [
     certifications: ['CISSP', 'CEH', 'CompTIA Security+'],
     totalProjects: 22, successRate: 97,
   },
+
+  /* ── Indian Candidates ── */
+  {
+    id: 'i1', name: 'Arjun Mehta', title: 'Full Stack Developer',
+    skills: ['React', 'Node.js', 'MongoDB', 'TypeScript', 'AWS'],
+    experience: 4, location: 'Mumbai, India', rate: '$45/hr',
+    availability: 'Immediate', lastUpdated: '2024-12-19',
+    status: 'Available', isVerified: true, isActive: true, rating: 4.6,
+    email: 'arjun.mehta@email.com', phone: '+91 98200 11001',
+    linkedin: 'linkedin.com/in/arjunmehta', summary: 'Full-stack developer with expertise in modern JS frameworks and cloud-native architectures.',
+    education: 'B.E. Computer Science, IIT Bombay',
+    certifications: ['AWS Cloud Practitioner'],
+    totalProjects: 10, successRate: 93,
+  },
+  {
+    id: 'i2', name: 'Priya Nair', title: 'Python Backend Developer',
+    skills: ['Python', 'Django', 'FastAPI', 'PostgreSQL', 'Redis'],
+    experience: 5, location: 'Bengaluru, India', rate: '$48/hr',
+    availability: '2 weeks', lastUpdated: '2024-12-17',
+    status: 'Available', isVerified: false, isActive: true, rating: 4.4,
+    email: 'priya.nair@email.com', phone: '+91 98200 11002',
+    linkedin: 'linkedin.com/in/priyanair', summary: 'Backend engineer specializing in high-performance Python APIs and database optimization.',
+    education: 'B.Tech Software Engineering, NIT Trichy',
+    certifications: ['Django Certified Developer'],
+    totalProjects: 13, successRate: 91,
+  },
+  {
+    id: 'i3', name: 'Rohan Verma', title: 'Cloud Infrastructure Engineer',
+    skills: ['AWS', 'Terraform', 'Ansible', 'Linux', 'Networking'],
+    experience: 7, location: 'Hyderabad, India', rate: '$55/hr',
+    availability: 'Immediate', lastUpdated: '2024-12-14',
+    status: 'In Process', isVerified: true, isActive: true, rating: 4.8,
+    email: 'rohan.verma@email.com', phone: '+91 98200 11003',
+    linkedin: 'linkedin.com/in/rohanverma', summary: 'Infrastructure engineer with 7 years automating cloud environments using IaC best practices.',
+    education: 'B.Tech Computer Engineering, BITS Pilani',
+    certifications: ['AWS SysOps Admin', 'HashiCorp Terraform'],
+    totalProjects: 20, successRate: 96,
+  },
+  {
+    id: 'i4', name: 'Meera Krishnan', title: 'Data Engineer',
+    skills: ['Spark', 'Kafka', 'Airflow', 'Python', 'Snowflake'],
+    experience: 5, location: 'Pune, India', rate: '$52/hr',
+    availability: '1 month', lastUpdated: '2024-12-11',
+    status: 'Available', isVerified: true, isActive: false, rating: 4.5,
+    email: 'meera.krishnan@email.com', phone: '+91 98200 11004',
+    linkedin: 'linkedin.com/in/meera.krishnan', summary: 'Data pipeline specialist focused on real-time streaming architectures using Kafka and Spark.',
+    education: 'M.Tech Data Science, IIT Madras',
+    certifications: ['Databricks Spark Developer'],
+    totalProjects: 14, successRate: 92,
+  },
+  {
+    id: 'i5', name: 'Karan Patel', title: 'Angular Developer',
+    skills: ['Angular', 'TypeScript', 'RxJS', 'NgRx', 'REST APIs'],
+    experience: 4, location: 'Ahmedabad, India', rate: '$42/hr',
+    availability: 'Immediate', lastUpdated: '2024-12-09',
+    status: 'Available', isVerified: false, isActive: false, rating: 4.2,
+    email: 'karan.patel@email.com', phone: '+91 98200 11005',
+    linkedin: 'linkedin.com/in/karanpatel', summary: 'Angular developer with strong RxJS and state management patterns. Delivered complex enterprise dashboards.',
+    education: 'B.E. Computer Science, Nirma University',
+    certifications: ['Angular Certified Developer'],
+    totalProjects: 11, successRate: 89,
+  },
+  {
+    id: 'i6', name: 'Ananya Krishnan', title: 'iOS Developer',
+    skills: ['Swift', 'Xcode', 'UIKit', 'SwiftUI', 'CoreData'],
+    experience: 5, location: 'Chennai, India', rate: '$50/hr',
+    availability: '3 weeks', lastUpdated: '2024-12-06',
+    status: 'Available', isVerified: true, isActive: true, rating: 4.7,
+    email: 'ananya.krishnan@email.com', phone: '+91 98200 11006',
+    linkedin: 'linkedin.com/in/ananyakrishnan', summary: 'iOS engineer with 5 published apps and expertise in SwiftUI transitions and CoreData sync.',
+    education: 'B.Tech Computer Science, Anna University',
+    certifications: ['Apple Certified Developer'],
+    totalProjects: 16, successRate: 95,
+  },
+  {
+    id: 'i7', name: 'Rajesh Kumar', title: 'Site Reliability Engineer',
+    skills: ['SRE', 'Prometheus', 'Grafana', 'Kubernetes', 'Python'],
+    experience: 8, location: 'Bengaluru, India', rate: '$62/hr',
+    availability: '1 week', lastUpdated: '2024-12-04',
+    status: 'In Process', isVerified: true, isActive: true, rating: 4.9,
+    email: 'rajesh.kumar@email.com', phone: '+91 98200 11007',
+    linkedin: 'linkedin.com/in/rajeshkumar', summary: 'SRE with 8 years maintaining 99.99% uptime SLAs at scale. Designed on-call rotation and incident management playbooks.',
+    education: 'M.Tech Systems Engineering, IIT Delhi',
+    certifications: ['CKA', 'Google SRE Fundamentals'],
+    totalProjects: 25, successRate: 99,
+  },
+  {
+    id: 'i8', name: 'Sneha Iyer', title: 'UX Researcher',
+    skills: ['User Research', 'Figma', 'Usability Testing', 'Miro', 'Prototyping'],
+    experience: 5, location: 'Mumbai, India', rate: '$47/hr',
+    availability: 'Immediate', lastUpdated: '2024-12-02',
+    status: 'Available', isVerified: false, isActive: true, rating: 4.3,
+    email: 'sneha.iyer@email.com', phone: '+91 98200 11008',
+    linkedin: 'linkedin.com/in/snehaiyer', summary: 'UX researcher combining qualitative and quantitative methods to drive product decisions at consumer tech firms.',
+    education: 'M.Des Human-Computer Interaction, IDC IIT Bombay',
+    certifications: ['Nielsen Norman UX Research'],
+    totalProjects: 14, successRate: 90,
+  },
+  {
+    id: 'i9', name: 'Amit Desai', title: 'Network Engineer',
+    skills: ['Cisco', 'BGP', 'OSPF', 'Firewalls', 'SD-WAN'],
+    experience: 6, location: 'Pune, India', rate: '$49/hr',
+    availability: '2 weeks', lastUpdated: '2024-11-29',
+    status: 'Available', isVerified: true, isActive: true, rating: 4.5,
+    email: 'amit.desai@email.com', phone: '+91 98200 11009',
+    linkedin: 'linkedin.com/in/amitdesai', summary: 'Network engineer designing and managing enterprise-grade WAN and LAN environments for Fortune 500 clients.',
+    education: 'B.Tech Electronics, Pune University',
+    certifications: ['CCNP', 'Cisco SD-WAN Specialist'],
+    totalProjects: 17, successRate: 94,
+  },
+  {
+    id: 'i10', name: 'Neha Gupta', title: 'Tableau Developer',
+    skills: ['Tableau', 'Power BI', 'SQL', 'Data Visualization', 'Excel'],
+    experience: 4, location: 'New Delhi, India', rate: '$40/hr',
+    availability: 'Immediate', lastUpdated: '2024-11-27',
+    status: 'Placed', isVerified: false, isActive: true, rating: 4.1,
+    email: 'neha.gupta@email.com', phone: '+91 98200 11010',
+    linkedin: 'linkedin.com/in/nehagupta', summary: 'BI developer transforming complex datasets into compelling executive dashboards and self-service analytics tools.',
+    education: 'B.Sc Information Systems, Delhi University',
+    certifications: ['Tableau Desktop Specialist'],
+    totalProjects: 12, successRate: 88,
+  },
+  {
+    id: 'i11', name: 'Vikram Rao', title: 'Embedded Systems Engineer',
+    skills: ['C', 'C++', 'RTOS', 'CAN Bus', 'AUTOSAR'],
+    experience: 7, location: 'Hyderabad, India', rate: '$54/hr',
+    availability: '1 month', lastUpdated: '2024-11-24',
+    status: 'Available', isVerified: true, isActive: false, rating: 4.6,
+    email: 'vikram.rao@email.com', phone: '+91 98200 11011',
+    linkedin: 'linkedin.com/in/vikramrao', summary: 'Embedded systems engineer with automotive domain expertise in AUTOSAR and functional safety (ISO 26262).',
+    education: 'M.Tech Electrical Engineering, IIT Kharagpur',
+    certifications: ['AUTOSAR Certified', 'ISO 26262 Functional Safety'],
+    totalProjects: 19, successRate: 95,
+  },
+  {
+    id: 'i12', name: 'Pooja Menon', title: 'Scrum Master',
+    skills: ['Scrum', 'Kanban', 'JIRA', 'SAFe', 'Confluence'],
+    experience: 5, location: 'Bengaluru, India', rate: '$46/hr',
+    availability: 'Immediate', lastUpdated: '2024-11-21',
+    status: 'Available', isVerified: true, isActive: false, rating: 4.4,
+    email: 'pooja.menon@email.com', phone: '+91 98200 11012',
+    linkedin: 'linkedin.com/in/poojamenon', summary: 'Certified Scrum Master fostering agile culture across distributed teams. Improved sprint velocity by 35% through process refinements.',
+    education: 'MBA, IIM Bangalore',
+    certifications: ['CSM', 'SAFe 5.0 Agilist'],
+    totalProjects: 15, successRate: 93,
+  },
+  {
+    id: 'i13', name: 'Suresh Pillai', title: 'Blockchain Developer',
+    skills: ['Solidity', 'Ethereum', 'Web3.js', 'DeFi', 'Hardhat'],
+    experience: 4, location: 'Kochi, India', rate: '$53/hr',
+    availability: '2 weeks', lastUpdated: '2024-11-19',
+    status: 'Available', isVerified: false, isActive: true, rating: 4.3,
+    email: 'suresh.pillai@email.com', phone: '+91 98200 11013',
+    linkedin: 'linkedin.com/in/sureshpillai', summary: 'Blockchain developer with hands-on DeFi and NFT protocol experience. Audited $50M+ in smart contracts.',
+    education: 'B.Tech Computer Science, Kerala University',
+    certifications: ['Ethereum Developer', 'Certified Blockchain Expert'],
+    totalProjects: 10, successRate: 90,
+  },
+  {
+    id: 'i14', name: 'Divya Joshi', title: 'Technical Writer',
+    skills: ['Technical Writing', 'API Docs', 'Markdown', 'Confluence', 'DITA'],
+    experience: 3, location: 'Noida, India', rate: '$38/hr',
+    availability: 'Immediate', lastUpdated: '2024-11-17',
+    status: 'Available', isVerified: true, isActive: true, rating: 4.5,
+    email: 'divya.joshi@email.com', phone: '+91 98200 11014',
+    linkedin: 'linkedin.com/in/divyajoshi', summary: 'Technical writer crafting developer-first documentation for APIs and SDKs. Reduced support tickets by 30% through clearer docs.',
+    education: 'B.A. English & Computer Science, Jawaharlal Nehru University',
+    certifications: ['DITA Specialist'],
+    totalProjects: 9, successRate: 95,
+  },
+  {
+    id: 'i15', name: 'Sanjay Chauhan', title: 'SAP ABAP Developer',
+    skills: ['SAP', 'ABAP', 'S/4HANA', 'BAPI', 'ALV Reports'],
+    experience: 8, location: 'Gurugram, India', rate: '$51/hr',
+    availability: '1 week', lastUpdated: '2024-11-14',
+    status: 'In Process', isVerified: true, isActive: true, rating: 4.7,
+    email: 'sanjay.chauhan@email.com', phone: '+91 98200 11015',
+    linkedin: 'linkedin.com/in/sanjaychauhan', summary: 'SAP ABAP developer specializing in S/4HANA migrations and custom development. Delivered 20+ SAP implementations globally.',
+    education: 'B.Tech Information Systems, Manipal University',
+    certifications: ['SAP Certified Development Associate', 'SAP S/4HANA'],
+    totalProjects: 22, successRate: 96,
+  },
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   SHORTLISTED CANDIDATES — 15 records (with client who shortlisted)
+   SHORTLISTED CANDIDATES — 15 records
+   Each candidate has a `shortlists` array:
+   [{ client, jobTitle, shortlistedDate }]
+   A candidate can appear shortlisted for multiple clients/jobs.
 ───────────────────────────────────────────────────────────── */
 const SHORTLISTED_CANDIDATES = [
   {
@@ -206,7 +391,10 @@ const SHORTLISTED_CANDIDATES = [
     experience: 4, location: 'Remote', rate: '$78/hr',
     availability: 'Immediate', lastUpdated: '2024-12-19',
     status: 'Shortlisted', isVerified: true, isActive: true, rating: 4.6,
-    shortlistedBy: 'Tech Solutions Inc.', shortlistedDate: 'Dec 18, 2024', jobTitle: 'Full Stack Engineer',
+    shortlists: [
+      { client: 'Tech Solutions Inc.', jobTitle: 'Full Stack Engineer', shortlistedDate: 'Dec 18, 2024' },
+      { client: 'Digital Ventures', jobTitle: 'MERN Stack Developer', shortlistedDate: 'Dec 20, 2024' },
+    ],
     email: 'arjun.mehta@email.com', phone: '+91 98200 11001',
     linkedin: 'linkedin.com/in/arjunmehta', summary: 'Full-stack developer with expertise in modern JS frameworks and cloud-native architectures.',
     education: 'B.E. Computer Science, IIT Bombay',
@@ -219,7 +407,9 @@ const SHORTLISTED_CANDIDATES = [
     experience: 5, location: 'Bengaluru, India', rate: '$82/hr',
     availability: '2 weeks', lastUpdated: '2024-12-17',
     status: 'Shortlisted', isVerified: false, isActive: true, rating: 4.4,
-    shortlistedBy: 'Digital Ventures', shortlistedDate: 'Dec 16, 2024', jobTitle: 'Senior Python Engineer',
+    shortlists: [
+      { client: 'Digital Ventures', jobTitle: 'Senior Python Engineer', shortlistedDate: 'Dec 16, 2024' },
+    ],
     email: 'priya.sharma@email.com', phone: '+91 98200 11002',
     linkedin: 'linkedin.com/in/priyasharma', summary: 'Backend engineer specializing in high-performance Python APIs and database optimization.',
     education: 'B.Tech Software Engineering, NIT Trichy',
@@ -232,7 +422,11 @@ const SHORTLISTED_CANDIDATES = [
     experience: 7, location: 'Hyderabad, India', rate: '$98/hr',
     availability: 'Immediate', lastUpdated: '2024-12-14',
     status: 'Shortlisted', isVerified: true, isActive: true, rating: 4.8,
-    shortlistedBy: 'Cloud Systems Corp', shortlistedDate: 'Dec 13, 2024', jobTitle: 'Cloud Infrastructure Lead',
+    shortlists: [
+      { client: 'Cloud Systems Corp', jobTitle: 'Cloud Infrastructure Lead', shortlistedDate: 'Dec 13, 2024' },
+      { client: 'Tech Solutions Inc.', jobTitle: 'AWS Architect', shortlistedDate: 'Dec 15, 2024' },
+      { client: 'Enterprise Corp', jobTitle: 'DevOps Lead', shortlistedDate: 'Dec 17, 2024' },
+    ],
     email: 'rohan.verma@email.com', phone: '+91 98200 11003',
     linkedin: 'linkedin.com/in/rohanverma', summary: 'Infrastructure engineer with 7 years automating cloud environments using IaC best practices.',
     education: 'B.Tech Computer Engineering, BITS Pilani',
@@ -245,7 +439,10 @@ const SHORTLISTED_CANDIDATES = [
     experience: 5, location: 'Pune, India', rate: '$92/hr',
     availability: '1 month', lastUpdated: '2024-12-11',
     status: 'Shortlisted', isVerified: true, isActive: false, rating: 4.5,
-    shortlistedBy: 'Analytics Pro', shortlistedDate: 'Dec 10, 2024', jobTitle: 'Senior Data Engineer',
+    shortlists: [
+      { client: 'Analytics Pro', jobTitle: 'Senior Data Engineer', shortlistedDate: 'Dec 10, 2024' },
+      { client: 'FinTech Startup', jobTitle: 'Data Pipeline Engineer', shortlistedDate: 'Dec 12, 2024' },
+    ],
     email: 'meera.nair@email.com', phone: '+91 98200 11004',
     linkedin: 'linkedin.com/in/meeranair', summary: 'Data pipeline specialist focused on real-time streaming architectures using Kafka and Spark.',
     education: 'M.Tech Data Science, IIT Madras',
@@ -258,7 +455,9 @@ const SHORTLISTED_CANDIDATES = [
     experience: 4, location: 'Ahmedabad, India', rate: '$80/hr',
     availability: 'Immediate', lastUpdated: '2024-12-09',
     status: 'Shortlisted', isVerified: false, isActive: false, rating: 4.2,
-    shortlistedBy: 'Innovate Labs', shortlistedDate: 'Dec 08, 2024', jobTitle: 'Frontend Angular Developer',
+    shortlists: [
+      { client: 'Innovate Labs', jobTitle: 'Frontend Angular Developer', shortlistedDate: 'Dec 08, 2024' },
+    ],
     email: 'karan.patel@email.com', phone: '+91 98200 11005',
     linkedin: 'linkedin.com/in/karanpatel', summary: 'Angular developer with strong RxJS and state management patterns. Delivered complex enterprise dashboards.',
     education: 'B.E. Computer Science, Nirma University',
@@ -271,7 +470,10 @@ const SHORTLISTED_CANDIDATES = [
     experience: 5, location: 'Chennai, India', rate: '$88/hr',
     availability: '3 weeks', lastUpdated: '2024-12-06',
     status: 'Shortlisted', isVerified: true, isActive: true, rating: 4.7,
-    shortlistedBy: 'MobileFirst Co.', shortlistedDate: 'Dec 05, 2024', jobTitle: 'Senior iOS Engineer',
+    shortlists: [
+      { client: 'MobileFirst Co.', jobTitle: 'Senior iOS Engineer', shortlistedDate: 'Dec 05, 2024' },
+      { client: 'Digital Ventures', jobTitle: 'iOS App Developer', shortlistedDate: 'Dec 07, 2024' },
+    ],
     email: 'ananya.krishnan@email.com', phone: '+91 98200 11006',
     linkedin: 'linkedin.com/in/ananyakrishnan', summary: 'iOS engineer with 5 published apps and expertise in SwiftUI transitions and CoreData sync.',
     education: 'B.Tech Computer Science, Anna University',
@@ -284,7 +486,11 @@ const SHORTLISTED_CANDIDATES = [
     experience: 8, location: 'Bengaluru, India', rate: '$110/hr',
     availability: '1 week', lastUpdated: '2024-12-04',
     status: 'Shortlisted', isVerified: true, isActive: true, rating: 4.9,
-    shortlistedBy: 'Enterprise Corp', shortlistedDate: 'Dec 03, 2024', jobTitle: 'Lead SRE',
+    shortlists: [
+      { client: 'Enterprise Corp', jobTitle: 'Lead SRE', shortlistedDate: 'Dec 03, 2024' },
+      { client: 'Cloud Systems Corp', jobTitle: 'Platform Engineer', shortlistedDate: 'Dec 05, 2024' },
+      { client: 'Tech Solutions Inc.', jobTitle: 'Infrastructure Engineer', shortlistedDate: 'Dec 06, 2024' },
+    ],
     email: 'rajesh.kumar@email.com', phone: '+91 98200 11007',
     linkedin: 'linkedin.com/in/rajeshkumar', summary: 'SRE with 8 years maintaining 99.99% uptime SLAs at scale. Designed on-call rotation and incident management playbooks.',
     education: 'M.Tech Systems Engineering, IIT Delhi',
@@ -297,7 +503,9 @@ const SHORTLISTED_CANDIDATES = [
     experience: 5, location: 'Mumbai, India', rate: '$85/hr',
     availability: 'Immediate', lastUpdated: '2024-12-02',
     status: 'Shortlisted', isVerified: false, isActive: true, rating: 4.3,
-    shortlistedBy: 'Creative Agency', shortlistedDate: 'Dec 01, 2024', jobTitle: 'UX Researcher',
+    shortlists: [
+      { client: 'Creative Agency', jobTitle: 'UX Researcher', shortlistedDate: 'Dec 01, 2024' },
+    ],
     email: 'sneha.iyer@email.com', phone: '+91 98200 11008',
     linkedin: 'linkedin.com/in/snehaiyer', summary: 'UX researcher combining qualitative and quantitative methods to drive product decisions at consumer tech firms.',
     education: 'M.Des Human-Computer Interaction, IDC IIT Bombay',
@@ -310,7 +518,10 @@ const SHORTLISTED_CANDIDATES = [
     experience: 6, location: 'Pune, India', rate: '$86/hr',
     availability: '2 weeks', lastUpdated: '2024-11-29',
     status: 'Shortlisted', isVerified: true, isActive: true, rating: 4.5,
-    shortlistedBy: 'SecureIT Solutions', shortlistedDate: 'Nov 28, 2024', jobTitle: 'Network Infrastructure Engineer',
+    shortlists: [
+      { client: 'SecureIT Solutions', jobTitle: 'Network Infrastructure Engineer', shortlistedDate: 'Nov 28, 2024' },
+      { client: 'Enterprise Corp', jobTitle: 'Senior Network Analyst', shortlistedDate: 'Nov 30, 2024' },
+    ],
     email: 'amit.desai@email.com', phone: '+91 98200 11009',
     linkedin: 'linkedin.com/in/amitdesai', summary: 'Network engineer designing and managing enterprise-grade WAN and LAN environments for Fortune 500 clients.',
     education: 'B.Tech Electronics, Pune University',
@@ -323,7 +534,9 @@ const SHORTLISTED_CANDIDATES = [
     experience: 4, location: 'New Delhi, India', rate: '$74/hr',
     availability: 'Immediate', lastUpdated: '2024-11-27',
     status: 'Shortlisted', isVerified: false, isActive: true, rating: 4.1,
-    shortlistedBy: 'Analytics Pro', shortlistedDate: 'Nov 26, 2024', jobTitle: 'BI Developer',
+    shortlists: [
+      { client: 'Analytics Pro', jobTitle: 'BI Developer', shortlistedDate: 'Nov 26, 2024' },
+    ],
     email: 'neha.gupta@email.com', phone: '+91 98200 11010',
     linkedin: 'linkedin.com/in/nehagupta', summary: 'BI developer transforming complex datasets into compelling executive dashboards and self-service analytics tools.',
     education: 'B.Sc Information Systems, Delhi University',
@@ -336,7 +549,10 @@ const SHORTLISTED_CANDIDATES = [
     experience: 7, location: 'Hyderabad, India', rate: '$94/hr',
     availability: '1 month', lastUpdated: '2024-11-24',
     status: 'Shortlisted', isVerified: true, isActive: false, rating: 4.6,
-    shortlistedBy: 'AutoTech Corp', shortlistedDate: 'Nov 23, 2024', jobTitle: 'Senior Embedded Engineer',
+    shortlists: [
+      { client: 'AutoTech Corp', jobTitle: 'Senior Embedded Engineer', shortlistedDate: 'Nov 23, 2024' },
+      { client: 'Innovate Labs', jobTitle: 'Firmware Developer', shortlistedDate: 'Nov 25, 2024' },
+    ],
     email: 'vikram.rao@email.com', phone: '+91 98200 11011',
     linkedin: 'linkedin.com/in/vikramrao', summary: 'Embedded systems engineer with automotive domain expertise in AUTOSAR and functional safety (ISO 26262).',
     education: 'M.Tech Electrical Engineering, IIT Kharagpur',
@@ -349,7 +565,11 @@ const SHORTLISTED_CANDIDATES = [
     experience: 5, location: 'Bengaluru, India', rate: '$82/hr',
     availability: 'Immediate', lastUpdated: '2024-11-21',
     status: 'Shortlisted', isVerified: true, isActive: false, rating: 4.4,
-    shortlistedBy: 'Innovate Labs', shortlistedDate: 'Nov 20, 2024', jobTitle: 'Agile Scrum Master',
+    shortlists: [
+      { client: 'Innovate Labs', jobTitle: 'Agile Scrum Master', shortlistedDate: 'Nov 20, 2024' },
+      { client: 'Digital Ventures', jobTitle: 'Agile Coach', shortlistedDate: 'Nov 22, 2024' },
+      { client: 'Creative Agency', jobTitle: 'Project Coordinator', shortlistedDate: 'Nov 24, 2024' },
+    ],
     email: 'pooja.menon@email.com', phone: '+91 98200 11012',
     linkedin: 'linkedin.com/in/poojamenon', summary: 'Certified Scrum Master fostering agile culture across distributed teams. Improved sprint velocity by 35% through process refinements.',
     education: 'MBA, IIM Bangalore',
@@ -362,7 +582,9 @@ const SHORTLISTED_CANDIDATES = [
     experience: 4, location: 'Kochi, India', rate: '$96/hr',
     availability: '2 weeks', lastUpdated: '2024-11-19',
     status: 'Shortlisted', isVerified: false, isActive: true, rating: 4.3,
-    shortlistedBy: 'FinTech Startup', shortlistedDate: 'Nov 18, 2024', jobTitle: 'Smart Contract Developer',
+    shortlists: [
+      { client: 'FinTech Startup', jobTitle: 'Smart Contract Developer', shortlistedDate: 'Nov 18, 2024' },
+    ],
     email: 'suresh.pillai@email.com', phone: '+91 98200 11013',
     linkedin: 'linkedin.com/in/sureshpillai', summary: 'Blockchain developer with hands-on DeFi and NFT protocol experience. Audited $50M+ in smart contracts.',
     education: 'B.Tech Computer Science, Kerala University',
@@ -375,7 +597,10 @@ const SHORTLISTED_CANDIDATES = [
     experience: 3, location: 'Noida, India', rate: '$68/hr',
     availability: 'Immediate', lastUpdated: '2024-11-17',
     status: 'Shortlisted', isVerified: true, isActive: true, rating: 4.5,
-    shortlistedBy: 'Cloud Systems Corp', shortlistedDate: 'Nov 16, 2024', jobTitle: 'Technical Documentation Specialist',
+    shortlists: [
+      { client: 'Cloud Systems Corp', jobTitle: 'Technical Documentation Specialist', shortlistedDate: 'Nov 16, 2024' },
+      { client: 'Tech Solutions Inc.', jobTitle: 'Developer Relations Writer', shortlistedDate: 'Nov 18, 2024' },
+    ],
     email: 'divya.joshi@email.com', phone: '+91 98200 11014',
     linkedin: 'linkedin.com/in/divyajoshi', summary: 'Technical writer crafting developer-first documentation for APIs and SDKs. Reduced support tickets by 30% through clearer docs.',
     education: 'B.A. English & Computer Science, Jawaharlal Nehru University',
@@ -388,7 +613,10 @@ const SHORTLISTED_CANDIDATES = [
     experience: 8, location: 'Gurugram, India', rate: '$90/hr',
     availability: '1 week', lastUpdated: '2024-11-14',
     status: 'Shortlisted', isVerified: true, isActive: true, rating: 4.7,
-    shortlistedBy: 'Enterprise Corp', shortlistedDate: 'Nov 13, 2024', jobTitle: 'SAP ABAP Lead Developer',
+    shortlists: [
+      { client: 'Enterprise Corp', jobTitle: 'SAP ABAP Lead Developer', shortlistedDate: 'Nov 13, 2024' },
+      { client: 'AutoTech Corp', jobTitle: 'SAP Technical Consultant', shortlistedDate: 'Nov 15, 2024' },
+    ],
     email: 'sanjay.chauhan@email.com', phone: '+91 98200 11015',
     linkedin: 'linkedin.com/in/sanjaychauhan', summary: 'SAP ABAP developer specializing in S/4HANA migrations and custom development. Delivered 20+ SAP implementations globally.',
     education: 'B.Tech Information Systems, Manipal University',
@@ -396,13 +624,14 @@ const SHORTLISTED_CANDIDATES = [
     totalProjects: 22, successRate: 96,
   },
 ];
+
 export default function ConsultantPage() {
   const navigate = useNavigate();
   const [searchTerm,    setSearchTerm]    = useState('');
   const [activeFilter,  setActiveFilter]  = useState('all');
   const [viewMode,      setViewMode]      = useState('list');
   const [showFilters,   setShowFilters]   = useState(false);
-  const [activeSection, setActiveSection] = useState('allCandidates'); // 'allCandidates' | 'shortlisted'
+  const [activeSection, setActiveSection] = useState('allCandidates');
 
   const currentCandidates = activeSection === 'shortlisted' ? SHORTLISTED_CANDIDATES : ALL_CANDIDATES;
 
@@ -471,12 +700,17 @@ export default function ConsultantPage() {
       ];
 
   const filtered = currentCandidates
-    .filter(c =>
-      c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (c.skills || []).some(s => s.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (c.shortlistedBy || '').toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    .filter(c => {
+      const search = searchTerm.toLowerCase();
+      const matchesSearch =
+        c.name.toLowerCase().includes(search) ||
+        c.title.toLowerCase().includes(search) ||
+        (c.skills || []).some(s => s.toLowerCase().includes(search)) ||
+        (c.shortlists || []).some(
+          sl => sl.client.toLowerCase().includes(search) || sl.jobTitle.toLowerCase().includes(search)
+        );
+      return matchesSearch;
+    })
     .filter(c => {
       if (activeFilter === 'verified')   return c.isVerified;
       if (activeFilter === 'unverified') return !c.isVerified;
@@ -511,6 +745,24 @@ export default function ConsultantPage() {
     </div>
   );
 
+  /* ── Shortlist Pills — shows all client+job combos for a candidate ── */
+  const ShortlistPills = ({ shortlists }) => {
+    if (!shortlists || shortlists.length === 0) return null;
+    return (
+      <div className="flex flex-col gap-1 mt-1">
+        {shortlists.map((sl, i) => (
+          <div key={i} className="flex items-center gap-1 flex-wrap">
+            <Building className="w-3 h-3 text-teal-600 flex-shrink-0" />
+            <span className="text-xs text-teal-700 font-semibold">{sl.client}</span>
+            <span className="text-xs text-gray-400">·</span>
+            <span className="text-xs text-gray-600 font-medium">{sl.jobTitle}</span>
+            <span className="text-xs text-gray-400 ml-auto">{sl.shortlistedDate}</span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   /* ── LIST VIEW ── */
   const ListView = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -524,7 +776,7 @@ export default function ConsultantPage() {
         >
           <div className="p-5">
             <div className="flex items-start justify-between mb-4">
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 flex-1 min-w-0">
                 <div className="relative flex-shrink-0">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-base uppercase bg-gradient-to-br ${
                     activeSection === 'shortlisted' ? 'from-teal-600 to-teal-800' : 'from-blue-600 to-blue-800'
@@ -537,26 +789,19 @@ export default function ConsultantPage() {
                     </div>
                   )}
                 </div>
-                <div>
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
                     <h3 className="font-bold text-gray-900 text-sm">{c.name}</h3>
                     <RatingStars rating={c.rating} />
                   </div>
                   <p className="text-xs text-gray-600 mb-1">{c.title}</p>
-                  {activeSection === 'shortlisted' && c.shortlistedBy && (
-                    <div className="flex items-center gap-1 mb-1">
-                      <Building className="w-3 h-3 text-teal-600" />
-                      <span className="text-xs text-teal-700 font-semibold">{c.shortlistedBy}</span>
-                      {c.jobTitle && <span className="text-xs text-gray-400">· {c.jobTitle}</span>}
-                    </div>
-                  )}
                   <div className="flex items-center gap-3 text-xs text-gray-500">
                     <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{c.location}</span>
                     <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{c.experience}y</span>
                   </div>
                 </div>
               </div>
-              <div className="text-right flex-shrink-0">
+              <div className="text-right flex-shrink-0 ml-3">
                 <div className={`text-base font-bold ${accent.rateText} mb-1`}>{c.rate}</div>
                 <StatusBadge status={c.status} />
               </div>
@@ -566,20 +811,28 @@ export default function ConsultantPage() {
                 <span key={i} className="px-2.5 py-1 bg-gray-50 text-gray-700 text-xs font-medium rounded-lg border border-gray-200">{sk}</span>
               ))}
             </div>
-            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-              <div className="text-xs text-gray-400">
-                {activeSection === 'shortlisted' && c.shortlistedDate
-                  ? `Shortlisted ${c.shortlistedDate}`
-                  : `Updated ${c.lastUpdated}`
-                }
+            <div className="pt-3 border-t border-gray-100">
+              {activeSection === 'shortlisted' && c.shortlists && c.shortlists.length > 0 ? (
+                <div className="mb-3">
+                  <div className="text-xs font-semibold text-teal-800 mb-1.5">
+                    Shortlisted for {c.shortlists.length} position{c.shortlists.length > 1 ? 's' : ''}
+                  </div>
+                  <div className="border border-teal-100 bg-teal-50/50 rounded-lg px-2 py-1.5">
+                    <ShortlistPills shortlists={c.shortlists} />
+                  </div>
+                </div>
+              ) : (
+                <div className="text-xs text-gray-400 mb-3">{`Updated ${c.lastUpdated}`}</div>
+              )}
+              <div className="flex items-center justify-end">
+                <button
+                  onClick={(e) => { e.stopPropagation(); navigate(`/vendor/consultant/candidate/${c.id}`); }}
+                  className={`px-3 py-1.5 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 ${accent.btn}`}
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  View Profile
+                </button>
               </div>
-              <button
-                onClick={(e) => { e.stopPropagation(); navigate(`/vendor/consultant/candidate/${c.id}`); }}
-                className={`px-3 py-1.5 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 ${accent.btn}`}
-              >
-                <Eye className="w-3.5 h-3.5" />
-                View Profile
-              </button>
             </div>
           </div>
         </motion.div>
@@ -594,7 +847,11 @@ export default function ConsultantPage() {
         <table className="w-full">
           <thead className="bg-gradient-to-r from-gray-50 to-gray-100/50 border-b border-gray-200">
             <tr>
-              {['Candidate', ...(activeSection === 'shortlisted' ? ['Shortlisted By', 'Job Title'] : []), 'Status', 'Skills', 'Exp', 'Rate', 'Location', 'Actions'].map(h => (
+              {[
+                'Candidate',
+                ...(activeSection === 'shortlisted' ? ['Shortlisted For (Client · Job)'] : []),
+                'Status', 'Skills', 'Exp', 'Rate', 'Location', 'Actions'
+              ].map(h => (
                 <th key={h} className="py-4 px-5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider whitespace-nowrap">{h}</th>
               ))}
             </tr>
@@ -619,14 +876,21 @@ export default function ConsultantPage() {
                   </div>
                 </td>
                 {activeSection === 'shortlisted' && (
-                  <>
-                    <td className="py-4 px-5">
-                      <span className="text-sm font-semibold text-teal-700">{c.shortlistedBy || '—'}</span>
-                    </td>
-                    <td className="py-4 px-5">
-                      <span className="text-xs text-gray-600">{c.jobTitle || '—'}</span>
-                    </td>
-                  </>
+                  <td className="py-4 px-5">
+                    <div className="flex flex-col gap-1 min-w-[240px]">
+                      {(c.shortlists || []).map((sl, i) => (
+                        <div key={i} className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-xs font-semibold text-teal-700 whitespace-nowrap">{sl.client}</span>
+                          <span className="text-xs text-gray-400">·</span>
+                          <span className="text-xs text-gray-600 whitespace-nowrap">{sl.jobTitle}</span>
+                          <span className="ml-auto text-xs text-gray-400 whitespace-nowrap pl-2">{sl.shortlistedDate}</span>
+                        </div>
+                      ))}
+                      {(!c.shortlists || c.shortlists.length === 0) && (
+                        <span className="text-xs text-gray-400">—</span>
+                      )}
+                    </div>
+                  </td>
                 )}
                 <td className="py-4 px-5"><StatusBadge status={c.status} /></td>
                 <td className="py-4 px-5">
@@ -769,7 +1033,7 @@ export default function ConsultantPage() {
                 <input
                   type="text"
                   placeholder={activeSection === 'shortlisted'
-                    ? "Search by name, skills, or client..."
+                    ? "Search by name, skills, client, or job title..."
                     : "Search candidates by name, skills, or title..."}
                   className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={searchTerm}

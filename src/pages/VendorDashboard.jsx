@@ -50,7 +50,7 @@ export default function VendorDashboard() {
                 Recruiter Dashboard
               </h1>
               <p className="text-sm text-slate-500 font-medium">
-                Welcome back, <span className="text-blue-600">{localStorage.getItem('') || 'Wrocus Technology'}</span>
+                Welcome back, <span className="text-blue-600">{localStorage.getItem('') || 'Wrocus Technologies'}</span>
               </p>
             </div>
 

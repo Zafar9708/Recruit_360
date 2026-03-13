@@ -319,9 +319,9 @@ export default function VendorSidebar() {
             className="lg:hidden fixed left-0 top-0 h-screen w-72 bg-blue-950 text-white z-50"
           >
             <div className="flex flex-col h-full overflow-hidden">
-              <div className="py-3 px-8 border-b border-white/10">
+              <div className="py-3 px-2 border-b border-white/10">
                 <div className="flex items-center justify-start">
-                  <div className="w-20 h-20 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                  <div className="w-24 h-24 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                     <img src="/wrocus.png" alt="Wrocus" className="w-full h-full object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
                   </div>
                 </div>
@@ -371,10 +371,10 @@ export default function VendorSidebar() {
       >
         <div className="flex flex-col h-full overflow-hidden">
           {/* Header */}
-          <div className="py-3 px-8 border-b border-white/10 flex-shrink-0">
+          <div className="py-0 px-8 border-b border-white/10 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-start flex-1">
-                <div className="w-20 h-20 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <div className="w-24 h-24 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                   <img src="/wrocus.png" alt="Wrocus" className="w-full h-full object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
                 </div>
               </div>
