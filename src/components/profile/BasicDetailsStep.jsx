@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function BasicDetailsStep({ data, updateData }) {
   const [formData, setFormData] = useState({
@@ -15,6 +15,30 @@ export default function BasicDetailsStep({ data, updateData }) {
     pincode: data.pincode || "",
     location: data.location || "",
   });
+
+  // ── THE FIX ──────────────────────────────────────────────────────
+  // ProfileSetupPage loads resume data from sessionStorage AFTER this
+  // component already mounted with empty data={}.
+  // useState only runs once on mount, so fields stayed blank.
+  // This useEffect re-syncs local state whenever parent data updates.
+  useEffect(() => {
+    if (!data || Object.keys(data).length === 0) return;
+    setFormData({
+      fullName:      data.fullName      || "",
+      email:         data.email         || "",
+      phone:         data.phone         ? String(data.phone) : "",  // DB stores phone as number
+      dateOfBirth:   data.dateOfBirth   || "",
+      gender:        data.gender        || "",
+      nationality:   data.nationality   || "",
+      maritalStatus: data.maritalStatus || "",
+      address:       data.address       || "",
+      city:          data.city          || "",
+      state:         data.state         || "",
+      pincode:       data.pincode       || "",
+      location:      data.location      || "",
+    });
+  }, [data]);
+  // ─────────────────────────────────────────────────────────────────
 
   const handleChange = (field, value) => {
     const updated = { ...formData, [field]: value };

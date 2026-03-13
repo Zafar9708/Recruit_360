@@ -51,6 +51,7 @@ import VerifyOTPPage from './pages/CandidateRegister/VerifyOTPPage';
 import TestInterview from './components/TestInterview';
 import AdminLoginPage from './pages/Admin/AdminLogin';
 import AdminDashboard from './pages/Admin/AdminDashboard';
+import ConsultantPage from './pages/VednorConsultant';
 
 export default function App() {
   return (
@@ -73,6 +74,8 @@ export default function App() {
           <Route path="/vendor/dashboard" element={<VendorDashboard />} />
           <Route path="/vendor/jobs" element={<VendorJobsPage />} />
           <Route path="/vendor/benchlist" element={<VendorBenchListPage/>} />
+          <Route path="/vendor/consultant" element={<ConsultantPage />} />
+          <Route path="/vendor/consultant/candidate/:candidateId" element={<JobCandidateDetailPage />} />
           <Route
             path="/vendor/bench-candidate/:candidateId"
             element={<BenchCandidateDetailPage />}
@@ -113,6 +116,7 @@ export default function App() {
           <Route path="/ai-interviews-test" element={<TestInterview />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           {/* <Route path="/login/admin" element={<AdminLoginPage />} /> */}
+
 
 
 

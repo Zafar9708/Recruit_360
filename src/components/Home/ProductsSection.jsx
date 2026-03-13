@@ -10,7 +10,7 @@ import {
 const STAKEHOLDERS = [
   {
     id: "client",
-    role: "Client Hiring",
+    role: "Sales",
     path: "/login/end-client", // Updated Path
     icon: <Building2 size={16} />,
     gradient: "from-orange-500 to-yellow-500",
@@ -27,7 +27,7 @@ const STAKEHOLDERS = [
   },
   {
     id: "vendor",
-    role: "Vendor Portal",
+    role: "Recruiter",
     path: "/login/vendor", // Updated Path
     icon: <Handshake size={16} />,
     gradient: "from-yellow-400 to-orange-500",
@@ -44,7 +44,7 @@ const STAKEHOLDERS = [
   },
   {
     id: "candidate",
-    role: "Candidate Portal",
+    role: "Candidate",
     path: "/register/candidate", // Updated Path
     icon: <Users size={16} />,
     gradient: "from-purple-500 to-indigo-600",

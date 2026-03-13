@@ -47,10 +47,10 @@ export default function VendorDashboard() {
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-                Vendor Dashboard
+                Recruiter Dashboard
               </h1>
               <p className="text-sm text-slate-500 font-medium">
-                Welcome back, <span className="text-blue-600">{localStorage.getItem('userName') || 'Partner'}</span>
+                Welcome back, <span className="text-blue-600">{localStorage.getItem('') || 'Wrocus Technology'}</span>
               </p>
             </div>
 

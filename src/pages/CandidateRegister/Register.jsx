@@ -1,28 +1,398 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+// import axios from 'axios';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { useForm } from 'react-hook-form';
+// import { toast } from 'sonner';
+// import { useGoogleLogin } from '@react-oauth/google';
+// import { authApi } from '../../utils/api';
+// import { Upload, Mail, Lock, User, Loader2, FileText, Sparkles, ArrowRight, Check, Briefcase, Shield } from 'lucide-react';
+
+// // API service for resume upload
+// const uploadResumeToServer = async (file) => {
+//   const formData = new FormData();
+//   formData.append('resume', file);
+  
+//   const response = await fetch('http://localhost:5000/api/resume/upload', {
+//     method: 'POST',
+//     body: formData
+//   });
+  
+//   if (!response.ok) {
+//     throw new Error('Upload failed');
+//   }
+  
+//   return response.json();
+// };
+
+// export default function RegistrationPage() {
+//   const navigate = useNavigate();
+//   const [uploadedFile, setUploadedFile] = useState(null);
+//   const [isParsing, setIsParsing] = useState(false);
+//   const [resumeData, setResumeData] = useState(null);
+
+//   const { register, handleSubmit, setValue, watch, formState: { errors, isSubmitting } } = useForm({
+//     defaultValues: {
+//       fullName: '',
+//       email: '',
+//       password: '',
+//       confirmPassword: ''
+//     }
+//   });
+
+//   const loginWithGoogle = useGoogleLogin({
+//     onSuccess: async (tokenResponse) => {
+//       try {
+//         const response = await authApi.googleLogin({ token: tokenResponse.access_token });
+//         if (response.data.success) {
+//           localStorage.setItem('token', response.data.token);
+//           navigate('/profile-setup');
+//         }
+//       } catch (error) {
+//         toast.error('Google login failed');
+//       }
+//     },
+//   });
+
+//   const handleFileUpload = async (file) => {
+//     const validTypes = ['application/pdf', 'application/msword', 
+//       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    
+//     if (!validTypes.includes(file.type)) {
+//       toast.error('Please upload PDF or DOC file');
+//       return;
+//     }
+    
+//     if (file.size > 5 * 1024 * 1024) {
+//       toast.error('File must be less than 5MB');
+//       return;
+//     }
+    
+//     setUploadedFile(file);
+//     setIsParsing(true);
+    
+//     try {
+//       // Upload to your backend API
+//       const response = await uploadResumeToServer(file);
+      
+//       if (response.success && response.candidate) {
+//         const extractedData = response.candidate;
+//         setResumeData(extractedData);
+        
+//         // Auto-fill registration form
+//         setValue('fullName', extractedData.fullName || '');
+//         setValue('email', extractedData.email || '');
+        
+//         // Store complete resume data in sessionStorage (temporary)
+//         sessionStorage.setItem('resumeData', JSON.stringify(extractedData));
+        
+//         toast.success('Resume parsed successfully!');
+//       } else {
+//         throw new Error('Invalid response format');
+//       }
+//     } catch (error) {
+//       console.error('Upload error:', error);
+//       toast.error('Failed to parse resume');
+//     } finally {
+//       setIsParsing(false);
+//     }
+//   };
+
+//  const onRegisterSubmit = async (data) => {
+//   try {
+//     const combinedData = {
+//       ...data,
+//       ...(resumeData || {}),
+//       password: data.password,
+//       registrationStep: 'completed'
+//     };
+
+//     // Store temporary data
+// localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
+
+//     // 🔥 REAL BACKEND CALL
+//     const response = await axios.post(
+//       "http://localhost:5000/api/auth/send-otp",
+//       { email: data.email }
+//     );
+
+//     if (response.data.success) {
+//       toast.success("OTP sent to your email!");
+
+//       navigate('/verify-otp', { 
+//         state: { email: data.email }
+//       });
+//     } else {
+//       toast.error("Failed to send OTP");
+//     }
+
+//   } catch (error) {
+//     console.error("OTP error:", error);
+//     toast.error("Failed to send OTP");
+//   }
+// };
+
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center p-6">
+//       <div className="w-full max-w-lg">
+//         {/* Header */}
+//         <div className="text-center mb-8">
+//           <h2 className="text-3xl font-black text-blue-950 mb-2">Create Account</h2>
+//           <p className="text-blue-600">Join thousands of professionals finding dream jobs</p>
+//         </div>
+
+//         {/* Main Card */}
+//         <div className="bg-white rounded-2xl shadow-xl border border-blue-100 overflow-hidden">
+//           {/* Upload Section */}
+//           <div className="p-8 border-b border-blue-100 bg-gradient-to-r from-blue-50 to-blue-100/30">
+//             <div className="flex items-center justify-between mb-4">
+//               <div>
+//                 <h3 className="text-lg font-bold text-blue-950">Quick Start with Resume</h3>
+//                 <p className="text-sm text-blue-600">Upload resume to auto-fill details</p>
+//               </div>
+//               <Sparkles className="w-5 h-5 text-blue-600" />
+//             </div>
+            
+//             <div className={`relative group border-2 border-dashed rounded-xl p-8 text-center transition-all ${
+//               uploadedFile 
+//                 ? 'border-green-500 bg-green-50/30' 
+//                 : isParsing
+//                 ? 'border-blue-300'
+//                 : 'border-blue-200 hover:border-blue-400 cursor-pointer'
+//             }`}>
+//               <input 
+//                 id="cv-upload" 
+//                 type="file" 
+//                 className="hidden" 
+//                 accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
+//                 onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0])} 
+//               />
+              
+//               {isParsing ? (
+//                 <div className="py-4">
+//                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-3" />
+//                   <p className="text-blue-700 font-medium">Parsing your resume...</p>
+//                   <p className="text-sm text-blue-600">Extracting information...</p>
+//                 </div>
+//               ) : uploadedFile ? (
+//                 <div className="space-y-4">
+//                   <div className="flex items-center justify-center gap-3">
+//                     <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+//                       <Check className="w-6 h-6 text-green-600" />
+//                     </div>
+//                     <div className="text-left">
+//                       <p className="font-bold text-blue-950 truncate">{uploadedFile.name}</p>
+//                       <p className="text-sm text-green-600 font-medium">✓ Successfully uploaded</p>
+//                     </div>
+//                   </div>
+//                   <button
+//                     type="button"
+//                     onClick={() => document.getElementById('cv-upload').click()}
+//                     className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+//                   >
+//                     Upload different file
+//                   </button>
+//                 </div>
+//               ) : (
+//                 <label htmlFor="cv-upload" className="cursor-pointer">
+//                   <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+//                     <Upload className="w-8 h-8 text-blue-600" />
+//                   </div>
+//                   <p className="text-blue-950 font-semibold mb-2">Upload Resume</p>
+//                   <p className="text-blue-600 text-sm">PDF or DOC up to 5MB</p>
+//                   <p className="text-xs text-blue-500 mt-2">We'll auto-fill your information</p>
+//                 </label>
+//               )}
+//             </div>
+//           </div>
+
+//           {/* Registration Form */}
+//           <div className="p-8">
+//             <form onSubmit={handleSubmit(onRegisterSubmit)} className="space-y-6">
+//               <div className="grid md:grid-cols-2 gap-4">
+//                 <div>
+//                   <label className="block text-sm font-semibold text-blue-900 mb-2">Full Name</label>
+//                   <div className="relative">
+//                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+//                     <input 
+//                       {...register('fullName', { 
+//                         required: 'Full name is required',
+//                         minLength: { value: 2, message: 'Name is too short' }
+//                       })} 
+//                       className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
+//                         errors.fullName ? 'border-red-300' : 'border-blue-200'
+//                       }`}
+//                     />
+//                   </div>
+//                   {errors.fullName && (
+//                     <p className="mt-1 text-sm text-red-600">{errors.fullName.message}</p>
+//                   )}
+//                 </div>
+
+//                 <div>
+//                   <label className="block text-sm font-semibold text-blue-900 mb-2">Email</label>
+//                   <div className="relative">
+//                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+//                     <input 
+//                       type="email"
+//                       {...register('email', { 
+//                         required: 'Email is required',
+//                         pattern: { 
+//                           value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 
+//                           message: 'Invalid email address' 
+//                         }
+//                       })} 
+//                       className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
+//                         errors.email ? 'border-red-300' : 'border-blue-200'
+//                       }`}
+//                     />
+//                   </div>
+//                   {errors.email && (
+//                     <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+//                   )}
+//                 </div>
+//               </div>
+
+//               <div className="grid md:grid-cols-2 gap-4">
+//                 <div>
+//                   <label className="block text-sm font-semibold text-blue-900 mb-2">Password</label>
+//                   <div className="relative">
+//                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+//                     <input 
+//                       type="password"
+//                       {...register('password', { 
+//                         required: 'Password is required', 
+//                         minLength: { value: 6, message: 'Minimum 6 characters' }
+//                       })} 
+//                       placeholder="••••••••" 
+//                       className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
+//                         errors.password ? 'border-red-300' : 'border-blue-200'
+//                       }`}
+//                     />
+//                   </div>
+//                   {errors.password && (
+//                     <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+//                   )}
+//                 </div>
+
+//                 <div>
+//                   <label className="block text-sm font-semibold text-blue-900 mb-2">Confirm Password</label>
+//                   <div className="relative">
+//                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+//                     <input 
+//                       type="password"
+//                       {...register('confirmPassword', { 
+//                         required: 'Please confirm your password',
+//                         validate: v => v === watch('password') || 'Passwords must match' 
+//                       })} 
+//                       placeholder="••••••••" 
+//                       className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
+//                         errors.confirmPassword ? 'border-red-300' : 'border-blue-200'
+//                       }`}
+//                     />
+//                   </div>
+//                   {errors.confirmPassword && (
+//                     <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>
+//                   )}
+//                 </div>
+//               </div>
+
+//               <div className="flex items-center gap-2 text-sm text-blue-600">
+//                 <Shield className="w-4 h-4" />
+//                 <span>Your data is secure and encrypted</span>
+//               </div>
+
+//               <button
+//                 type="submit"
+//                 disabled={isSubmitting}
+//                 className="w-full py-3.5 bg-gradient-to-r from-blue-950 to-blue-900 text-white rounded-xl font-semibold hover:from-blue-900 hover:to-blue-800 transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+//               >
+//                 {isSubmitting ? (
+//                   <>
+//                     <Loader2 className="w-5 h-5 animate-spin" />
+//                     Creating Account...
+//                   </>
+//                 ) : (
+//                   <>
+//                     Create Account
+//                     <ArrowRight className="w-5 h-5" />
+//                   </>
+//                 )}
+//               </button>
+//             </form>
+
+//             <div className="relative my-6">
+//               <div className="absolute inset-0 flex items-center">
+//                 <div className="w-full border-t border-blue-100"></div>
+//               </div>
+//               <div className="relative flex justify-center">
+//                 <span className="px-4 bg-white text-blue-600 text-sm font-medium">OR</span>
+//               </div>
+//             </div>
+
+//             <button 
+//               onClick={() => loginWithGoogle()}
+//               className="w-full py-3.5 border border-blue-200 rounded-xl text-blue-900 hover:bg-blue-50 transition-colors font-medium flex items-center justify-center gap-3"
+//             >
+//               <img className="w-5 h-5" src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" />
+//               Sign up with Google
+//             </button>
+
+//             <div className="mt-8 pt-6 border-t border-blue-100 text-center">
+//               <p className="text-blue-700">
+//                 Already have an account?{' '}
+//                 <Link to="/login" className="text-blue-950 font-semibold hover:text-blue-800">
+//                   Sign In
+//                 </Link>
+//               </p>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Features */}
+//         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-3">
+//           <div className="flex items-center gap-3 p-3 bg-white/80 rounded-xl border border-blue-100">
+//             <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+//               <FileText className="w-4 h-4 text-blue-600" />
+//             </div>
+//             <div>
+//               <p className="text-sm font-medium text-blue-950">AI Resume Parser</p>
+//               <p className="text-xs text-blue-600">Auto-fill your details</p>
+//             </div>
+//           </div>
+//           <div className="flex items-center gap-3 p-3 bg-white/80 rounded-xl border border-blue-100">
+//             <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+//               <Sparkles className="w-4 h-4 text-blue-600" />
+//             </div>
+//             <div>
+//               <p className="text-sm font-medium text-blue-950">Smart Matching</p>
+//               <p className="text-xs text-blue-600">Find relevant jobs</p>
+//             </div>
+//           </div>
+//           <div className="flex items-center gap-3 p-3 bg-white/80 rounded-xl border border-blue-100">
+//             <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+//               <Shield className="w-4 h-4 text-blue-600" />
+//             </div>
+//             <div>
+//               <p className="text-sm font-medium text-blue-950">Secure Platform</p>
+//               <p className="text-xs text-blue-600">Encrypted & private</p>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useGoogleLogin } from '@react-oauth/google';
 import { authApi } from '../../utils/api';
-import { Upload, Mail, Lock, User, Loader2, FileText, Sparkles, ArrowRight, Check, Briefcase, Shield } from 'lucide-react';
-
-// API service for resume upload
-const uploadResumeToServer = async (file) => {
-  const formData = new FormData();
-  formData.append('resume', file);
-  
-  const response = await fetch('http://localhost:5000/api/resume/upload', {
-    method: 'POST',
-    body: formData
-  });
-  
-  if (!response.ok) {
-    throw new Error('Upload failed');
-  }
-  
-  return response.json();
-};
+import { Upload, Mail, Lock, User, Loader2, FileText, Sparkles, ArrowRight, Check, Shield } from 'lucide-react';
 
 export default function RegistrationPage() {
   const navigate = useNavigate();
@@ -39,6 +409,22 @@ export default function RegistrationPage() {
     }
   });
 
+  // ── KEY FIX: use useEffect to call setValue whenever resumeData changes ──
+  // This guarantees React Hook Form registers the new values after state update.
+  useEffect(() => {
+    if (!resumeData) return;
+
+    console.log('Loading resume data:', resumeData);
+
+    // fullName comes directly from API as "Shivam Tomar"
+    if (resumeData.fullName) {
+      setValue('fullName', resumeData.fullName, { shouldValidate: true, shouldDirty: true });
+    }
+    if (resumeData.email) {
+      setValue('email', resumeData.email, { shouldValidate: true, shouldDirty: true });
+    }
+  }, [resumeData, setValue]);
+
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
@@ -54,37 +440,48 @@ export default function RegistrationPage() {
   });
 
   const handleFileUpload = async (file) => {
-    const validTypes = ['application/pdf', 'application/msword', 
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    
+    const validTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
+
     if (!validTypes.includes(file.type)) {
       toast.error('Please upload PDF or DOC file');
       return;
     }
-    
+
     if (file.size > 5 * 1024 * 1024) {
       toast.error('File must be less than 5MB');
       return;
     }
-    
+
     setUploadedFile(file);
     setIsParsing(true);
-    
+
     try {
-      // Upload to your backend API
-      const response = await uploadResumeToServer(file);
-      
-      if (response.success && response.candidate) {
-        const extractedData = response.candidate;
-        setResumeData(extractedData);
-        
-        // Auto-fill registration form
-        setValue('fullName', extractedData.fullName || '');
-        setValue('email', extractedData.email || '');
-        
-        // Store complete resume data in sessionStorage (temporary)
-        sessionStorage.setItem('resumeData', JSON.stringify(extractedData));
-        
+      const formData = new FormData();
+      formData.append('resume', file);
+
+      const response = await fetch('http://localhost:5000/api/resume/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) throw new Error('Upload failed');
+
+      const data = await response.json();
+      console.log('Raw API response:', data);
+
+      if (data.success && data.candidate) {
+        const candidate = data.candidate;
+
+        // Store in state — useEffect above will call setValue
+        setResumeData(candidate);
+
+        // Store complete resume data for profile-setup page
+        sessionStorage.setItem('resumeData', JSON.stringify(candidate));
+
         toast.success('Resume parsed successfully!');
       } else {
         throw new Error('Invalid response format');
@@ -97,40 +494,33 @@ export default function RegistrationPage() {
     }
   };
 
- const onRegisterSubmit = async (data) => {
-  try {
-    const combinedData = {
-      ...data,
-      ...(resumeData || {}),
-      password: data.password,
-      registrationStep: 'completed'
-    };
+  const onRegisterSubmit = async (data) => {
+    try {
+      const combinedData = {
+        ...data,
+        ...(resumeData || {}),
+        password: data.password,
+        registrationStep: 'completed'
+      };
 
-    // Store temporary data
-localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
+      localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
 
-    // 🔥 REAL BACKEND CALL
-    const response = await axios.post(
-      "http://localhost:5000/api/auth/send-otp",
-      { email: data.email }
-    );
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/send-otp',
+        { email: data.email }
+      );
 
-    if (response.data.success) {
-      toast.success("OTP sent to your email!");
-
-      navigate('/verify-otp', { 
-        state: { email: data.email }
-      });
-    } else {
-      toast.error("Failed to send OTP");
+      if (response.data.success) {
+        toast.success('OTP sent to your email!');
+        navigate('/verify-otp', { state: { email: data.email } });
+      } else {
+        toast.error('Failed to send OTP');
+      }
+    } catch (error) {
+      console.error('OTP error:', error);
+      toast.error('Failed to send OTP');
     }
-
-  } catch (error) {
-    console.error("OTP error:", error);
-    toast.error("Failed to send OTP");
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center p-6">
@@ -152,22 +542,22 @@ localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
               </div>
               <Sparkles className="w-5 h-5 text-blue-600" />
             </div>
-            
+
             <div className={`relative group border-2 border-dashed rounded-xl p-8 text-center transition-all ${
-              uploadedFile 
-                ? 'border-green-500 bg-green-50/30' 
+              uploadedFile
+                ? 'border-green-500 bg-green-50/30'
                 : isParsing
-                ? 'border-blue-300'
-                : 'border-blue-200 hover:border-blue-400 cursor-pointer'
+                  ? 'border-blue-300'
+                  : 'border-blue-200 hover:border-blue-400 cursor-pointer'
             }`}>
-              <input 
-                id="cv-upload" 
-                type="file" 
-                className="hidden" 
-                accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
-                onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0])} 
+              <input
+                id="cv-upload"
+                type="file"
+                className="hidden"
+                accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0])}
               />
-              
+
               {isParsing ? (
                 <div className="py-4">
                   <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto mb-3" />
@@ -214,11 +604,11 @@ localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
                   <label className="block text-sm font-semibold text-blue-900 mb-2">Full Name</label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
-                    <input 
-                      {...register('fullName', { 
+                    <input
+                      {...register('fullName', {
                         required: 'Full name is required',
                         minLength: { value: 2, message: 'Name is too short' }
-                      })} 
+                      })}
                       className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
                         errors.fullName ? 'border-red-300' : 'border-blue-200'
                       }`}
@@ -233,15 +623,15 @@ localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
                   <label className="block text-sm font-semibold text-blue-900 mb-2">Email</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
-                    <input 
+                    <input
                       type="email"
-                      {...register('email', { 
+                      {...register('email', {
                         required: 'Email is required',
-                        pattern: { 
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 
-                          message: 'Invalid email address' 
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: 'Invalid email address'
                         }
-                      })} 
+                      })}
                       className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
                         errors.email ? 'border-red-300' : 'border-blue-200'
                       }`}
@@ -258,13 +648,13 @@ localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
                   <label className="block text-sm font-semibold text-blue-900 mb-2">Password</label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
-                    <input 
+                    <input
                       type="password"
-                      {...register('password', { 
-                        required: 'Password is required', 
+                      {...register('password', {
+                        required: 'Password is required',
                         minLength: { value: 6, message: 'Minimum 6 characters' }
-                      })} 
-                      placeholder="••••••••" 
+                      })}
+                      placeholder="••••••••"
                       className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
                         errors.password ? 'border-red-300' : 'border-blue-200'
                       }`}
@@ -279,13 +669,13 @@ localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
                   <label className="block text-sm font-semibold text-blue-900 mb-2">Confirm Password</label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
-                    <input 
+                    <input
                       type="password"
-                      {...register('confirmPassword', { 
+                      {...register('confirmPassword', {
                         required: 'Please confirm your password',
-                        validate: v => v === watch('password') || 'Passwords must match' 
-                      })} 
-                      placeholder="••••••••" 
+                        validate: v => v === watch('password') || 'Passwords must match'
+                      })}
+                      placeholder="••••••••"
                       className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none ${
                         errors.confirmPassword ? 'border-red-300' : 'border-blue-200'
                       }`}
@@ -330,7 +720,7 @@ localStorage.setItem('pendingRegistration', JSON.stringify(combinedData));
               </div>
             </div>
 
-            <button 
+            <button
               onClick={() => loginWithGoogle()}
               className="w-full py-3.5 border border-blue-200 rounded-xl text-blue-900 hover:bg-blue-50 transition-colors font-medium flex items-center justify-center gap-3"
             >

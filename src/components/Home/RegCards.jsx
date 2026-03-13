@@ -34,7 +34,7 @@ const cards = [
   },
   {
     role: "Companies",
-    title: "Client Portal",
+    title: "Sales Portal",
     desc: "Find pre-assessed pools of candidates and track your hiring progress in real time.",
     icon: <CorporateFare sx={{ fontSize: 32 }} />,
     gradient: "from-orange-400 to-orange-600",
@@ -45,7 +45,7 @@ const cards = [
   },
   {
     role: "Partners",
-    title: "Vendor Network",
+    title: "Recruiter Portal",
     desc: "Find top talent and discover new clients to work with on a unified platform.",
     icon: <Handshake sx={{ fontSize: 32 }} />,
     gradient: "from-yellow-400 to-amber-500",
